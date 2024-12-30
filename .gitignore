@@ -123,3 +123,6 @@ fabric.properties
 
 ### idea template
 /.idea/
+
+/idea-flex.skeleton
+/jflex-1.9.1.jar

@@ -27,7 +27,7 @@ public class BatchFileType extends LanguageFileType {
 
     @Override @NotNull
     public String getDefaultExtension() {
-        return "bat";
+        return "cmd";
     }
 
     @Override @NotNull

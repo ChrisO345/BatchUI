@@ -1,0 +1,20 @@
+{
+    parserClass = "io.github.chriso345.batchui.BatchParser"
+
+    extends = "com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix = "Batch"
+    psiImplClassSuffix = "Impl"
+    psiPackage = "io.github.chriso345.batchui.psi"
+    psiImplPackage = "io.github.chriso345.batchui.psi.impl"
+
+    elementTypeHolderClass = "io.github.chriso345.batchui.psi.BatchTypes"
+    elementTypeClass = "io.github.chriso345.batchui.psi.BatchElementType"
+    tokenTypeClass = "io.github.chriso345.batchui.psi.BatchTokenType"
+}
+
+batchFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY

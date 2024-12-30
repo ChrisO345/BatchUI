@@ -29,7 +29,14 @@
                 implementationClass="io.github.chriso345.batchui.BatchFileType"
                 fieldName="INSTANCE"
                 language="Batch"
-                extensions="bat"
-                />
+                extensions="cmd"/>
+        <lang.parserDefinition
+                language="Batch"
+                implementationClass="io.github.chriso345.batchui.BatchParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="Batch"
+                implementationClass="io.github.chriso345.batchui.BatchSyntaxHighlighterFactory"/>
+        <colorSettingsPage
+                implementation="io.github.chriso345.batchui.BatchColorSettingsPage"/>
     </extensions>
 </idea-plugin>
