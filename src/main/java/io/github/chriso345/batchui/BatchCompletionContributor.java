@@ -14,7 +14,8 @@ public class BatchCompletionContributor extends CompletionContributor {
                 new CompletionProvider<>() {
                     public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
                         for (BatchCommand command : BatchCommand.values()) {
-                            resultSet.addElement(LookupElementBuilder.create(command.getCommand()));
+                            resultSet.addElement(LookupElementBuilder.create(command.getCommand())
+                                    .withIcon(BatchIcons.FILE));
                         }
                     }
                 }

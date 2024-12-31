@@ -13,16 +13,15 @@ import java.util.Map;
 
 final class BatchColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Key", BatchSyntaxHighlighter.KEY),
-            new AttributesDescriptor("Separator", BatchSyntaxHighlighter.SEPARATOR),
-            new AttributesDescriptor("Value", BatchSyntaxHighlighter.VALUE),
-            new AttributesDescriptor("Bad value", BatchSyntaxHighlighter.BAD_CHARACTER),
-            new AttributesDescriptor("Comment", BatchSyntaxHighlighter.COMMENT),
-            new AttributesDescriptor("Switch key", BatchSyntaxHighlighter.SWITCH_KEY),
-//            new AttributesDescriptor("Operators//Plus", MySyntaxHighlighter.PLUS),
-//            new AttributesDescriptor("Operators//Minus", MySyntaxHighlighter.MINUS),
-//            new AttributesDescriptor("Operators//Advanced//Sigma", MySyntaxHighlighter.SIGMA),
-//            new AttributesDescriptor("Operators//Advanced//Pi", MySyntaxHighlighter.PI),
+            new AttributesDescriptor("TODO//Key", BatchSyntaxHighlighter.KEY),
+            new AttributesDescriptor("TODO//Separator", BatchSyntaxHighlighter.SEPARATOR),
+            new AttributesDescriptor("TODO//Value", BatchSyntaxHighlighter.VALUE),
+
+            new AttributesDescriptor("Comments//Line comment", BatchSyntaxHighlighter.COMMENT),
+
+            new AttributesDescriptor("Decorators", BatchSyntaxHighlighter.SWITCH_KEY),
+
+            new AttributesDescriptor("Bad character", BatchSyntaxHighlighter.BAD_CHARACTER),
     };
 
     @Override

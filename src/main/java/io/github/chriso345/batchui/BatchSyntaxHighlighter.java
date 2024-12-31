@@ -41,25 +41,15 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
     }
 
     @Override @NotNull
-    public TextAttributesKey [] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(BatchTypes.SEPARATOR)) {
-            return SEPARATOR_KEYS;
-        }
-        if (tokenType.equals(BatchTypes.KEY)) {
-            return KEY_KEYS;
-        }
-        if (tokenType.equals(BatchTypes.VALUE)) {
-            return VALUE_KEYS;
-        }
-        if (tokenType.equals(BatchTypes.COMMENT)) {
-            return COMMENT_KEYS;
-        }
-        if (tokenType.equals(TokenType.BAD_CHARACTER)) {
-            return BAD_CHAR_KEYS;
-        }
-        if (tokenType.equals(BatchTypes.ANNOTATION)) {
-            return SWITCH_KEYS;
-        }
-        return EMPTY_KEYS;
+    public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
+        return switch (tokenType.toString()) {
+            case "BatchTokenType.SEPARATOR" -> SEPARATOR_KEYS;
+            case "BatchTokenType.KEY" -> KEY_KEYS;
+            case "BatchTokenType.VALUE" -> VALUE_KEYS;
+            case "BatchTokenType.COMMENT" -> COMMENT_KEYS;
+            case "BatchTokenType.ANNOTATION" -> SWITCH_KEYS;
+            case "BAD_CHARACTER" -> BAD_CHAR_KEYS;
+            default -> EMPTY_KEYS;
+        };
     }
 }
