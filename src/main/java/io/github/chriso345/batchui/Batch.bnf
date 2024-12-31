@@ -11,10 +11,17 @@
     elementTypeHolderClass = "io.github.chriso345.batchui.psi.BatchTypes"
     elementTypeClass = "io.github.chriso345.batchui.psi.BatchElementType"
     tokenTypeClass = "io.github.chriso345.batchui.psi.BatchTokenType"
+
+    psiImplUtilClass = "io.github.chriso345.batchui.psi.impl.BatchPsiImplUtil"
 }
 
 batchFile ::= item_*
 
 private item_ ::= (property|COMMENT|CRLF)
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+property ::= (KEY? SEPARATOR VALUE?) | KEY {
+    methods = [
+        getKey
+        getValue
+    ]
+}

@@ -27,4 +27,14 @@ public class BatchPropertyImpl extends ASTWrapperPsiElement implements BatchProp
     else super.accept(visitor);
   }
 
+  @Override
+  public String getKey() {
+    return BatchPsiImplUtil.getKey(this);
+  }
+
+  @Override
+  public String getValue() {
+    return BatchPsiImplUtil.getValue(this);
+  }
+
 }
