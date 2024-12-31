@@ -1,11 +1,13 @@
 package io.github.chriso345.batchui.psi.impl;
 
 import com.intellij.lang.ASTNode;
-import io.github.chriso345.batchui.psi.BatchProperty;
+import io.github.chriso345.batchui.psi.BatchSwitch;
 import io.github.chriso345.batchui.psi.BatchTypes;
+import io.github.chriso345.batchui.psi.BatchVariable;
 
 public class BatchPsiImplUtil {
-    public static String getKey(BatchProperty element) {
+    // Variable
+    public static String getKey(BatchVariable element) {
         ASTNode keyNode = element.getNode().findChildByType(BatchTypes.KEY);
         if (keyNode != null) {
             // IMPORTANT: Convert embedded escaped spaces to simple spaces FIXME: what is this doing??
@@ -15,7 +17,7 @@ public class BatchPsiImplUtil {
         }
     }
 
-    public static String getValue(BatchProperty element) {
+    public static String getValue(BatchVariable element) {
         ASTNode valueNode = element.getNode().findChildByType(BatchTypes.VALUE);
         if (valueNode != null) {
             return valueNode.getText();
@@ -23,4 +25,23 @@ public class BatchPsiImplUtil {
             return null;
         }
     }
+
+    // Switch
+    public static String getAnnotation(BatchSwitch element) {
+        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.ANNOTATION);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+//    public static String getCommand(BatchSwitch element) {
+//        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.COMMAND);
+//        if (valueNode != null) {
+//            return valueNode.getText();
+//        } else {
+//            return null;
+//        }
+//    }
 }

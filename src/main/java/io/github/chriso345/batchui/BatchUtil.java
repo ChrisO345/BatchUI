@@ -12,7 +12,7 @@ import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.chriso345.batchui.psi.BatchFile;
-import io.github.chriso345.batchui.psi.BatchProperty;
+import io.github.chriso345.batchui.psi.BatchVariable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -25,16 +25,16 @@ public class BatchUtil {
      * @param key     to check
      * @return matching properties
      */
-    public static List<BatchProperty> findProperties(Project project, String key) {
-        List<BatchProperty> result = new ArrayList<>();
+    public static List<BatchVariable> findProperties(Project project, String key) {
+        List<BatchVariable> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(BatchFileType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             BatchFile batchFile = (BatchFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (batchFile != null) {
-                BatchProperty[] properties = PsiTreeUtil.getChildrenOfType(batchFile, BatchProperty.class);
+                BatchVariable[] properties = PsiTreeUtil.getChildrenOfType(batchFile, BatchVariable.class);
                 if (properties != null) {
-                    for (BatchProperty property : properties) {
+                    for (BatchVariable property : properties) {
                         if (key.equals(property.getKey())) {
                             result.add(property);
                         }
@@ -45,14 +45,14 @@ public class BatchUtil {
         return result;
     }
 
-    public static List<BatchProperty> findProperties(Project project) {
-        List<BatchProperty> result = new ArrayList<>();
+    public static List<BatchVariable> findProperties(Project project) {
+        List<BatchVariable> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(BatchFileType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             BatchFile batchFile = (BatchFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (batchFile != null) {
-                BatchProperty[] properties = PsiTreeUtil.getChildrenOfType(batchFile, BatchProperty.class);
+                BatchVariable[] properties = PsiTreeUtil.getChildrenOfType(batchFile, BatchVariable.class);
                 if (properties != null) {
                     Collections.addAll(result, properties);
                 }
@@ -65,7 +65,7 @@ public class BatchUtil {
      * Attempts to collect any comment elements above the Batch key/value pair.
      */
     @NotNull
-    public static String findDocumentationComment(BatchProperty property) {
+    public static String findDocumentationComment(BatchVariable property) {
         List<String> result = new LinkedList<>();
         PsiElement element = property.getPrevSibling();
         while (element instanceof PsiComment || element instanceof PsiWhiteSpace) {

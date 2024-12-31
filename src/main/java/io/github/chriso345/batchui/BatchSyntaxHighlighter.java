@@ -23,6 +23,8 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("BATCH_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("BATCH_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
+    public static final TextAttributesKey SWITCH_KEY =
+            createTextAttributesKey("BATCH_SWITCH_KEY", DefaultLanguageHighlighterColors.METADATA);
 
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
@@ -30,6 +32,7 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] KEY_KEYS = new TextAttributesKey[]{KEY};
     private static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[]{VALUE};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
+    private static final TextAttributesKey[] SWITCH_KEYS = new TextAttributesKey[]{SWITCH_KEY};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     @Override @NotNull
@@ -53,6 +56,9 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
         }
         if (tokenType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;
+        }
+        if (tokenType.equals(BatchTypes.ANNOTATION)) {
+            return SWITCH_KEYS;
         }
         return EMPTY_KEYS;
     }

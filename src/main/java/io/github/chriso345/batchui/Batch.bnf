@@ -17,11 +17,22 @@
 
 batchFile ::= item_*
 
-private item_ ::= (property|COMMENT|CRLF)
+private item_ ::= (variable|switch|COMMENT|CRLF)
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY {
+variable ::= (KEY? SEPARATOR VALUE?) {
     methods = [
         getKey
         getValue
     ]
 }
+
+switch ::= (ANNOTATION) {
+    methods = [
+        getAnnotation
+    ]
+}
+//switch ::= (SWITCH_KEY COMMAND SWITCH_VALUE?) {
+//    methods = [
+//        getSwitchValue
+//    ]
+//}

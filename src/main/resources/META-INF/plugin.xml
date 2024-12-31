@@ -38,5 +38,8 @@
                 implementationClass="io.github.chriso345.batchui.BatchSyntaxHighlighterFactory"/>
         <colorSettingsPage
                 implementation="io.github.chriso345.batchui.BatchColorSettingsPage"/>
+        <completion.contributor
+                language="Batch"
+                implementationClass="io.github.chriso345.batchui.BatchCompletionContributor"/>
     </extensions>
 </idea-plugin>

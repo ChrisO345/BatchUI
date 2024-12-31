@@ -1,0 +1,18 @@
+// Basic PEG BNF syntax
+
+root_rule ::= rule_A rule_B rule_C rule_D                // sequence expression
+rule_A ::= token | 'or_text' | "another_one"             // choice expression
+rule_B ::= [ optional_token ] and_another_one?           // optional expression
+rule_C ::= &required !forbidden                          // predicate expression
+rule_D ::= { can_use_braces + (and_parens) * }           // grouping and repetition
+
+// Grammar-Kit BNF syntax
+
+{ generate=[psi="no"] }                                  // top-level global attributes
+private left rule_with_modifier ::= '+'                  // rule modifiers
+left rule_with_attributes ::= '?' {elementType=rule_D}   // rule attributes
+
+private meta list ::= <<p>> (',' <<p>>) *                // meta rule with parameters
+private list_usage ::= <<list rule_D>>                   // meta rule application
+
+

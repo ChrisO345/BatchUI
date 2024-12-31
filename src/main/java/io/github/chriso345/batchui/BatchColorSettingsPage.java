@@ -16,7 +16,9 @@ final class BatchColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Key", BatchSyntaxHighlighter.KEY),
             new AttributesDescriptor("Separator", BatchSyntaxHighlighter.SEPARATOR),
             new AttributesDescriptor("Value", BatchSyntaxHighlighter.VALUE),
-            new AttributesDescriptor("Bad value", BatchSyntaxHighlighter.BAD_CHARACTER)
+            new AttributesDescriptor("Bad value", BatchSyntaxHighlighter.BAD_CHARACTER),
+            new AttributesDescriptor("Comment", BatchSyntaxHighlighter.COMMENT),
+            new AttributesDescriptor("Switch key", BatchSyntaxHighlighter.SWITCH_KEY),
 //            new AttributesDescriptor("Operators//Plus", MySyntaxHighlighter.PLUS),
 //            new AttributesDescriptor("Operators//Minus", MySyntaxHighlighter.MINUS),
 //            new AttributesDescriptor("Operators//Advanced//Sigma", MySyntaxHighlighter.SIGMA),

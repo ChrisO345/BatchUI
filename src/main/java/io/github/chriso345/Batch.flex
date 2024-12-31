@@ -17,9 +17,13 @@ import com.intellij.psi.TokenType;
 
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
+
+ANNOTATION=@[^\r\n\W]*
+
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
 END_OF_LINE_COMMENT=("::")[^\r\n]*
+FULL_LINE_COMMENT=("REM")[^\r\n]* | ("rem")[^\r\n]*
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
@@ -28,6 +32,10 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 %%
 
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return BatchTypes.COMMENT; }
+
+<YYINITIAL> {FULL_LINE_COMMENT}                             { yybegin(YYINITIAL); return BatchTypes.COMMENT; }
+
+<YYINITIAL> {ANNOTATION}                    { yybegin(YYINITIAL); return BatchTypes.ANNOTATION; }
 
 <YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return BatchTypes.KEY; }
 

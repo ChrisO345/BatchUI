@@ -7,7 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public class BatchVisitor extends PsiElementVisitor {
 
-  public void visitProperty(@NotNull BatchProperty o) {
+  public void visitSwitch(@NotNull BatchSwitch o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVariable(@NotNull BatchVariable o) {
     visitPsiElement(o);
   }
 

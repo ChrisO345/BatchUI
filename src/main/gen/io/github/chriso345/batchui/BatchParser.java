@@ -48,51 +48,54 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // property|COMMENT|CRLF
+  // DEFAULT|variable|switch|COMMENT|CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
-    r = property(b, l + 1);
+    r = consumeToken(b, DEFAULT);
+    if (!r) r = variable(b, l + 1);
+    if (!r) r = switch_$(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     return r;
   }
 
   /* ********************************************************** */
-  // (KEY? SEPARATOR VALUE?) | KEY
-  public static boolean property(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property")) return false;
-    if (!nextTokenIs(b, "<property>", KEY, SEPARATOR)) return false;
+  // (ANNOTATION)
+  public static boolean switch_$(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "switch_$")) return false;
+    if (!nextTokenIs(b, ANNOTATION)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PROPERTY, "<property>");
-    r = property_0(b, l + 1);
-    if (!r) r = consumeToken(b, KEY);
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ANNOTATION);
+    exit_section_(b, m, SWITCH, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // KEY? SEPARATOR VALUE?
+  public static boolean variable(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable")) return false;
+    if (!nextTokenIs(b, "<variable>", KEY, SEPARATOR)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, VARIABLE, "<variable>");
+    r = variable_0(b, l + 1);
+    r = r && consumeToken(b, SEPARATOR);
+    r = r && variable_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // KEY? SEPARATOR VALUE?
-  private static boolean property_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = property_0_0(b, l + 1);
-    r = r && consumeToken(b, SEPARATOR);
-    r = r && property_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   // KEY?
-  private static boolean property_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_0_0")) return false;
+  private static boolean variable_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_0")) return false;
     consumeToken(b, KEY);
     return true;
   }
 
   // VALUE?
-  private static boolean property_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_0_2")) return false;
+  private static boolean variable_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_2")) return false;
     consumeToken(b, VALUE);
     return true;
   }

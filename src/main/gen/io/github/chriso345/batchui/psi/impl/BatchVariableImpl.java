@@ -11,14 +11,14 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchPropertyImpl extends ASTWrapperPsiElement implements BatchProperty {
+public class BatchVariableImpl extends ASTWrapperPsiElement implements BatchVariable {
 
-  public BatchPropertyImpl(@NotNull ASTNode node) {
+  public BatchVariableImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitProperty(this);
+    visitor.visitVariable(this);
   }
 
   @Override

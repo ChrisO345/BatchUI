@@ -8,10 +8,13 @@ import io.github.chriso345.batchui.psi.impl.*;
 
 public interface BatchTypes {
 
-  IElementType PROPERTY = new BatchElementType("PROPERTY");
+  IElementType SWITCH = new BatchElementType("SWITCH");
+  IElementType VARIABLE = new BatchElementType("VARIABLE");
 
+  IElementType ANNOTATION = new BatchTokenType("ANNOTATION");
   IElementType COMMENT = new BatchTokenType("COMMENT");
   IElementType CRLF = new BatchTokenType("CRLF");
+  IElementType DEFAULT = new BatchTokenType("DEFAULT");
   IElementType KEY = new BatchTokenType("KEY");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
   IElementType VALUE = new BatchTokenType("VALUE");
@@ -19,8 +22,11 @@ public interface BatchTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == PROPERTY) {
-        return new BatchPropertyImpl(node);
+      if (type == SWITCH) {
+        return new BatchSwitchImpl(node);
+      }
+      else if (type == VARIABLE) {
+        return new BatchVariableImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }
