@@ -11,17 +11,22 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.Map;
 
+import static io.github.chriso345.batchui.BatchSyntaxHighlighterDefinitions.*;
+
 final class BatchColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("TODO//Key", BatchSyntaxHighlighter.KEY),
-            new AttributesDescriptor("TODO//Separator", BatchSyntaxHighlighter.SEPARATOR),
-            new AttributesDescriptor("TODO//Value", BatchSyntaxHighlighter.VALUE),
+            new AttributesDescriptor("TODO//Key", KEY.getKeys()[0]),
+            new AttributesDescriptor("TODO//Separator", SEPARATOR.getKeys()[0]),
+            new AttributesDescriptor("TODO//Value", VALUE.getKeys()[0]),
 
-            new AttributesDescriptor("Comments//Line comment", BatchSyntaxHighlighter.COMMENT),
+            new AttributesDescriptor("Comments//Line comment", COMMENT.getKeys()[0]),
 
-            new AttributesDescriptor("Decorators", BatchSyntaxHighlighter.SWITCH_KEY),
+            new AttributesDescriptor("Decorators", ANNOTATION.getKeys()[0]),
 
-            new AttributesDescriptor("Bad character", BatchSyntaxHighlighter.BAD_CHARACTER),
+            new AttributesDescriptor("Identifiers//Function label", FUNC_LABEL.getKeys()[0]),
+            new AttributesDescriptor("Identifiers//Toggle", TOGGLE.getKeys()[0]),
+
+            new AttributesDescriptor("Bad character", BAD_CHARACTER.getKeys()[0]),
     };
 
     @Override

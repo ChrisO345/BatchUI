@@ -27,7 +27,7 @@ LABEL=[^\r\n\W]+
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
 END_OF_LINE_COMMENT=("::")[^\r\n]*
-FULL_LINE_COMMENT=("REM")[^\r\n]* | ("rem")[^\r\n]*
+FULL_LINE_COMMENT=([Rr][Ee][Mm])[^\r\n]*
 SEPARATOR=[=]
 KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
