@@ -9,4 +9,6 @@ public interface BatchSwitch extends PsiElement {
 
   String getAnnotation();
 
+  String getToggle();
+
 }

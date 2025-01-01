@@ -8,21 +8,27 @@ import io.github.chriso345.batchui.psi.impl.*;
 
 public interface BatchTypes {
 
+  IElementType LABEL = new BatchElementType("LABEL");
   IElementType SWITCH = new BatchElementType("SWITCH");
   IElementType VARIABLE = new BatchElementType("VARIABLE");
 
   IElementType ANNOTATION = new BatchTokenType("ANNOTATION");
+  IElementType COLON = new BatchTokenType("COLON");
   IElementType COMMENT = new BatchTokenType("COMMENT");
   IElementType CRLF = new BatchTokenType("CRLF");
-  IElementType DEFAULT = new BatchTokenType("DEFAULT");
+  IElementType FUNC_LABEL = new BatchTokenType("FUNC_LABEL");
   IElementType KEY = new BatchTokenType("KEY");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
+  IElementType TOGGLE = new BatchTokenType("TOGGLE");
   IElementType VALUE = new BatchTokenType("VALUE");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == SWITCH) {
+      if (type == LABEL) {
+        return new BatchLabelImpl(node);
+      }
+      else if (type == SWITCH) {
         return new BatchSwitchImpl(node);
       }
       else if (type == VARIABLE) {

@@ -26,7 +26,7 @@ public class BatchPsiImplUtil {
         }
     }
 
-    // Switch
+    // Annotation
     public static String getAnnotation(BatchSwitch element) {
         ASTNode valueNode = element.getNode().findChildByType(BatchTypes.ANNOTATION);
         if (valueNode != null) {
@@ -36,12 +36,31 @@ public class BatchPsiImplUtil {
         }
     }
 
-//    public static String getCommand(BatchSwitch element) {
-//        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.COMMAND);
-//        if (valueNode != null) {
-//            return valueNode.getText();
-//        } else {
-//            return null;
-//        }
-//    }
+    public static String getToggle(BatchSwitch element) {
+        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.TOGGLE);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    // Label
+    public static String getFuncLabel(BatchSwitch element) {
+        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.FUNC_LABEL);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    public static String getColon(BatchSwitch element) {
+        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.COLON);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
 }

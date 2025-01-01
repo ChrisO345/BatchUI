@@ -19,12 +19,16 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 
 ANNOTATION=@[^\r\n\W]*
+TOGGLE="on" | "off"
+
+COLON=":"
+LABEL=[^\r\n\W]+
 
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
 END_OF_LINE_COMMENT=("::")[^\r\n]*
 FULL_LINE_COMMENT=("REM")[^\r\n]* | ("rem")[^\r\n]*
-SEPARATOR=[:=]
+SEPARATOR=[=]
 KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
 %state WAITING_VALUE
@@ -35,7 +39,13 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
 <YYINITIAL> {FULL_LINE_COMMENT}                             { yybegin(YYINITIAL); return BatchTypes.COMMENT; }
 
-<YYINITIAL> {ANNOTATION}                    { yybegin(YYINITIAL); return BatchTypes.ANNOTATION; }
+<YYINITIAL> {ANNOTATION}                                    { yybegin(YYINITIAL); return BatchTypes.ANNOTATION; }
+
+<YYINITIAL> {TOGGLE}                                        { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
+
+<YYINITIAL> {COLON}                                        { yybegin(WAITING_VALUE); return BatchTypes.COLON; }
+
+<WAITING_VALUE> {LABEL}                                         { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL; }
 
 <YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return BatchTypes.KEY; }
 

@@ -11,30 +11,20 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchSwitchImpl extends ASTWrapperPsiElement implements BatchSwitch {
+public class BatchLabelImpl extends ASTWrapperPsiElement implements BatchLabel {
 
-  public BatchSwitchImpl(@NotNull ASTNode node) {
+  public BatchLabelImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitSwitch(this);
+    visitor.visitLabel(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof BatchVisitor) accept((BatchVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  public String getAnnotation() {
-    return BatchPsiImplUtil.getAnnotation(this);
-  }
-
-  @Override
-  public String getToggle() {
-    return BatchPsiImplUtil.getToggle(this);
   }
 
 }
