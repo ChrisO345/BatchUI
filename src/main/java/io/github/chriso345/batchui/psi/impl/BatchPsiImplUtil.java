@@ -1,6 +1,7 @@
 package io.github.chriso345.batchui.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import io.github.chriso345.batchui.psi.BatchLabel;
 import io.github.chriso345.batchui.psi.BatchSwitch;
 import io.github.chriso345.batchui.psi.BatchTypes;
 import io.github.chriso345.batchui.psi.BatchVariable;
@@ -46,7 +47,7 @@ public class BatchPsiImplUtil {
     }
 
     // Label
-    public static String getFuncLabel(BatchSwitch element) {
+    public static String getFuncLabel(BatchLabel element) {
         ASTNode valueNode = element.getNode().findChildByType(BatchTypes.FUNC_LABEL);
         if (valueNode != null) {
             return valueNode.getText();
@@ -55,7 +56,7 @@ public class BatchPsiImplUtil {
         }
     }
 
-    public static String getColon(BatchSwitch element) {
+    public static String getColon(BatchLabel element) {
         ASTNode valueNode = element.getNode().findChildByType(BatchTypes.COLON);
         if (valueNode != null) {
             return valueNode.getText();
