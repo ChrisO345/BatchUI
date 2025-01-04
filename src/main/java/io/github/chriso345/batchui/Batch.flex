@@ -28,7 +28,7 @@ RemIndicator = [Rr][Ee][Mm]
 CommentIndicator = ("::" | {RemIndicator})
 Toggle = "on" | "off"
 
-%state ANNOTATION, COMMAND, ECHO, GOTO, LABEL, REM
+%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM
 
 %%
 
@@ -63,7 +63,19 @@ Toggle = "on" | "off"
 <ECHO> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(ECHO); return TokenType.WHITE_SPACE; }
-    {Toggle} { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    {Toggle}[\ \t]*[\r\n]+ { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
+
+    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.COMMAND; }
+}
+
+<ECHO_STRING> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(ECHO_STRING); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.COMMAND; }
 }
 
 <GOTO> {
@@ -83,4 +95,4 @@ Toggle = "on" | "off"
     {FullLine}+ { yybegin(REM); return BatchTypes.COMMENT; }
 }
 
-[^]                                                         { return TokenType.BAD_CHARACTER; }
+{Token}+ { return TokenType.BAD_CHARACTER; }
