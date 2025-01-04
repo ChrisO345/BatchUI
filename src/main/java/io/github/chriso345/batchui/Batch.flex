@@ -23,7 +23,8 @@ Exp = [^ \t\f\n\r\:\;\,\|\&\<\>]+
 CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
 EscapeCharacter = "^".
 
-CommentIndicator = ("::" | [Rr][Ee][Mm])
+RemIndicator = [Rr][Ee][Mm]
+CommentIndicator = ("::" | {RemIndicator})
 Toggle = "on" | "off"
 
 %state ANNOTATION, EXPR, LABEL, REM
@@ -43,6 +44,7 @@ Toggle = "on" | "off"
 
 <ANNOTATION> {
     {WhiteSpace}* { yybegin(ANNOTATION); return TokenType.WHITE_SPACE; }
+    {RemIndicator} { yybegin(REM); return BatchTypes.COMMENT; }
     {Exp}+ { yybegin(EXPR); return BatchTypes.ANNOTATION; }
 }
 
