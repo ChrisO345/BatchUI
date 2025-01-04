@@ -12,15 +12,15 @@ public interface BatchTypes {
   IElementType VARIABLE = new BatchElementType("VARIABLE");
 
   IElementType ANNOTATION = new BatchTokenType("ANNOTATION");
-  IElementType COMMAND = new BatchTokenType("command");
+  IElementType COMMAND = new BatchTokenType("COMMAND");
   IElementType COMMENT = new BatchTokenType("COMMENT");
   IElementType CRLF = new BatchTokenType("CRLF");
   IElementType FUNC_LABEL = new BatchTokenType("FUNC_LABEL");
   IElementType KEY = new BatchTokenType("KEY");
   IElementType LABEL_MARKER = new BatchTokenType("LABEL_MARKER");
+  IElementType REM_ANNOTATION = new BatchTokenType("REM_ANNOTATION");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
   IElementType SETTER = new BatchTokenType("SETTER");
-  IElementType SWITCH = new BatchTokenType("switch");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
   IElementType VALUE = new BatchTokenType("VALUE");
 

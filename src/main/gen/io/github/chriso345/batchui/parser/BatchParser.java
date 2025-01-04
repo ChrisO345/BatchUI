@@ -48,19 +48,19 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variable|command|switch|label|COMMENT|CRLF
-  //                     |ANNOTATION|TOGGLE
+  // variable|label|COMMENT|CRLF|
+  //                     ANNOTATION|REM_ANNOTATION|TOGGLE|COMMAND
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     r = variable(b, l + 1);
-    if (!r) r = consumeToken(b, COMMAND);
-    if (!r) r = consumeToken(b, SWITCH);
     if (!r) r = label(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     if (!r) r = consumeToken(b, ANNOTATION);
+    if (!r) r = consumeToken(b, REM_ANNOTATION);
     if (!r) r = consumeToken(b, TOGGLE);
+    if (!r) r = consumeToken(b, COMMAND);
     return r;
   }
 

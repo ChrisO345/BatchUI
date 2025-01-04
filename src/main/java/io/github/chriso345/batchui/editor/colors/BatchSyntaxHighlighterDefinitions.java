@@ -12,6 +12,7 @@ public enum BatchSyntaxHighlighterDefinitions {
     KEY(DefaultLanguageHighlighterColors.KEYWORD),
     VALUE(DefaultLanguageHighlighterColors.STRING),
     COMMENT(DefaultLanguageHighlighterColors.LINE_COMMENT),
+    REM_ANNOTATION(DefaultLanguageHighlighterColors.KEYWORD),
     ANNOTATION(DefaultLanguageHighlighterColors.METADATA),
     TOGGLE(DefaultLanguageHighlighterColors.STATIC_FIELD),
     FUNC_LABEL(DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
