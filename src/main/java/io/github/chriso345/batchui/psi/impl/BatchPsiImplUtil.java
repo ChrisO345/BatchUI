@@ -8,6 +8,14 @@ import io.github.chriso345.batchui.psi.BatchVariable;
 
 public class BatchPsiImplUtil {
     // Variable
+    public static String getSetter(BatchVariable element) {
+        ASTNode setterNode = element.getNode().findChildByType(BatchTypes.SETTER);
+        if (setterNode != null) {
+            return setterNode.getText();
+        } else {
+            return null;
+        }
+    }
     public static String getKey(BatchVariable element) {
         ASTNode keyNode = element.getNode().findChildByType(BatchTypes.KEY);
         if (keyNode != null) {
@@ -56,8 +64,8 @@ public class BatchPsiImplUtil {
         }
     }
 
-    public static String getColon(BatchLabel element) {
-        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.COLON);
+    public static String getLabelMarker(BatchLabel element) {
+        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.LABEL_MARKER);
         if (valueNode != null) {
             return valueNode.getText();
         } else {

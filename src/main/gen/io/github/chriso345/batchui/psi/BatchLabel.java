@@ -7,12 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface BatchLabel extends PsiElement {
 
-  //WARNING: getColon(...) is skipped
-  //matching getColon(BatchLabel, ...)
-  //methods are not found in BatchPsiImplUtil
+  String getLabelMarker();
 
-  //WARNING: getFuncLabel(...) is skipped
-  //matching getFuncLabel(BatchLabel, ...)
-  //methods are not found in BatchPsiImplUtil
+  String getFuncLabel();
 
 }

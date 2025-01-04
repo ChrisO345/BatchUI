@@ -48,11 +48,32 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variable|switch|label|COMMENT|CRLF
+  // COMMAND_KEY COMMAND_VALUE?
+  public static boolean command(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command")) return false;
+    if (!nextTokenIs(b, COMMAND_KEY)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMAND_KEY);
+    r = r && command_1(b, l + 1);
+    exit_section_(b, m, COMMAND, r);
+    return r;
+  }
+
+  // COMMAND_VALUE?
+  private static boolean command_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_1")) return false;
+    consumeToken(b, COMMAND_VALUE);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // variable|command|switch|label|COMMENT|CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     r = variable(b, l + 1);
+    if (!r) r = command(b, l + 1);
     if (!r) r = switch_$(b, l + 1);
     if (!r) r = label(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
@@ -61,10 +82,10 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COLON? FUNC_LABEL
+  // LABEL_MARKER? FUNC_LABEL
   public static boolean label(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "label")) return false;
-    if (!nextTokenIs(b, "<label>", COLON, FUNC_LABEL)) return false;
+    if (!nextTokenIs(b, "<label>", FUNC_LABEL, LABEL_MARKER)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, LABEL, "<label>");
     r = label_0(b, l + 1);
@@ -73,10 +94,10 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // COLON?
+  // LABEL_MARKER?
   private static boolean label_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "label_0")) return false;
-    consumeToken(b, COLON);
+    consumeToken(b, LABEL_MARKER);
     return true;
   }
 
@@ -101,29 +122,36 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEY? SEPARATOR VALUE?
+  // SETTER? KEY? SEPARATOR VALUE?
   public static boolean variable(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable")) return false;
-    if (!nextTokenIs(b, "<variable>", KEY, SEPARATOR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VARIABLE, "<variable>");
     r = variable_0(b, l + 1);
+    r = r && variable_1(b, l + 1);
     r = r && consumeToken(b, SEPARATOR);
-    r = r && variable_2(b, l + 1);
+    r = r && variable_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // KEY?
+  // SETTER?
   private static boolean variable_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_0")) return false;
+    consumeToken(b, SETTER);
+    return true;
+  }
+
+  // KEY?
+  private static boolean variable_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_1")) return false;
     consumeToken(b, KEY);
     return true;
   }
 
   // VALUE?
-  private static boolean variable_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_2")) return false;
+  private static boolean variable_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_3")) return false;
     consumeToken(b, VALUE);
     return true;
   }

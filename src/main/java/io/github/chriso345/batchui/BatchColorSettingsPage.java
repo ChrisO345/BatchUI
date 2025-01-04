@@ -43,18 +43,57 @@ final class BatchColorSettingsPage implements ColorSettingsPage {
     @Override @NotNull
     public String getDemoText() {
         return """
-        :: You are reading the ".properties" entry.
-        :: The exclamation mark can also mark text as comments.
-        website = https://en.wikipedia.org/
-        language = English
-        :: The backslash below tells the application to continue reading
-        :: the value onto the next line.
-        message = Welcome to \\
-                  Wikipedia!
-        :: Add spaces to the key
-        key\\ with\\ spaces = This is the value that could be looked up with the key "key with spaces".
-        :: Unicode
-        tab : \\u0009
+        :: Allow the use of 'ls' command in Windows
+        :: Full support not guaranteed, but basic functionality is provided
+        
+        @echo off
+        setlocal enabledelayedexpansion
+        
+        :: Default to current directory if no directory is passed
+        set DIR=.
+        set COUNT=0
+        
+        :: Parse arguments
+        :parse_args
+        if "%~1"=="" goto done
+        if "%~1"=="-c" (
+            set /a COUNT=%2
+            shift
+            shift
+        ) else (
+            set DIR=%1
+            shift
+        )
+        goto parse_args
+        
+        :done
+        
+        :: Initialize output variable as empty string
+        set output=
+        
+        :: Show files in directory similar to 'ls' command
+        set counter=0
+        for /f "delims=" %%f in ('dir "%DIR%" /b /a') do (
+            if !COUNT! neq 0 (
+                set /a counter+=1
+                if !counter! leq !COUNT! (
+                    if defined output (
+                        set output=!output!   %%f
+                    ) else (
+                        set output=%%f
+                    )
+                )
+            ) else (
+                if defined output (
+                    set output=!output!   %%f
+                ) else (
+                    set output=%%f
+                )
+            )
+        )
+        
+        echo !output!
+        endlocal
         """;
     }
 

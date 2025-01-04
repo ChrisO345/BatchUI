@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
+import io.github.chriso345.batchui.psi.BatchTokenType;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
@@ -23,7 +24,7 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
         return switch (tokenType.toString()) {
             case "BatchTokenType.SEPARATOR" -> SEPARATOR.getKeys();
-            case "BatchTokenType.KEY", "BatchTokenType.COLON" -> KEY.getKeys();
+            case "BatchTokenType.KEY", "BatchTokenType.LABEL_MARKER" -> KEY.getKeys();
             case "BatchTokenType.VALUE" -> VALUE.getKeys();
             case "BatchTokenType.COMMENT" -> COMMENT.getKeys();
             case "BatchTokenType.ANNOTATION" -> ANNOTATION.getKeys();

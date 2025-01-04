@@ -17,12 +17,20 @@
 
 batchFile ::= item_*
 
-private item_ ::= (variable|switch|label|COMMENT|CRLF)
+private item_ ::= (variable|command|switch|label|COMMENT|CRLF)
 
-variable ::= (KEY? SEPARATOR VALUE?) {
+variable ::= (SETTER? KEY? SEPARATOR VALUE?) {
     methods = [
+        getSetter
         getKey
         getValue
+    ]
+}
+
+command ::= (COMMAND_KEY COMMAND_VALUE?) {
+    methods = [
+        getCommandKey
+        getCommandValue
     ]
 }
 
@@ -33,9 +41,9 @@ switch ::= (ANNOTATION TOGGLE?) {
     ]
 }
 
-label ::= (COLON? FUNC_LABEL) {
+label ::= (LABEL_MARKER? FUNC_LABEL) {
     methods = [
-        getColon
+        getLabelMarker
         getFuncLabel
     ]
 }

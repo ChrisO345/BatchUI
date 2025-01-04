@@ -7,6 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface BatchVariable extends PsiElement {
 
+  String getSetter();
+
   String getKey();
 
   String getValue();

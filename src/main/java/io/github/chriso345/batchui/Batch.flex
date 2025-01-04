@@ -1,9 +1,9 @@
 package io.github.chriso345.batchui;
 
-import com.intellij.lexer.FlexLexer;
+import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import io.github.chriso345.batchui.psi.BatchTypes;
-import com.intellij.psi.TokenType;
+import com.intellij.lexer.FlexLexer;
 
 %%
 
@@ -15,48 +15,50 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
-CRLF=\R
-WHITE_SPACE=[\ \n\t\f]
+WhiteSpace = [ \t]
+LineTerminator = \r|\n|\r\n
+FullLine = [^\r\n]
+StringLiteral = \" ( \\\" | [^\"\n\r] )* \"
+Exp = [^ \t\f\n\r\:\;\,\|\&\<\>]+
+CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
+EscapeCharacter = "^".
 
-ANNOTATION=@[^\r\n\W]*
-TOGGLE="on" | "off"
+CommentIndicator = ("::" | [Rr][Ee][Mm])
+Toggle = "on" | "off"
 
-COLON=":"
-LABEL=[^\r\n\W]+
-
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("::")[^\r\n]*
-FULL_LINE_COMMENT=([Rr][Ee][Mm])[^\r\n]*
-SEPARATOR=[=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
-
-%state WAITING_VALUE
+%state ANNOTATION, EXPR, LABEL, REM
 
 %%
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return BatchTypes.COMMENT; }
+<YYINITIAL> {
+    {WhiteSpace}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    "@" { yybegin(ANNOTATION); return BatchTypes.ANNOTATION; }
+    // {Exp}
+    // {Escaping}
+    // {StringLiteral}
+    {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
+    ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
+}
 
-<YYINITIAL> {FULL_LINE_COMMENT}                             { yybegin(YYINITIAL); return BatchTypes.COMMENT; }
+<ANNOTATION> {
+    {WhiteSpace}* { yybegin(ANNOTATION); return TokenType.WHITE_SPACE; }
+    {Exp}+ { yybegin(EXPR); return BatchTypes.ANNOTATION; }
+}
 
-<YYINITIAL> {ANNOTATION}                                    { yybegin(YYINITIAL); return BatchTypes.ANNOTATION; }
+<EXPR> {
+    {WhiteSpace}* { yybegin(EXPR); return TokenType.WHITE_SPACE; }
+    {Toggle}? { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
+}
 
-<YYINITIAL> {TOGGLE}                                        { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
+<LABEL> {
+    {WhiteSpace}* { yybegin(LABEL); return TokenType.WHITE_SPACE; }
+    {FullLine}+ { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL; }
+}
 
-<YYINITIAL> {COLON}                                        { yybegin(WAITING_VALUE); return BatchTypes.COLON; }
-
-<WAITING_VALUE> {LABEL}                                         { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL; }
-
-<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return BatchTypes.KEY; }
-
-<YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return BatchTypes.SEPARATOR; }
-
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return BatchTypes.VALUE; }
-
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<REM> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {FullLine}* { yybegin(REM); return BatchTypes.COMMENT; }
+}
 
 [^]                                                         { return TokenType.BAD_CHARACTER; }
