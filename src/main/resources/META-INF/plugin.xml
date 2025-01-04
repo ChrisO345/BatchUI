@@ -41,5 +41,15 @@
         <completion.contributor
                 language="Batch"
                 implementationClass="io.github.chriso345.batchui.BatchCompletionContributor"/>
+        <applicationService
+                serviceImplementation="io.github.chriso345.batchui.settings.AppSettingsState"/>
+        <applicationConfigurable
+                parentId=""
+                instance="io.github.chriso345.batchui.settings.AppSettingsConfigurable"
+                id="io.github.chriso345.batchui.settings.AppSettingsConfigurable"
+                displayName="Batch Plugin Settings"/>
+        <lang.commenter
+                language="Batch"
+                implementationClass="io.github.chriso345.batchui.editor.BatchCommenter"/>
     </extensions>
 </idea-plugin>
