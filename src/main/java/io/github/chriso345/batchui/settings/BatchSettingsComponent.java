@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class AppSettingsComponent {
+public class BatchSettingsComponent {
     private final JPanel myMainPanel;
     private final JBTextField myCommentPrefix = new JBTextField();
 
-    public AppSettingsComponent() {
+    public BatchSettingsComponent() {
         myMainPanel = FormBuilder.createFormBuilder()
                 .addLabeledComponent("Comment prefix", myCommentPrefix, 1, false)
                 .addComponentFillVertically(new JBPanelWithEmptyText(), 0)

@@ -12,22 +12,22 @@ import org.jetbrains.annotations.Nullable;
         name = "io.github.chriso345.batchui.settings.AppSettingsState",
         storages = @Storage("BatchUIPluginSettings.xml")
 )
-public class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
+public class BatchSettingsState implements PersistentStateComponent<BatchSettingsState> {
 
     public String commentPrefix = "::";
 
-    public static AppSettingsState getInstance() {
-        return ApplicationManager.getApplication().getService(AppSettingsState.class);
+    public static BatchSettingsState getInstance() {
+        return ApplicationManager.getApplication().getService(BatchSettingsState.class);
     }
 
     @Nullable
     @Override
-    public AppSettingsState getState() {
+    public BatchSettingsState getState() {
         return this;
     }
 
     @Override
-    public void loadState(@NotNull AppSettingsState state) {
+    public void loadState(@NotNull BatchSettingsState state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 

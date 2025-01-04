@@ -1,5 +1,5 @@
 // This is a generated file. Not intended for manual editing.
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.parser;
 
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
@@ -48,36 +48,19 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMMAND_KEY COMMAND_VALUE?
-  public static boolean command(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "command")) return false;
-    if (!nextTokenIs(b, COMMAND_KEY)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, COMMAND_KEY);
-    r = r && command_1(b, l + 1);
-    exit_section_(b, m, COMMAND, r);
-    return r;
-  }
-
-  // COMMAND_VALUE?
-  private static boolean command_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "command_1")) return false;
-    consumeToken(b, COMMAND_VALUE);
-    return true;
-  }
-
-  /* ********************************************************** */
   // variable|command|switch|label|COMMENT|CRLF
+  //                     |ANNOTATION|TOGGLE
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     r = variable(b, l + 1);
-    if (!r) r = command(b, l + 1);
-    if (!r) r = switch_$(b, l + 1);
+    if (!r) r = consumeToken(b, COMMAND);
+    if (!r) r = consumeToken(b, SWITCH);
     if (!r) r = label(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
+    if (!r) r = consumeToken(b, ANNOTATION);
+    if (!r) r = consumeToken(b, TOGGLE);
     return r;
   }
 
@@ -98,26 +81,6 @@ public class BatchParser implements PsiParser, LightPsiParser {
   private static boolean label_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "label_0")) return false;
     consumeToken(b, LABEL_MARKER);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // ANNOTATION TOGGLE?
-  public static boolean switch_$(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "switch_$")) return false;
-    if (!nextTokenIs(b, ANNOTATION)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, ANNOTATION);
-    r = r && switch_1(b, l + 1);
-    exit_section_(b, m, SWITCH, r);
-    return r;
-  }
-
-  // TOGGLE?
-  private static boolean switch_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "switch_1")) return false;
-    consumeToken(b, TOGGLE);
     return true;
   }
 

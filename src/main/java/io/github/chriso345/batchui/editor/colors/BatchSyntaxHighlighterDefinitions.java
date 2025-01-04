@@ -1,4 +1,4 @@
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.editor.colors;
 
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;

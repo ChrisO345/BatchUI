@@ -1,4 +1,4 @@
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.lexer;
 
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
@@ -51,6 +51,7 @@ Toggle = "on" | "off"
 <EXPR> {
     {WhiteSpace}* { yybegin(EXPR); return TokenType.WHITE_SPACE; }
     {Toggle}? { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 }
 
 <LABEL> {

@@ -1,4 +1,4 @@
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
@@ -8,9 +8,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
+import io.github.chriso345.batchui.BatchLanguage;
+import io.github.chriso345.batchui.lexer.BatchLexerAdapter;
 import io.github.chriso345.batchui.psi.BatchFile;
 import io.github.chriso345.batchui.psi.BatchTokenSets;
 import io.github.chriso345.batchui.psi.BatchTypes;

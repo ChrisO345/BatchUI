@@ -1,17 +1,19 @@
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.settings;
 
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
+import io.github.chriso345.batchui.BatchIcons;
+import io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Map;
 
-import static io.github.chriso345.batchui.BatchSyntaxHighlighterDefinitions.*;
+import static io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighterDefinitions.*;
 
 final class BatchColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{

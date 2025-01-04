@@ -1,11 +1,10 @@
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.editor.colors;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 final class BatchSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
     @Override @NotNull

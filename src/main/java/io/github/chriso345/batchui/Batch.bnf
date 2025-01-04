@@ -1,5 +1,5 @@
 {
-    parserClass = "io.github.chriso345.batchui.BatchParser"
+    parserClass = "io.github.chriso345.batchui.parser.BatchParser"
 
     extends = "com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -17,27 +17,14 @@
 
 batchFile ::= item_*
 
-private item_ ::= (variable|command|switch|label|COMMENT|CRLF)
+private item_ ::= (variable|command|switch|label|COMMENT|CRLF
+                    |ANNOTATION|TOGGLE)
 
 variable ::= (SETTER? KEY? SEPARATOR VALUE?) {
     methods = [
         getSetter
         getKey
         getValue
-    ]
-}
-
-command ::= (COMMAND_KEY COMMAND_VALUE?) {
-    methods = [
-        getCommandKey
-        getCommandValue
-    ]
-}
-
-switch ::= (ANNOTATION TOGGLE?) {
-    methods = [
-        getAnnotation
-        getToggle
     ]
 }
 

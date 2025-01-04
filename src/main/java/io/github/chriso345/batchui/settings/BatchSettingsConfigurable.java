@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class AppSettingsConfigurable implements Configurable {
-    private AppSettingsComponent mySettingsComponent;
+public class BatchSettingsConfigurable implements Configurable {
+    private BatchSettingsComponent mySettingsComponent;
 
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
@@ -23,25 +23,25 @@ public class AppSettingsConfigurable implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
-        mySettingsComponent = new AppSettingsComponent();
+        mySettingsComponent = new BatchSettingsComponent();
         return mySettingsComponent.getPanel();
     }
 
     @Override
     public boolean isModified() {
-        AppSettingsState settings = AppSettingsState.getInstance();
+        BatchSettingsState settings = BatchSettingsState.getInstance();
         return !mySettingsComponent.getCommentPrefixText().equals(settings.commentPrefix);
     }
 
     @Override
     public void apply() {
-        AppSettingsState settings = AppSettingsState.getInstance();
+        BatchSettingsState settings = BatchSettingsState.getInstance();
         settings.commentPrefix = mySettingsComponent.getCommentPrefixText().strip();
     }
 
     @Override
     public void reset() {
-        AppSettingsState settings = AppSettingsState.getInstance();
+        BatchSettingsState settings = BatchSettingsState.getInstance();
         mySettingsComponent.setCommentPrefixText(settings.commentPrefix);
     }
 

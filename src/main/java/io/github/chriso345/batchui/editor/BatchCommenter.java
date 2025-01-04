@@ -1,19 +1,16 @@
 package io.github.chriso345.batchui.editor;
 
 import com.intellij.lang.Commenter;
-import com.intellij.util.containers.ContainerUtil;
-import io.github.chriso345.batchui.settings.AppSettingsState;
+import io.github.chriso345.batchui.settings.BatchSettingsState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BatchCommenter implements Commenter {
     @Override
     public @Nullable String getLineCommentPrefix() {
-        AppSettingsState settings = AppSettingsState.getInstance();
+        BatchSettingsState settings = BatchSettingsState.getInstance();
         return settings.commentPrefix + " ";
     }
 

@@ -1,4 +1,4 @@
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.util;
 
 public enum BatchCommand {
     ASSOC("assoc"),

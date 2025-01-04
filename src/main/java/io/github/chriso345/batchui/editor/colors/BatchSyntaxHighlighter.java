@@ -1,16 +1,14 @@
-package io.github.chriso345.batchui;
+package io.github.chriso345.batchui.editor.colors;
 
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
-import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import io.github.chriso345.batchui.psi.BatchTokenType;
+import io.github.chriso345.batchui.lexer.BatchLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
-import static io.github.chriso345.batchui.BatchSyntaxHighlighterDefinitions.*;
+import static io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighterDefinitions.*;
 
 public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];

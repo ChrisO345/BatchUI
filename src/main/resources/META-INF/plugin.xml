@@ -32,21 +32,21 @@
                 extensions="cmd"/>
         <lang.parserDefinition
                 language="Batch"
-                implementationClass="io.github.chriso345.batchui.BatchParserDefinition"/>
+                implementationClass="io.github.chriso345.batchui.parser.BatchParserDefinition"/>
         <lang.syntaxHighlighterFactory
                 language="Batch"
-                implementationClass="io.github.chriso345.batchui.BatchSyntaxHighlighterFactory"/>
+                implementationClass="io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighterFactory"/>
         <colorSettingsPage
-                implementation="io.github.chriso345.batchui.BatchColorSettingsPage"/>
+                implementation="io.github.chriso345.batchui.settings.BatchColorSettingsPage"/>
         <completion.contributor
                 language="Batch"
-                implementationClass="io.github.chriso345.batchui.BatchCompletionContributor"/>
+                implementationClass="io.github.chriso345.batchui.contributors.BatchCompletionContributor"/>
         <applicationService
-                serviceImplementation="io.github.chriso345.batchui.settings.AppSettingsState"/>
+                serviceImplementation="io.github.chriso345.batchui.settings.BatchSettingsState"/>
         <applicationConfigurable
                 parentId=""
-                instance="io.github.chriso345.batchui.settings.AppSettingsConfigurable"
-                id="io.github.chriso345.batchui.settings.AppSettingsConfigurable"
+                instance="io.github.chriso345.batchui.settings.BatchSettingsConfigurable"
+                id="io.github.chriso345.batchui.settings.BatchSettingsConfigurable"
                 displayName="Batch Plugin Settings"/>
         <lang.commenter
                 language="Batch"

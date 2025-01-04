@@ -1,8 +1,8 @@
 package io.github.chriso345.batchui.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import io.github.chriso345.batchui.psi.BatchLabel;
-import io.github.chriso345.batchui.psi.BatchSwitch;
 import io.github.chriso345.batchui.psi.BatchTypes;
 import io.github.chriso345.batchui.psi.BatchVariable;
 
@@ -35,29 +35,11 @@ public class BatchPsiImplUtil {
         }
     }
 
-    // Annotation
-    public static String getAnnotation(BatchSwitch element) {
-        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.ANNOTATION);
-        if (valueNode != null) {
-            return valueNode.getText();
-        } else {
-            return null;
-        }
-    }
-
-    public static String getToggle(BatchSwitch element) {
-        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.TOGGLE);
-        if (valueNode != null) {
-            return valueNode.getText();
-        } else {
-            return null;
-        }
-    }
-
     // Label
     public static String getFuncLabel(BatchLabel element) {
         ASTNode valueNode = element.getNode().findChildByType(BatchTypes.FUNC_LABEL);
         if (valueNode != null) {
+            System.out.println("getFuncLabel: " + valueNode.getText());
             return valueNode.getText();
         } else {
             return null;
