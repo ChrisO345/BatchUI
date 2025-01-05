@@ -94,6 +94,7 @@ Toggle = "on" | "off"
 <LABEL> {
     {WhiteSpace} { yybegin(LABEL); return TokenType.WHITE_SPACE; }
     {Token}+ { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL; }
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 }
 
 <REM> {
