@@ -4,9 +4,9 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.util.ProcessingContext;
+import io.github.chriso345.batchui.psi.BatchTypes;
 import io.github.chriso345.batchui.util.BatchCommand;
 import io.github.chriso345.batchui.BatchIcons;
-import io.github.chriso345.batchui.psi.BatchTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class BatchCompletionContributor extends CompletionContributor {

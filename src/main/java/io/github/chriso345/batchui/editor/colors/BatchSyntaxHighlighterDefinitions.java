@@ -15,7 +15,9 @@ public enum BatchSyntaxHighlighterDefinitions {
     REM_ANNOTATION(DefaultLanguageHighlighterColors.KEYWORD),
     ANNOTATION(DefaultLanguageHighlighterColors.METADATA),
     TOGGLE(DefaultLanguageHighlighterColors.STATIC_FIELD),
-    FUNC_LABEL(DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
+    FUNC_LABEL(DefaultLanguageHighlighterColors.FUNCTION_DECLARATION),
+    CMD_TERMINATOR(DefaultLanguageHighlighterColors.OPERATION_SIGN),
+    STRING(DefaultLanguageHighlighterColors.STRING),
     ;
 
     private final TextAttributesKey attributesKey;

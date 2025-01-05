@@ -38,9 +38,10 @@ Toggle = "on" | "off"
     "@"{RemIndicator} { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_ANNOTATION; }
     "@"{Token}+ { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.ANNOTATION; }
     // {Escaping}
-    // {StringLiteral}
+    {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
     {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
     ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
+    {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.CMD_TERMINATOR; }
     {Token}+ { yybegin(COMMAND); yypushback(yylength()); }
 }
 
@@ -55,6 +56,8 @@ Toggle = "on" | "off"
 <COMMAND> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(COMMAND); return TokenType.WHITE_SPACE; }
+    {StringLiteral} { yybegin(COMMAND); return BatchTypes.STRING; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
     echo { yybegin(ECHO); return BatchTypes.COMMAND; }
     goto { yybegin(GOTO); return BatchTypes.COMMAND; }
@@ -67,6 +70,7 @@ Toggle = "on" | "off"
 
     {Toggle}[\ \t]*[\r\n]+ { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
 
+    {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
     {Token}+ { yybegin(ECHO_STRING); return BatchTypes.COMMAND; }
 }
 
@@ -74,6 +78,7 @@ Toggle = "on" | "off"
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(ECHO_STRING); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+    {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
 
     {Token}+ { yybegin(ECHO_STRING); return BatchTypes.COMMAND; }
 }

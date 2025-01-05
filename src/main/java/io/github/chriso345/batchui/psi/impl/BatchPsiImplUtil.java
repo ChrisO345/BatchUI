@@ -1,7 +1,6 @@
 package io.github.chriso345.batchui.psi.impl;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import io.github.chriso345.batchui.psi.BatchLabel;
 import io.github.chriso345.batchui.psi.BatchTypes;
 import io.github.chriso345.batchui.psi.BatchVariable;

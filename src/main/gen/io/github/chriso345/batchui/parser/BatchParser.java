@@ -48,19 +48,16 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variable|label|COMMENT|CRLF|
-  //                     ANNOTATION|REM_ANNOTATION|TOGGLE|COMMAND
+  // variable|label|value_types|COMMENT|CRLF|misc
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     r = variable(b, l + 1);
     if (!r) r = label(b, l + 1);
+    if (!r) r = value_types(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
-    if (!r) r = consumeToken(b, ANNOTATION);
-    if (!r) r = consumeToken(b, REM_ANNOTATION);
-    if (!r) r = consumeToken(b, TOGGLE);
-    if (!r) r = consumeToken(b, COMMAND);
+    if (!r) r = misc(b, l + 1);
     return r;
   }
 
@@ -82,6 +79,33 @@ public class BatchParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "label_0")) return false;
     consumeToken(b, LABEL_MARKER);
     return true;
+  }
+
+  /* ********************************************************** */
+  // ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR
+  public static boolean misc(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "misc")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MISC, "<misc>");
+    r = consumeToken(b, ANNOTATION);
+    if (!r) r = consumeToken(b, REM_ANNOTATION);
+    if (!r) r = consumeToken(b, COMMAND);
+    if (!r) r = consumeToken(b, CMD_TERMINATOR);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // STRING|NUMERIC|TOGGLE
+  public static boolean value_types(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "value_types")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, VALUE_TYPES, "<value types>");
+    r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, NUMERIC);
+    if (!r) r = consumeToken(b, TOGGLE);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */

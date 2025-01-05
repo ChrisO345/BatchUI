@@ -72,12 +72,13 @@ class BatchLexer implements FlexLexer {
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
     "\11\0\1\1\1\2\1\0\1\3\1\2\22\0\1\1"+
-    "\5\0\1\4\5\0\1\3\15\0\1\5\1\3\1\6"+
-    "\1\0\1\7\1\0\1\10\2\0\1\11\1\0\1\12"+
-    "\1\13\1\14\1\15\4\0\1\16\1\17\1\20\2\0"+
-    "\1\21\1\0\1\22\16\0\1\11\1\0\1\12\1\13"+
-    "\1\14\1\15\4\0\1\16\1\17\1\20\2\0\1\21"+
-    "\1\0\1\22\7\0\1\23\u0183\0";
+    "\1\0\1\4\3\0\1\5\5\0\1\3\15\0\1\6"+
+    "\1\3\1\7\1\0\1\10\1\0\1\11\2\0\1\12"+
+    "\1\0\1\13\1\14\1\15\1\16\4\0\1\17\1\20"+
+    "\1\21\2\0\1\22\1\0\1\23\7\0\1\24\6\0"+
+    "\1\12\1\0\1\13\1\14\1\15\1\16\4\0\1\17"+
+    "\1\20\1\21\2\0\1\22\1\0\1\23\7\0\1\25"+
+    "\u0183\0";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[512];
@@ -104,14 +105,17 @@ class BatchLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\10\0\1\1\2\2\1\3\2\1\1\4\1\5\1\4"+
-    "\1\6\1\7\2\6\1\10\1\11\3\12\1\10\1\12"+
-    "\1\13\1\14\1\15\1\16\1\17\1\20\2\21\1\1"+
-    "\1\4\2\6\1\12\2\10\1\21\1\20\1\4\2\6"+
-    "\1\0\1\22\1\23\1\24\1\25\1\26";
+    "\10\0\1\1\2\2\1\1\1\3\1\4\2\3\2\1"+
+    "\1\3\1\5\1\6\1\5\1\7\1\10\1\7\3\11"+
+    "\2\7\1\11\1\12\1\13\2\12\1\14\1\15\1\16"+
+    "\1\17\1\20\1\0\1\21\1\1\1\3\1\22\2\23"+
+    "\1\1\1\5\1\0\1\24\1\7\1\11\2\7\1\0"+
+    "\1\25\3\12\1\21\1\0\1\21\1\23\1\22\1\5"+
+    "\1\24\1\0\1\24\2\7\1\25\1\0\1\25\1\0"+
+    "\1\26\1\21\1\27\1\30\1\24\1\31\1\32\1\25";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[54];
+    int [] result = new int[83];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -136,16 +140,20 @@ class BatchLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\24\0\50\0\74\0\120\0\144\0\170\0\214"+
-    "\0\240\0\264\0\310\0\334\0\360\0\u0104\0\u0118\0\u012c"+
-    "\0\u0140\0\u0154\0\u0168\0\u017c\0\u0190\0\u01a4\0\u01b8\0\u01cc"+
-    "\0\u01e0\0\u01f4\0\u0208\0\u021c\0\u0230\0\u0244\0\u0258\0\u026c"+
-    "\0\u0280\0\u0294\0\u02a8\0\u02bc\0\u02d0\0\u02e4\0\u02f8\0\u030c"+
-    "\0\u0294\0\u0320\0\u0334\0\u0348\0\240\0\u035c\0\u0370\0\u0384"+
-    "\0\u0398\0\u03ac\0\u02a8\0\u0118\0\u0154\0\u0154";
+    "\0\0\0\26\0\54\0\102\0\130\0\156\0\204\0\232"+
+    "\0\260\0\306\0\334\0\362\0\u0108\0\u011e\0\u0134\0\u014a"+
+    "\0\u0160\0\u0176\0\u018c\0\u01a2\0\u01b8\0\u01ce\0\u01e4\0\u01fa"+
+    "\0\u0210\0\u0226\0\u023c\0\u0252\0\u0268\0\u027e\0\u0294\0\u02aa"+
+    "\0\u02c0\0\u02d6\0\u02ec\0\u0302\0\u0318\0\u032e\0\u0344\0\u035a"+
+    "\0\u0370\0\260\0\u0386\0\u039c\0\u039c\0\u03b2\0\u03c8\0\u03de"+
+    "\0\u03f4\0\u040a\0\u01e4\0\u0420\0\u039c\0\u0436\0\u044c\0\u0462"+
+    "\0\u02aa\0\u0478\0\u048e\0\u04a4\0\u039c\0\u04ba\0\362\0\u04d0"+
+    "\0\260\0\u04e6\0\u039c\0\u04fc\0\u0210\0\u0512\0\u0528\0\u039c"+
+    "\0\u053e\0\u02d6\0\u0554\0\u056a\0\u0370\0\u03b2\0\u01a2\0\u040a"+
+    "\0\u01e4\0\u01e4\0\u0462";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[54];
+    int [] result = new int[83];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -168,38 +176,59 @@ class BatchLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\11\1\12\1\13\2\0\1\14\2\0\1\15\10\11"+
-    "\1\16\1\11\1\0\1\17\1\20\6\0\2\17\1\21"+
-    "\10\17\1\0\1\22\1\23\1\13\5\0\2\22\1\24"+
-    "\1\22\1\25\6\22\1\0\1\26\1\27\1\13\1\0"+
-    "\1\30\1\0\1\31\1\32\10\26\1\33\2\26\1\34"+
-    "\1\26\1\35\1\13\1\0\1\30\1\0\1\31\1\32"+
-    "\13\26\1\34\1\36\1\37\1\13\5\0\13\36\1\0"+
-    "\1\36\1\40\6\0\13\36\1\0\2\41\1\13\21\41"+
-    "\1\11\7\0\13\11\2\0\1\12\24\0\1\13\26\0"+
-    "\1\42\16\0\1\43\7\0\11\43\1\44\1\43\1\0"+
-    "\1\11\7\0\2\11\1\45\10\11\1\0\1\17\7\0"+
-    "\13\17\2\0\1\20\22\0\1\17\7\0\1\17\1\46"+
-    "\11\17\1\0\1\22\7\0\13\22\2\0\1\23\22\0"+
-    "\1\22\7\0\1\22\1\47\11\22\1\0\1\22\7\0"+
-    "\10\22\1\50\2\22\1\0\1\26\7\0\13\26\2\0"+
-    "\1\27\26\0\1\51\25\0\1\51\24\0\1\51\14\0"+
-    "\1\26\7\0\3\26\1\52\3\26\1\53\3\26\24\0"+
-    "\1\51\1\0\1\35\22\0\1\36\7\0\13\36\2\0"+
-    "\1\37\23\0\1\40\22\0\2\41\1\0\21\41\24\0"+
-    "\1\43\7\0\13\43\1\0\1\43\7\0\2\43\1\54"+
-    "\10\43\1\0\1\11\7\0\6\11\1\55\4\11\1\0"+
-    "\1\17\7\0\5\17\1\56\5\17\1\0\1\22\7\0"+
-    "\5\22\1\57\5\22\1\0\1\22\7\0\12\22\1\60"+
-    "\1\0\1\26\7\0\3\26\1\53\7\26\1\0\1\26"+
-    "\1\61\1\62\5\0\13\26\1\0\1\43\7\0\6\43"+
-    "\1\63\4\43\1\0\1\17\7\0\10\17\1\64\2\17"+
-    "\1\0\1\22\7\0\10\22\1\65\2\22\1\0\1\22"+
-    "\7\0\10\22\1\66\2\22\2\0\1\61\1\62\23\0"+
-    "\1\62\21\0";
+    "\1\11\1\12\1\13\1\0\1\14\1\15\1\16\1\17"+
+    "\1\20\1\21\10\11\1\22\2\11\1\23\1\24\1\25"+
+    "\2\0\1\24\4\0\2\24\1\26\11\24\1\0\1\27"+
+    "\1\30\1\13\1\0\1\31\1\32\1\0\1\33\1\34"+
+    "\2\27\1\35\1\27\1\36\7\27\1\37\1\40\1\41"+
+    "\1\13\1\0\1\42\1\32\1\0\1\33\1\34\10\40"+
+    "\1\43\3\40\1\37\1\40\1\44\1\13\1\0\1\42"+
+    "\1\32\1\0\1\33\1\34\14\40\1\37\1\45\1\46"+
+    "\1\13\1\0\1\45\4\0\14\45\1\0\1\45\1\47"+
+    "\2\0\1\45\4\0\14\45\1\0\2\50\1\13\23\50"+
+    "\1\11\3\0\1\11\4\0\14\11\2\0\1\12\26\0"+
+    "\1\13\23\0\1\14\1\51\1\0\1\51\1\52\4\51"+
+    "\13\14\1\53\1\51\5\0\1\54\26\0\1\55\26\0"+
+    "\1\54\26\0\1\54\15\0\1\56\3\0\1\56\4\0"+
+    "\11\56\1\57\2\56\1\0\1\11\3\0\1\11\4\0"+
+    "\2\11\1\60\11\11\26\0\1\54\1\24\3\0\1\24"+
+    "\4\0\14\24\2\0\1\25\24\0\1\24\3\0\1\24"+
+    "\4\0\1\24\1\61\12\24\1\0\1\27\3\0\1\27"+
+    "\4\0\14\27\2\0\1\30\24\0\1\31\1\62\1\0"+
+    "\1\62\1\63\4\62\13\31\1\64\1\62\5\0\1\65"+
+    "\27\0\1\65\26\0\1\65\15\0\1\27\3\0\1\27"+
+    "\4\0\1\27\1\66\12\27\1\0\1\27\3\0\1\27"+
+    "\4\0\10\27\1\67\3\27\26\0\1\65\1\40\3\0"+
+    "\1\40\4\0\14\40\2\0\1\41\24\0\1\42\1\70"+
+    "\1\0\1\70\1\71\4\70\13\42\1\72\1\70\1\40"+
+    "\3\0\1\40\4\0\3\40\1\73\3\40\1\74\4\40"+
+    "\2\0\1\44\24\0\1\45\3\0\1\45\4\0\14\45"+
+    "\2\0\1\46\25\0\1\47\24\0\2\50\1\0\23\50"+
+    "\2\51\1\0\1\51\1\75\17\51\1\76\1\51\1\14"+
+    "\1\51\1\0\1\51\1\77\4\51\13\14\1\53\1\51"+
+    "\26\0\1\56\3\0\1\56\4\0\14\56\1\0\1\56"+
+    "\3\0\1\56\4\0\2\56\1\100\11\56\1\0\1\11"+
+    "\3\0\1\11\4\0\6\11\1\101\5\11\1\0\1\24"+
+    "\3\0\1\24\4\0\5\24\1\102\6\24\1\0\2\62"+
+    "\1\0\1\62\1\103\17\62\1\104\1\62\1\31\1\62"+
+    "\1\0\1\62\1\105\4\62\13\31\1\64\1\62\1\27"+
+    "\3\0\1\27\4\0\5\27\1\106\6\27\1\0\1\27"+
+    "\3\0\1\27\4\0\12\27\1\107\1\27\1\0\2\70"+
+    "\1\0\1\70\1\110\17\70\1\111\1\70\1\42\1\70"+
+    "\1\0\1\70\1\112\4\70\13\42\1\72\1\70\1\40"+
+    "\3\0\1\40\4\0\3\40\1\74\10\40\1\0\1\40"+
+    "\1\113\1\114\1\0\1\40\4\0\14\40\1\0\2\51"+
+    "\1\0\1\51\1\115\17\51\1\76\1\51\1\56\3\0"+
+    "\1\56\4\0\6\56\1\116\5\56\1\0\1\24\3\0"+
+    "\1\24\4\0\10\24\1\117\3\24\1\0\2\62\1\0"+
+    "\1\62\1\120\17\62\1\104\1\62\1\27\3\0\1\27"+
+    "\4\0\10\27\1\121\3\27\1\0\1\27\3\0\1\27"+
+    "\4\0\10\27\1\122\3\27\1\0\2\70\1\0\1\70"+
+    "\1\123\17\70\1\111\1\70\1\0\1\113\1\114\25\0"+
+    "\1\114\23\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[960];
+    int [] result = new int[1408];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -237,10 +266,12 @@ class BatchLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\10\0\31\1\1\11\6\1\1\11\7\1\1\0\5\1";
+    "\10\0\40\1\1\0\2\1\2\11\4\1\1\0\2\1"+
+    "\1\11\2\1\1\0\4\1\1\11\1\0\4\1\1\11"+
+    "\1\0\3\1\1\11\1\0\1\1\1\0\10\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[54];
+    int [] result = new int[83];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -565,112 +596,132 @@ class BatchLexer implements FlexLexer {
             { yybegin(COMMAND); yypushback(yylength());
             }
           // fall through
-          case 23: break;
+          case 27: break;
           case 2:
             { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
             }
           // fall through
-          case 24: break;
-          case 3:
-            { yybegin(LABEL); return BatchTypes.LABEL_MARKER;
-            }
-          // fall through
-          case 25: break;
-          case 4:
-            { yybegin(YYINITIAL); return BatchTypes.ANNOTATION;
-            }
-          // fall through
-          case 26: break;
-          case 5:
-            { yybegin(ANNOTATION); return TokenType.WHITE_SPACE;
-            }
-          // fall through
-          case 27: break;
-          case 6:
-            { return TokenType.BAD_CHARACTER;
-            }
-          // fall through
           case 28: break;
-          case 7:
-            { yybegin(COMMAND); return TokenType.WHITE_SPACE;
+          case 3:
+            { yybegin(YYINITIAL); return BatchTypes.CMD_TERMINATOR;
             }
           // fall through
           case 29: break;
-          case 8:
-            { yybegin(ECHO_STRING); return BatchTypes.COMMAND;
+          case 4:
+            { yybegin(LABEL); return BatchTypes.LABEL_MARKER;
             }
           // fall through
           case 30: break;
-          case 9:
-            { yybegin(ECHO); return TokenType.WHITE_SPACE;
+          case 5:
+            { yybegin(YYINITIAL); return BatchTypes.ANNOTATION;
             }
           // fall through
           case 31: break;
-          case 10:
-            { yybegin(YYINITIAL); yypushback(yylength());
+          case 6:
+            { yybegin(ANNOTATION); return TokenType.WHITE_SPACE;
             }
           // fall through
           case 32: break;
-          case 11:
-            { yybegin(ECHO_STRING); return TokenType.WHITE_SPACE;
+          case 7:
+            { return TokenType.BAD_CHARACTER;
             }
           // fall through
           case 33: break;
-          case 12:
-            { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL;
+          case 8:
+            { yybegin(COMMAND); return TokenType.WHITE_SPACE;
             }
           // fall through
           case 34: break;
-          case 13:
-            { yybegin(GOTO); return TokenType.WHITE_SPACE;
+          case 9:
+            { yybegin(YYINITIAL); yypushback(yylength());
             }
           // fall through
           case 35: break;
-          case 14:
-            { yybegin(LABEL); return TokenType.WHITE_SPACE;
+          case 10:
+            { yybegin(ECHO_STRING); return BatchTypes.COMMAND;
             }
           // fall through
           case 36: break;
-          case 15:
-            { yybegin(REM); return BatchTypes.COMMENT;
+          case 11:
+            { yybegin(ECHO); return TokenType.WHITE_SPACE;
             }
           // fall through
           case 37: break;
-          case 16:
-            { yybegin(REM); yypushback(yylength());
+          case 12:
+            { yybegin(ECHO_STRING); return TokenType.WHITE_SPACE;
             }
           // fall through
           case 38: break;
-          case 17:
-            { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.ANNOTATION;
+          case 13:
+            { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL;
             }
           // fall through
           case 39: break;
-          case 18:
-            { yybegin(YYINITIAL); return BatchTypes.TOGGLE;
+          case 14:
+            { yybegin(GOTO); return TokenType.WHITE_SPACE;
             }
           // fall through
           case 40: break;
-          case 19:
-            { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_ANNOTATION;
+          case 15:
+            { yybegin(LABEL); return TokenType.WHITE_SPACE;
             }
           // fall through
           case 41: break;
-          case 20:
-            { yybegin(ECHO); return BatchTypes.ANNOTATION;
+          case 16:
+            { yybegin(REM); return BatchTypes.COMMENT;
             }
           // fall through
           case 42: break;
-          case 21:
-            { yybegin(ECHO); return BatchTypes.COMMAND;
+          case 17:
+            { yybegin(YYINITIAL); return BatchTypes.STRING;
             }
           // fall through
           case 43: break;
-          case 22:
-            { yybegin(GOTO); return BatchTypes.COMMAND;
+          case 18:
+            { yybegin(REM); yypushback(yylength());
             }
           // fall through
           case 44: break;
+          case 19:
+            { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.ANNOTATION;
+            }
+          // fall through
+          case 45: break;
+          case 20:
+            { yybegin(COMMAND); return BatchTypes.STRING;
+            }
+          // fall through
+          case 46: break;
+          case 21:
+            { yybegin(ECHO_STRING); return BatchTypes.STRING;
+            }
+          // fall through
+          case 47: break;
+          case 22:
+            { yybegin(YYINITIAL); return BatchTypes.TOGGLE;
+            }
+          // fall through
+          case 48: break;
+          case 23:
+            { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_ANNOTATION;
+            }
+          // fall through
+          case 49: break;
+          case 24:
+            { yybegin(ECHO); return BatchTypes.ANNOTATION;
+            }
+          // fall through
+          case 50: break;
+          case 25:
+            { yybegin(ECHO); return BatchTypes.COMMAND;
+            }
+          // fall through
+          case 51: break;
+          case 26:
+            { yybegin(GOTO); return BatchTypes.COMMAND;
+            }
+          // fall through
+          case 52: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

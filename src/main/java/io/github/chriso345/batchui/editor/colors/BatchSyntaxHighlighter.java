@@ -20,6 +20,7 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override @NotNull
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
+        System.out.println(tokenType.toString());
         return switch (tokenType.toString()) {
             case "BatchTokenType.SEPARATOR" -> SEPARATOR.getKeys();
             case "BatchTokenType.COMMAND", "BatchTokenType.LABEL_MARKER" -> KEY.getKeys();
@@ -29,6 +30,8 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
             case "BatchTokenType.ANNOTATION" -> ANNOTATION.getKeys();
             case "BatchTokenType.TOGGLE" -> TOGGLE.getKeys();
             case "BatchTokenType.FUNC_LABEL" -> FUNC_LABEL.getKeys();
+            case "BatchTokenType.CMD_TERMINATOR" -> CMD_TERMINATOR.getKeys();
+            case "BatchTokenType.STRING" -> STRING.getKeys();
             case "BAD_CHARACTER" -> BAD_CHARACTER.getKeys();
             default -> EMPTY_KEYS;
         };

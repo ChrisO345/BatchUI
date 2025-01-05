@@ -9,18 +9,23 @@ import io.github.chriso345.batchui.psi.impl.*;
 public interface BatchTypes {
 
   IElementType LABEL = new BatchElementType("LABEL");
+  IElementType MISC = new BatchElementType("MISC");
+  IElementType VALUE_TYPES = new BatchElementType("VALUE_TYPES");
   IElementType VARIABLE = new BatchElementType("VARIABLE");
 
   IElementType ANNOTATION = new BatchTokenType("ANNOTATION");
+  IElementType CMD_TERMINATOR = new BatchTokenType("CMD_TERMINATOR");
   IElementType COMMAND = new BatchTokenType("COMMAND");
   IElementType COMMENT = new BatchTokenType("COMMENT");
   IElementType CRLF = new BatchTokenType("CRLF");
   IElementType FUNC_LABEL = new BatchTokenType("FUNC_LABEL");
   IElementType KEY = new BatchTokenType("KEY");
   IElementType LABEL_MARKER = new BatchTokenType("LABEL_MARKER");
+  IElementType NUMERIC = new BatchTokenType("NUMERIC");
   IElementType REM_ANNOTATION = new BatchTokenType("REM_ANNOTATION");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
   IElementType SETTER = new BatchTokenType("SETTER");
+  IElementType STRING = new BatchTokenType("STRING");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
   IElementType VALUE = new BatchTokenType("VALUE");
 
@@ -29,6 +34,12 @@ public interface BatchTypes {
       IElementType type = node.getElementType();
       if (type == LABEL) {
         return new BatchLabelImpl(node);
+      }
+      else if (type == MISC) {
+        return new BatchMiscImpl(node);
+      }
+      else if (type == VALUE_TYPES) {
+        return new BatchValueTypesImpl(node);
       }
       else if (type == VARIABLE) {
         return new BatchVariableImpl(node);
