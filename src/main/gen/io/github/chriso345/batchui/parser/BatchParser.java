@@ -48,13 +48,14 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variable|label|value_types|COMMENT|CRLF|misc
+  // variable|label|value_types|set_local|COMMENT|CRLF|misc
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     r = variable(b, l + 1);
     if (!r) r = label(b, l + 1);
     if (!r) r = value_types(b, l + 1);
+    if (!r) r = set_local(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     if (!r) r = misc(b, l + 1);
@@ -94,6 +95,34 @@ public class BatchParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, SEPARATOR);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  /* ********************************************************** */
+  // COMMAND SET_LOCAL_COMMAND? SET_LOCAL_COMMAND?
+  public static boolean set_local(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "set_local")) return false;
+    if (!nextTokenIs(b, COMMAND)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMAND);
+    r = r && set_local_1(b, l + 1);
+    r = r && set_local_2(b, l + 1);
+    exit_section_(b, m, SET_LOCAL, r);
+    return r;
+  }
+
+  // SET_LOCAL_COMMAND?
+  private static boolean set_local_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "set_local_1")) return false;
+    consumeToken(b, SET_LOCAL_COMMAND);
+    return true;
+  }
+
+  // SET_LOCAL_COMMAND?
+  private static boolean set_local_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "set_local_2")) return false;
+    consumeToken(b, SET_LOCAL_COMMAND);
+    return true;
   }
 
   /* ********************************************************** */

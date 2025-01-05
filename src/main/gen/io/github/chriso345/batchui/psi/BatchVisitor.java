@@ -15,6 +15,10 @@ public class BatchVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSetLocal(@NotNull BatchSetLocal o) {
+    visitPsiElement(o);
+  }
+
   public void visitValueTypes(@NotNull BatchValueTypes o) {
     visitPsiElement(o);
   }

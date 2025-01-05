@@ -18,7 +18,8 @@ public enum BatchSyntaxHighlighterDefinitions {
     FUNC_LABEL(DefaultLanguageHighlighterColors.FUNCTION_DECLARATION),
     CMD_TERMINATOR(DefaultLanguageHighlighterColors.OPERATION_SIGN),
     STRING(DefaultLanguageHighlighterColors.STRING),
-    CONSTANT(DefaultLanguageHighlighterColors.CONSTANT)
+    CONSTANT(DefaultLanguageHighlighterColors.CONSTANT),
+    NUMERIC(DefaultLanguageHighlighterColors.NUMBER)
     ;
 
     private final TextAttributesKey attributesKey;

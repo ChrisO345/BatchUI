@@ -20,6 +20,7 @@ WhiteSpace = [ \t]+
 LineTerminator = \r|\n|\r\n
 FullLine = [^\r\n]
 StringLiteral = \" ( \\\" | [^\"\n\r] )* \"
+ArgLiteral = \%\~[0-9~]
 Token = [^ \t\f\n\r\:\;\,\|\&\<\>\=]+
 CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
 EscapeCharacter = "^".
@@ -28,21 +29,23 @@ RemIndicator = [Rr][Ee][Mm]
 CommentIndicator = ("::" | {RemIndicator})
 Toggle = "on" | "off"
 
-%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM, SET, SET_VALUE
+%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM, SET, SET_LOCAL, SET_VALUE
 
 %%
 
 <YYINITIAL> {
     {WhiteSpace} { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-    "@"{RemIndicator} { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_ANNOTATION; }
+    "@"{CommentIndicator} { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_ANNOTATION; }
     "@"{Token}+ { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.ANNOTATION; }
     // {Escaping}
     {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
+    {ArgLiteral} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
     {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
     ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
     {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.CMD_TERMINATOR; }
     {Token}+ { yybegin(COMMAND); yypushback(yylength()); }
+    "=" { yybegin(YYINITIAL); return BatchTypes.SEPARATOR; }
 }
 
 <ANNOTATION> {
@@ -61,6 +64,7 @@ Toggle = "on" | "off"
 
     echo { yybegin(ECHO); return BatchTypes.COMMAND; }
     goto { yybegin(GOTO); return BatchTypes.COMMAND; }
+    setlocal { yybegin(SET_LOCAL); return BatchTypes.COMMAND; }
     set {yybegin(SET); return BatchTypes.COMMAND; }
 }
 
@@ -88,6 +92,7 @@ Toggle = "on" | "off"
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(GOTO); return TokenType.WHITE_SPACE; }
 
+    ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
     {Token}+ { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL; }
 }
 
@@ -109,11 +114,19 @@ Toggle = "on" | "off"
     = { yybegin(SET_VALUE); return BatchTypes.SEPARATOR; }
 }
 
+<SET_LOCAL> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(SET_LOCAL); return TokenType.WHITE_SPACE; }
+    {Token}+ { yybegin(SET_LOCAL); return BatchTypes.SET_LOCAL_COMMAND; }
+}
+
 <SET_VALUE> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(SET_VALUE); return TokenType.WHITE_SPACE; }
     {StringLiteral} { yybegin(SET_VALUE); return BatchTypes.STRING; }
+    {ArgLiteral} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
     {Token}+ { yybegin(SET_VALUE); return BatchTypes.STRING; }
+    = { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 }
 
 {Token}+ { return TokenType.BAD_CHARACTER; }

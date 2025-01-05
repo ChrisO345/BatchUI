@@ -20,21 +20,26 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override @NotNull
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        System.out.println(tokenType.toString());
         return switch (tokenType.toString()) {
             case "BatchTokenType.SEPARATOR" -> SEPARATOR.getKeys();
             case "BatchTokenType.COMMAND", "BatchTokenType.LABEL_MARKER" -> KEY.getKeys();
             case "BatchTokenType.VALUE" -> VALUE.getKeys();
             case "BatchTokenType.COMMENT" -> COMMENT.getKeys();
             case "BatchTokenType.REM_ANNOTATION" -> REM_ANNOTATION.getKeys();
-            case "BatchTokenType.ANNOTATION" -> ANNOTATION.getKeys();
+            case "BatchTokenType.ANNOTATION", "BatchTokenType.SET_LOCAL_COMMAND" -> ANNOTATION.getKeys();
             case "BatchTokenType.TOGGLE" -> TOGGLE.getKeys();
             case "BatchTokenType.FUNC_LABEL" -> FUNC_LABEL.getKeys();
             case "BatchTokenType.CMD_TERMINATOR" -> CMD_TERMINATOR.getKeys();
             case "BatchTokenType.STRING" -> STRING.getKeys();
             case "BatchTokenType.CONSTANT" -> CONSTANT.getKeys();
+            case "BatchTokenType.NUMERIC" -> NUMERIC.getKeys();
             case "BAD_CHARACTER" -> BAD_CHARACTER.getKeys();
-            default -> EMPTY_KEYS;
+            default -> getEmptyKeys(tokenType.toString());
         };
+    }
+
+    private TextAttributesKey[] getEmptyKeys(String tokenType) {
+        System.out.println("Unknown token type: " + tokenType);
+        return EMPTY_KEYS;
     }
 }

@@ -10,6 +10,7 @@ public interface BatchTypes {
 
   IElementType LABEL = new BatchElementType("LABEL");
   IElementType MISC = new BatchElementType("MISC");
+  IElementType SET_LOCAL = new BatchElementType("SET_LOCAL");
   IElementType VALUE_TYPES = new BatchElementType("VALUE_TYPES");
   IElementType VARIABLE = new BatchElementType("VARIABLE");
 
@@ -24,6 +25,7 @@ public interface BatchTypes {
   IElementType NUMERIC = new BatchTokenType("NUMERIC");
   IElementType REM_ANNOTATION = new BatchTokenType("REM_ANNOTATION");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
+  IElementType SET_LOCAL_COMMAND = new BatchTokenType("SET_LOCAL_COMMAND");
   IElementType STRING = new BatchTokenType("STRING");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
 
@@ -35,6 +37,9 @@ public interface BatchTypes {
       }
       else if (type == MISC) {
         return new BatchMiscImpl(node);
+      }
+      else if (type == SET_LOCAL) {
+        return new BatchSetLocalImpl(node);
       }
       else if (type == VALUE_TYPES) {
         return new BatchValueTypesImpl(node);
