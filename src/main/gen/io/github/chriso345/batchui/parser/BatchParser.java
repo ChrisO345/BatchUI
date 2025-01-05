@@ -82,7 +82,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR
+  // ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR|SEPARATOR
   public static boolean misc(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "misc")) return false;
     boolean r;
@@ -91,6 +91,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, REM_ANNOTATION);
     if (!r) r = consumeToken(b, COMMAND);
     if (!r) r = consumeToken(b, CMD_TERMINATOR);
+    if (!r) r = consumeToken(b, SEPARATOR);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -109,38 +110,15 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SETTER? KEY? SEPARATOR VALUE?
+  // COMMAND CONSTANT
   public static boolean variable(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable")) return false;
+    if (!nextTokenIs(b, COMMAND)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, VARIABLE, "<variable>");
-    r = variable_0(b, l + 1);
-    r = r && variable_1(b, l + 1);
-    r = r && consumeToken(b, SEPARATOR);
-    r = r && variable_3(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, COMMAND, CONSTANT);
+    exit_section_(b, m, VARIABLE, r);
     return r;
-  }
-
-  // SETTER?
-  private static boolean variable_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_0")) return false;
-    consumeToken(b, SETTER);
-    return true;
-  }
-
-  // KEY?
-  private static boolean variable_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_1")) return false;
-    consumeToken(b, KEY);
-    return true;
-  }
-
-  // VALUE?
-  private static boolean variable_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_3")) return false;
-    consumeToken(b, VALUE);
-    return true;
   }
 
 }

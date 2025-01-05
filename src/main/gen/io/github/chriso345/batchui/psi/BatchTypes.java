@@ -17,17 +17,15 @@ public interface BatchTypes {
   IElementType CMD_TERMINATOR = new BatchTokenType("CMD_TERMINATOR");
   IElementType COMMAND = new BatchTokenType("COMMAND");
   IElementType COMMENT = new BatchTokenType("COMMENT");
+  IElementType CONSTANT = new BatchTokenType("CONSTANT");
   IElementType CRLF = new BatchTokenType("CRLF");
   IElementType FUNC_LABEL = new BatchTokenType("FUNC_LABEL");
-  IElementType KEY = new BatchTokenType("KEY");
   IElementType LABEL_MARKER = new BatchTokenType("LABEL_MARKER");
   IElementType NUMERIC = new BatchTokenType("NUMERIC");
   IElementType REM_ANNOTATION = new BatchTokenType("REM_ANNOTATION");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
-  IElementType SETTER = new BatchTokenType("SETTER");
   IElementType STRING = new BatchTokenType("STRING");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
-  IElementType VALUE = new BatchTokenType("VALUE");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

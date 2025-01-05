@@ -37,9 +37,4 @@ public class BatchVariableImpl extends ASTWrapperPsiElement implements BatchVari
     return BatchPsiImplUtil.getKey(this);
   }
 
-  @Override
-  public String getValue() {
-    return BatchPsiImplUtil.getValue(this);
-  }
-
 }

@@ -20,7 +20,7 @@ WhiteSpace = [ \t]+
 LineTerminator = \r|\n|\r\n
 FullLine = [^\r\n]
 StringLiteral = \" ( \\\" | [^\"\n\r] )* \"
-Token = [^ \t\f\n\r\:\;\,\|\&\<\>]+
+Token = [^ \t\f\n\r\:\;\,\|\&\<\>\=]+
 CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
 EscapeCharacter = "^".
 
@@ -28,7 +28,7 @@ RemIndicator = [Rr][Ee][Mm]
 CommentIndicator = ("::" | {RemIndicator})
 Toggle = "on" | "off"
 
-%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM
+%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM, SET, SET_VALUE
 
 %%
 
@@ -61,6 +61,7 @@ Toggle = "on" | "off"
 
     echo { yybegin(ECHO); return BatchTypes.COMMAND; }
     goto { yybegin(GOTO); return BatchTypes.COMMAND; }
+    set {yybegin(SET); return BatchTypes.COMMAND; }
 }
 
 <ECHO> {
@@ -98,6 +99,20 @@ Toggle = "on" | "off"
 <REM> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {FullLine}+ { yybegin(REM); return BatchTypes.COMMENT; }
+}
+
+<SET> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(SET); return TokenType.WHITE_SPACE; }
+    {Token}+[\ \t]*= { yybegin(SET); yypushback(1); return BatchTypes.CONSTANT; }
+    = { yybegin(SET_VALUE); return BatchTypes.SEPARATOR; }
+}
+
+<SET_VALUE> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(SET_VALUE); return TokenType.WHITE_SPACE; }
+    {StringLiteral} { yybegin(SET_VALUE); return BatchTypes.STRING; }
+    {Token}+ { yybegin(SET_VALUE); return BatchTypes.STRING; }
 }
 
 {Token}+ { return TokenType.BAD_CHARACTER; }

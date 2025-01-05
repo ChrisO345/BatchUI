@@ -8,7 +8,7 @@ import io.github.chriso345.batchui.psi.BatchVariable;
 public class BatchPsiImplUtil {
     // Variable
     public static String getSetter(BatchVariable element) {
-        ASTNode setterNode = element.getNode().findChildByType(BatchTypes.SETTER);
+        ASTNode setterNode = element.getNode().findChildByType(BatchTypes.COMMAND);
         if (setterNode != null) {
             return setterNode.getText();
         } else {
@@ -16,19 +16,10 @@ public class BatchPsiImplUtil {
         }
     }
     public static String getKey(BatchVariable element) {
-        ASTNode keyNode = element.getNode().findChildByType(BatchTypes.KEY);
+        ASTNode keyNode = element.getNode().findChildByType(BatchTypes.CONSTANT);
         if (keyNode != null) {
             // IMPORTANT: Convert embedded escaped spaces to simple spaces FIXME: what is this doing??
             return keyNode.getText().replaceAll("\\\\ ", " ");
-        } else {
-            return null;
-        }
-    }
-
-    public static String getValue(BatchVariable element) {
-        ASTNode valueNode = element.getNode().findChildByType(BatchTypes.VALUE);
-        if (valueNode != null) {
-            return valueNode.getText();
         } else {
             return null;
         }

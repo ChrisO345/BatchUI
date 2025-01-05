@@ -11,6 +11,4 @@ public interface BatchVariable extends PsiElement {
 
   String getKey();
 
-  String getValue();
-
 }

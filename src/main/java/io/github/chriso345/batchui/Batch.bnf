@@ -19,11 +19,10 @@ batchFile ::= item_*
 
 private item_ ::= (variable|label|value_types|COMMENT|CRLF|misc)
 
-variable ::= (SETTER? KEY? SEPARATOR VALUE?) {
+variable ::= (COMMAND CONSTANT) {
     methods = [
         getSetter
         getKey
-        getValue
     ]
 }
 
@@ -38,4 +37,4 @@ label ::= (LABEL_MARKER? FUNC_LABEL) {
 
 value_types ::= STRING|NUMERIC|TOGGLE
 
-misc ::= ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR
+misc ::= ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR|SEPARATOR

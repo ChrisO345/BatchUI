@@ -32,6 +32,7 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
             case "BatchTokenType.FUNC_LABEL" -> FUNC_LABEL.getKeys();
             case "BatchTokenType.CMD_TERMINATOR" -> CMD_TERMINATOR.getKeys();
             case "BatchTokenType.STRING" -> STRING.getKeys();
+            case "BatchTokenType.CONSTANT" -> CONSTANT.getKeys();
             case "BAD_CHARACTER" -> BAD_CHARACTER.getKeys();
             default -> EMPTY_KEYS;
         };
