@@ -29,7 +29,7 @@ RemIndicator = [Rr][Ee][Mm]
 CommentIndicator = ("::" | {RemIndicator})
 Toggle = "on" | "off"
 
-%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM, SET, SET_LOCAL, SET_VALUE
+%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
 
 %%
 
@@ -66,6 +66,7 @@ Toggle = "on" | "off"
     goto { yybegin(GOTO); return BatchTypes.COMMAND; }
     setlocal { yybegin(SET_LOCAL); return BatchTypes.COMMAND; }
     set {yybegin(SET); return BatchTypes.COMMAND; }
+    shift {yybegin(SHIFT); return BatchTypes.COMMAND; }
 }
 
 <ECHO> {
@@ -76,7 +77,7 @@ Toggle = "on" | "off"
     {Toggle}[\ \t]*[\r\n]+ { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
 
     {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
-    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.COMMAND; }
+    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.PLAINTEXT; }
 }
 
 <ECHO_STRING> {
@@ -85,7 +86,7 @@ Toggle = "on" | "off"
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
     {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
 
-    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.COMMAND; }
+    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.PLAINTEXT; }
 }
 
 <GOTO> {
@@ -127,6 +128,13 @@ Toggle = "on" | "off"
     {ArgLiteral} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
     {Token}+ { yybegin(SET_VALUE); return BatchTypes.STRING; }
     = { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
+}
+
+<SHIFT> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(SHIFT); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+    \/[0-8] { yybegin(YYINITIAL); return BatchTypes.SHIFT_EXTENSION; }
 }
 
 {Token}+ { return TokenType.BAD_CHARACTER; }

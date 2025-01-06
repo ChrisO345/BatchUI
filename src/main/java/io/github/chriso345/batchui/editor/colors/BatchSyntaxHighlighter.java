@@ -12,6 +12,7 @@ import static io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighterDe
 
 public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+    private static final TextAttributesKey[] PLAINTEXT = new TextAttributesKey[0];
 
     @Override @NotNull
     public Lexer getHighlightingLexer() {
@@ -33,6 +34,8 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
             case "BatchTokenType.STRING" -> STRING.getKeys();
             case "BatchTokenType.CONSTANT" -> CONSTANT.getKeys();
             case "BatchTokenType.NUMERIC" -> NUMERIC.getKeys();
+            case "BatchTokenType.SHIFT_EXTENSION" -> EXTENSIONS.getKeys();
+            case "BatchTokenType.PLAINTEXT" -> PLAINTEXT;
             case "BAD_CHARACTER" -> BAD_CHARACTER.getKeys();
             default -> getEmptyKeys(tokenType.toString());
         };

@@ -23,9 +23,12 @@ public interface BatchTypes {
   IElementType FUNC_LABEL = new BatchTokenType("FUNC_LABEL");
   IElementType LABEL_MARKER = new BatchTokenType("LABEL_MARKER");
   IElementType NUMERIC = new BatchTokenType("NUMERIC");
+  IElementType PLAINTEXT = new BatchTokenType("PLAINTEXT");
   IElementType REM_ANNOTATION = new BatchTokenType("REM_ANNOTATION");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
   IElementType SET_LOCAL_COMMAND = new BatchTokenType("SET_LOCAL_COMMAND");
+  IElementType SHIFT_COMMAND = new BatchTokenType("shift_command");
+  IElementType SHIFT_EXTENSION = new BatchTokenType("SHIFT_EXTENSION");
   IElementType STRING = new BatchTokenType("STRING");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
 

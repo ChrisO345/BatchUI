@@ -17,7 +17,7 @@
 
 batchFile ::= item_*
 
-private item_ ::= (variable|label|value_types|set_local|COMMENT|CRLF|misc)
+private item_ ::= (variable|label|value_types|set_local|shift_command|COMMENT|CRLF|misc)
 
 variable ::= (COMMAND CONSTANT) {
     methods = [
@@ -37,6 +37,6 @@ label ::= (LABEL_MARKER? FUNC_LABEL) {
 
 value_types ::= STRING|NUMERIC|TOGGLE
 
-set_local ::= COMMAND SET_LOCAL_COMMAND? SET_LOCAL_COMMAND?
+set_local ::= COMMAND (SET_LOCAL_COMMAND SET_LOCAL_COMMAND? | SHIFT_EXTENSION)?
 
-misc ::= ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR|SEPARATOR
+misc ::= ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR|SEPARATOR|PLAINTEXT
