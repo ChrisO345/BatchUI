@@ -24,12 +24,13 @@ ArgLiteral = \%\~[0-9~]
 Token = [^ \t\f\n\r\:\;\,\|\&\<\>\=]+
 CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
 EscapeCharacter = "^".
+Numeric = [0-9]+
 
 RemIndicator = [Rr][Ee][Mm]
 CommentIndicator = ("::" | {RemIndicator})
 Toggle = "on" | "off"
 
-%state ANNOTATION, COMMAND, ECHO, ECHO_STRING, GOTO, LABEL, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
+%state ANNOTATION, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, GOTO, LABEL, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
 
 %%
 
@@ -56,6 +57,14 @@ Toggle = "on" | "off"
     {Token}+ { yybegin(YYINITIAL); return BatchTypes.ANNOTATION; }
 }
 
+<CALL> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(GOTO); return TokenType.WHITE_SPACE; }
+
+    ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
+    {Token}+ { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL; }
+}
+
 <COMMAND> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(COMMAND); return TokenType.WHITE_SPACE; }
@@ -64,9 +73,12 @@ Toggle = "on" | "off"
 
     echo { yybegin(ECHO); return BatchTypes.COMMAND; }
     goto { yybegin(GOTO); return BatchTypes.COMMAND; }
+    call { yybegin(CALL); return BatchTypes.COMMAND; }
     setlocal { yybegin(SET_LOCAL); return BatchTypes.COMMAND; }
     set {yybegin(SET); return BatchTypes.COMMAND; }
     shift {yybegin(SHIFT); return BatchTypes.COMMAND; }
+    endlocal { yybegin(YYINITIAL); return BatchTypes.COMMAND; }
+    exit { yybegin(EXIT); return BatchTypes.COMMAND; }
 }
 
 <ECHO> {
@@ -87,6 +99,15 @@ Toggle = "on" | "off"
     {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
 
     {Token}+ { yybegin(ECHO_STRING); return BatchTypes.PLAINTEXT; }
+}
+
+<EXIT> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(EXIT); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    \/b { yybegin(EXIT); return BatchTypes.SHIFT_EXTENSION; }
+    {Numeric} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
 }
 
 <GOTO> {

@@ -27,7 +27,6 @@ public interface BatchTypes {
   IElementType REM_ANNOTATION = new BatchTokenType("REM_ANNOTATION");
   IElementType SEPARATOR = new BatchTokenType("SEPARATOR");
   IElementType SET_LOCAL_COMMAND = new BatchTokenType("SET_LOCAL_COMMAND");
-  IElementType SHIFT_COMMAND = new BatchTokenType("shift_command");
   IElementType SHIFT_EXTENSION = new BatchTokenType("SHIFT_EXTENSION");
   IElementType STRING = new BatchTokenType("STRING");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
