@@ -13,23 +13,12 @@ import org.jetbrains.annotations.NotNull;
 public class BatchCompletionContributor extends CompletionContributor {
     BatchCompletionContributor() {
         // Annotations
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(BatchTypes.ANNOTATION),
+        extend(CompletionType.BASIC, PlatformPatterns.or(PlatformPatterns.psiElement(BatchTypes.ANNOTATION), PlatformPatterns.psiElement(TokenType.BAD_CHARACTER)),
                 new CompletionProvider<>() {
                     public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
                         for (BatchCommand command : BatchCommand.values()) {
                             resultSet.addElement(LookupElementBuilder.create(command.getCommand())
-                                    .withIcon(BatchIcons.FILE));
-                        }
-                    }
-                }
-        );
-
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(TokenType.BAD_CHARACTER),
-                new CompletionProvider<>() {
-                    public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
-                        for (BatchCommand command : BatchCommand.values()) {
-                            resultSet.addElement(LookupElementBuilder.create(command.getCommand())
-                                    .withIcon(BatchIcons.FILE));
+                                    .withIcon(BatchIcons.COMMAND));
                         }
                     }
                 }
