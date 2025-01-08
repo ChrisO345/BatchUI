@@ -7,6 +7,7 @@ import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import io.github.chriso345.batchui.BatchIcons;
 import io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighter;
+import kotlinx.html.VAR;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,15 +18,15 @@ import static io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighterDe
 
 final class BatchColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("TODO//Key", KEY.getKeys()[0]),
-            new AttributesDescriptor("TODO//Separator", SEPARATOR.getKeys()[0]),
-            new AttributesDescriptor("TODO//Value", VALUE.getKeys()[0]),
+            new AttributesDescriptor("TODO//Key", COMMAND.getKeys()[0]),
+            new AttributesDescriptor("TODO//Separator", ASSIGNMENT.getKeys()[0]),
+            new AttributesDescriptor("TODO//Value", VARIABLE.getKeys()[0]),
 
             new AttributesDescriptor("Comments//Line comment", COMMENT.getKeys()[0]),
 
-            new AttributesDescriptor("Decorators", ANNOTATION.getKeys()[0]),
+            new AttributesDescriptor("Decorators", DECORATOR.getKeys()[0]),
 
-            new AttributesDescriptor("Identifiers//Function label", FUNC_LABEL.getKeys()[0]),
+            new AttributesDescriptor("Identifiers//Function label", LABEL_MARK.getKeys()[0]),
             new AttributesDescriptor("Identifiers//Toggle", TOGGLE.getKeys()[0]),
 
             new AttributesDescriptor("Bad character", BAD_CHARACTER.getKeys()[0]),

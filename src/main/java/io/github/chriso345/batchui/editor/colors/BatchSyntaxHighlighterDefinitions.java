@@ -8,19 +8,24 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 
 public enum BatchSyntaxHighlighterDefinitions {
     BAD_CHARACTER(HighlighterColors.BAD_CHARACTER),
-    SEPARATOR(DefaultLanguageHighlighterColors.OPERATION_SIGN),
-    KEY(DefaultLanguageHighlighterColors.KEYWORD),
-    VALUE(DefaultLanguageHighlighterColors.STRING),
+
+    COMMAND(DefaultLanguageHighlighterColors.KEYWORD),
+    DECORATOR(DefaultLanguageHighlighterColors.METADATA),
+    LABEL_MARK(DefaultLanguageHighlighterColors.KEYWORD),
+    LABEL(DefaultLanguageHighlighterColors.FUNCTION_DECLARATION),
+
     COMMENT(DefaultLanguageHighlighterColors.LINE_COMMENT),
-    REM_ANNOTATION(DefaultLanguageHighlighterColors.KEYWORD),
-    ANNOTATION(DefaultLanguageHighlighterColors.METADATA),
-    TOGGLE(DefaultLanguageHighlighterColors.STATIC_FIELD),
-    FUNC_LABEL(DefaultLanguageHighlighterColors.FUNCTION_DECLARATION),
-    CMD_TERMINATOR(DefaultLanguageHighlighterColors.OPERATION_SIGN),
-    STRING(DefaultLanguageHighlighterColors.STRING),
-    CONSTANT(DefaultLanguageHighlighterColors.CONSTANT),
+    DECORATOR_COMMENT(DefaultLanguageHighlighterColors.KEYWORD),
+
+    TOGGLE(DefaultLanguageHighlighterColors.CONSTANT),
+    SETLOCAL_PARAMETER(DefaultLanguageHighlighterColors.METADATA),
+
+    VARIABLE(DefaultLanguageHighlighterColors.CONSTANT), // Change default??
+    ASSIGNMENT(DefaultLanguageHighlighterColors.OPERATION_SIGN),
+
+    EXTENSIONS(DefaultLanguageHighlighterColors.NUMBER),
     NUMERIC(DefaultLanguageHighlighterColors.NUMBER),
-    EXTENSIONS(DefaultLanguageHighlighterColors.NUMBER)
+    STRING(DefaultLanguageHighlighterColors.STRING),
     ;
 
     private final TextAttributesKey attributesKey;

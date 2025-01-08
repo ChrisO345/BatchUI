@@ -7,6 +7,8 @@ import com.intellij.psi.tree.IElementType;
 import io.github.chriso345.batchui.lexer.BatchLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 import static io.github.chriso345.batchui.editor.colors.BatchSyntaxHighlighterDefinitions.*;
 
@@ -21,23 +23,36 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override @NotNull
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        return switch (tokenType.toString()) {
-            case "BatchTokenType.SEPARATOR" -> SEPARATOR.getKeys();
-            case "BatchTokenType.COMMAND", "BatchTokenType.LABEL_MARKER" -> KEY.getKeys();
-            case "BatchTokenType.VALUE" -> VALUE.getKeys();
+        String tokenName = tokenType.toString();
+        if (Objects.equals(tokenName, "COMMAND_TERMINATOR"))
+            return COMMAND.getKeys();
+        if (tokenName.contains("COMMAND"))
+            return COMMAND.getKeys();
+        if (tokenName.contains("ANNOTATION"))
+            return DECORATOR.getKeys();
+
+        return switch (tokenName) {
+            case "BatchTokenType.DECORATOR" -> DECORATOR.getKeys();
+            case "BatchTokenType.LABEL_MARKER" -> LABEL_MARK.getKeys(); // TODO: Should this be under the COMMAND type?
+            case "BatchTokenType.FUNC_LABEL" -> LABEL.getKeys();
+
             case "BatchTokenType.COMMENT" -> COMMENT.getKeys();
-            case "BatchTokenType.REM_ANNOTATION" -> REM_ANNOTATION.getKeys();
-            case "BatchTokenType.ANNOTATION", "BatchTokenType.SET_LOCAL_COMMAND" -> ANNOTATION.getKeys();
+            case "BatchTokenType.REM_DECORATOR" -> DECORATOR_COMMENT.getKeys();
+
             case "BatchTokenType.TOGGLE" -> TOGGLE.getKeys();
-            case "BatchTokenType.FUNC_LABEL" -> FUNC_LABEL.getKeys();
-            case "BatchTokenType.CMD_TERMINATOR" -> CMD_TERMINATOR.getKeys();
-            case "BatchTokenType.STRING" -> STRING.getKeys();
-            case "BatchTokenType.CONSTANT" -> CONSTANT.getKeys();
+            case "BatchTokenType.SETLOCAL_PARAMETER" -> SETLOCAL_PARAMETER.getKeys();
+
+            case "BatchTokenType.VARIABLE" -> VARIABLE.getKeys();
+            case "BatchTokenType.ASSIGNMENT" -> ASSIGNMENT.getKeys();
+            case "BatchTokenType.COMMAND_TERMINATOR" -> COMMAND.getKeys();
+
+            case "BatchTokenType.EXTENSION" -> EXTENSIONS.getKeys();
             case "BatchTokenType.NUMERIC" -> NUMERIC.getKeys();
-            case "BatchTokenType.SHIFT_EXTENSION" -> EXTENSIONS.getKeys();
+            case "BatchTokenType.STRING" -> STRING.getKeys();
+
             case "BatchTokenType.PLAINTEXT" -> PLAINTEXT;
             case "BAD_CHARACTER" -> BAD_CHARACTER.getKeys();
-            default -> getEmptyKeys(tokenType.toString());
+            default -> getEmptyKeys(tokenName);
         };
     }
 

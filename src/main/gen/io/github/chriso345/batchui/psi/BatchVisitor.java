@@ -7,23 +7,51 @@ import com.intellij.psi.PsiElement;
 
 public class BatchVisitor extends PsiElementVisitor {
 
+  public void visitAnnotationReference(@NotNull BatchAnnotationReference o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCallArguments(@NotNull BatchCallArguments o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCommand(@NotNull BatchCommand o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCommandReference(@NotNull BatchCommandReference o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEchoArguments(@NotNull BatchEchoArguments o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExitArguments(@NotNull BatchExitArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitLabel(@NotNull BatchLabel o) {
     visitPsiElement(o);
   }
 
-  public void visitMisc(@NotNull BatchMisc o) {
+  public void visitPrefix(@NotNull BatchPrefix o) {
     visitPsiElement(o);
   }
 
-  public void visitSetLocal(@NotNull BatchSetLocal o) {
+  public void visitSetArguments(@NotNull BatchSetArguments o) {
     visitPsiElement(o);
   }
 
-  public void visitValueTypes(@NotNull BatchValueTypes o) {
+  public void visitSetlocalArguments(@NotNull BatchSetlocalArguments o) {
     visitPsiElement(o);
   }
 
-  public void visitVariable(@NotNull BatchVariable o) {
+  public void visitShiftArguments(@NotNull BatchShiftArguments o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypes_(@NotNull BatchTypes_ o) {
     visitPsiElement(o);
   }
 

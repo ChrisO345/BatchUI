@@ -11,14 +11,14 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchSetLocalImpl extends ASTWrapperPsiElement implements BatchSetLocal {
+public class BatchTypes_Impl extends ASTWrapperPsiElement implements BatchTypes_ {
 
-  public BatchSetLocalImpl(@NotNull ASTNode node) {
+  public BatchTypes_Impl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitSetLocal(this);
+    visitor.visitTypes_(this);
   }
 
   @Override

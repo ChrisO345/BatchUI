@@ -5,6 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BatchValueTypes extends PsiElement {
+public interface BatchCommand extends PsiElement {
+
+  @Nullable
+  BatchAnnotationReference getAnnotationReference();
+
+  @Nullable
+  BatchCommandReference getCommandReference();
 
 }

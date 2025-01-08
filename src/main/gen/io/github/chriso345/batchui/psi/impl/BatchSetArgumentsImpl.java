@@ -11,20 +11,26 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchValueTypesImpl extends ASTWrapperPsiElement implements BatchValueTypes {
+public class BatchSetArgumentsImpl extends ASTWrapperPsiElement implements BatchSetArguments {
 
-  public BatchValueTypesImpl(@NotNull ASTNode node) {
+  public BatchSetArgumentsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitValueTypes(this);
+    visitor.visitSetArguments(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof BatchVisitor) accept((BatchVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public BatchTypes_ getTypes_() {
+    return findChildByClass(BatchTypes_.class);
   }
 
 }

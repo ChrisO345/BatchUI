@@ -700,7 +700,7 @@ class BatchLexer implements FlexLexer {
           // fall through
           case 49: break;
           case 3:
-            { yybegin(YYINITIAL); return BatchTypes.CMD_TERMINATOR;
+            { yybegin(YYINITIAL); return BatchTypes.COMMAND_TERMINATOR;
             }
           // fall through
           case 50: break;
@@ -710,12 +710,12 @@ class BatchLexer implements FlexLexer {
           // fall through
           case 51: break;
           case 5:
-            { yybegin(YYINITIAL); return BatchTypes.SEPARATOR;
+            { yybegin(YYINITIAL); return BatchTypes.ASSIGNMENT;
             }
           // fall through
           case 52: break;
           case 6:
-            { yybegin(YYINITIAL); return BatchTypes.ANNOTATION;
+            { yybegin(YYINITIAL); return BatchTypes.DECORATOR;
             }
           // fall through
           case 53: break;
@@ -790,12 +790,12 @@ class BatchLexer implements FlexLexer {
           // fall through
           case 67: break;
           case 21:
-            { yybegin(SET_VALUE); return BatchTypes.SEPARATOR;
+            { yybegin(SET_VALUE); return BatchTypes.ASSIGNMENT;
             }
           // fall through
           case 68: break;
           case 22:
-            { yybegin(SET_LOCAL); return BatchTypes.SET_LOCAL_COMMAND;
+            { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_PARAMETER;
             }
           // fall through
           case 69: break;
@@ -835,7 +835,7 @@ class BatchLexer implements FlexLexer {
           // fall through
           case 76: break;
           case 30:
-            { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.ANNOTATION;
+            { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.DECORATOR;
             }
           // fall through
           case 77: break;
@@ -850,27 +850,27 @@ class BatchLexer implements FlexLexer {
           // fall through
           case 79: break;
           case 33:
-            { yybegin(EXIT); return BatchTypes.SHIFT_EXTENSION;
+            { yybegin(EXIT); return BatchTypes.EXTENSION;
             }
           // fall through
           case 80: break;
           case 34:
-            { yybegin(SET); yypushback(1); return BatchTypes.CONSTANT;
+            { yybegin(SET); yypushback(1); return BatchTypes.VARIABLE;
             }
           // fall through
           case 81: break;
           case 35:
-            { yybegin(YYINITIAL); return BatchTypes.SHIFT_EXTENSION;
+            { yybegin(YYINITIAL); return BatchTypes.EXTENSION;
             }
           // fall through
           case 82: break;
           case 36:
-            { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_ANNOTATION;
+            { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_DECORATOR;
             }
           // fall through
           case 83: break;
           case 37:
-            { yybegin(SET); return BatchTypes.COMMAND;
+            { yybegin(SET); return BatchTypes.SET_COMMAND;
             }
           // fall through
           case 84: break;
@@ -885,42 +885,42 @@ class BatchLexer implements FlexLexer {
           // fall through
           case 86: break;
           case 40:
-            { yybegin(ECHO); return BatchTypes.ANNOTATION;
+            { yybegin(ECHO); return BatchTypes.ECHO_ANNOTATION;
             }
           // fall through
           case 87: break;
           case 41:
-            { yybegin(CALL); return BatchTypes.COMMAND;
+            { yybegin(CALL); return BatchTypes.CALL_COMMAND;
             }
           // fall through
           case 88: break;
           case 42:
-            { yybegin(ECHO); return BatchTypes.COMMAND;
+            { yybegin(ECHO); return BatchTypes.ECHO_COMMAND;
             }
           // fall through
           case 89: break;
           case 43:
-            { yybegin(EXIT); return BatchTypes.COMMAND;
+            { yybegin(EXIT); return BatchTypes.EXIT_COMMAND;
             }
           // fall through
           case 90: break;
           case 44:
-            { yybegin(GOTO); return BatchTypes.COMMAND;
+            { yybegin(GOTO); return BatchTypes.GOTO_COMMAND;
             }
           // fall through
           case 91: break;
           case 45:
-            { yybegin(SHIFT); return BatchTypes.COMMAND;
+            { yybegin(SHIFT); return BatchTypes.SHIFT_COMMAND;
             }
           // fall through
           case 92: break;
           case 46:
-            { yybegin(YYINITIAL); return BatchTypes.COMMAND;
+            { yybegin(YYINITIAL); return BatchTypes.ENDLOCAL_COMMAND;
             }
           // fall through
           case 93: break;
           case 47:
-            { yybegin(SET_LOCAL); return BatchTypes.COMMAND;
+            { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_COMMAND;
             }
           // fall through
           case 94: break;

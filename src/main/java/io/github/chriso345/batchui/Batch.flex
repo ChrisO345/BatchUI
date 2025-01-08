@@ -37,24 +37,24 @@ Toggle = "on" | "off"
 <YYINITIAL> {
     {WhiteSpace} { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-    "@"{CommentIndicator} { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_ANNOTATION; }
-    "@"{Token}+ { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.ANNOTATION; }
+    "@"{CommentIndicator} { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_DECORATOR; }
+    "@"{Token}+ { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.DECORATOR; }
     // {Escaping}
     {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
     {ArgLiteral} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
     {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
     ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
-    {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.CMD_TERMINATOR; }
+    {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.COMMAND_TERMINATOR; }
     {Token}+ { yybegin(COMMAND); yypushback(yylength()); }
-    "=" { yybegin(YYINITIAL); return BatchTypes.SEPARATOR; }
+    "=" { yybegin(YYINITIAL); return BatchTypes.ASSIGNMENT; }
 }
 
 <ANNOTATION> {
     {WhiteSpace} { yybegin(ANNOTATION); return TokenType.WHITE_SPACE; }
 
-    echo { yybegin(ECHO); return BatchTypes.ANNOTATION; }
+    echo { yybegin(ECHO); return BatchTypes.ECHO_ANNOTATION; }
 
-    {Token}+ { yybegin(YYINITIAL); return BatchTypes.ANNOTATION; }
+    {Token}+ { yybegin(YYINITIAL); return BatchTypes.DECORATOR; }
 }
 
 <CALL> {
@@ -71,14 +71,14 @@ Toggle = "on" | "off"
     {StringLiteral} { yybegin(COMMAND); return BatchTypes.STRING; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
-    echo { yybegin(ECHO); return BatchTypes.COMMAND; }
-    goto { yybegin(GOTO); return BatchTypes.COMMAND; }
-    call { yybegin(CALL); return BatchTypes.COMMAND; }
-    setlocal { yybegin(SET_LOCAL); return BatchTypes.COMMAND; }
-    set {yybegin(SET); return BatchTypes.COMMAND; }
-    shift {yybegin(SHIFT); return BatchTypes.COMMAND; }
-    endlocal { yybegin(YYINITIAL); return BatchTypes.COMMAND; }
-    exit { yybegin(EXIT); return BatchTypes.COMMAND; }
+    echo { yybegin(ECHO); return BatchTypes.ECHO_COMMAND; }
+    goto { yybegin(GOTO); return BatchTypes.GOTO_COMMAND; }
+    call { yybegin(CALL); return BatchTypes.CALL_COMMAND; }
+    setlocal { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_COMMAND; }
+    set {yybegin(SET); return BatchTypes.SET_COMMAND; }
+    shift {yybegin(SHIFT); return BatchTypes.SHIFT_COMMAND; }
+    endlocal { yybegin(YYINITIAL); return BatchTypes.ENDLOCAL_COMMAND; }
+    exit { yybegin(EXIT); return BatchTypes.EXIT_COMMAND; }
 }
 
 <ECHO> {
@@ -106,7 +106,7 @@ Toggle = "on" | "off"
     {WhiteSpace} { yybegin(EXIT); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
-    \/b { yybegin(EXIT); return BatchTypes.SHIFT_EXTENSION; }
+    \/b { yybegin(EXIT); return BatchTypes.EXTENSION; }
     {Numeric} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
 }
 
@@ -132,14 +132,14 @@ Toggle = "on" | "off"
 <SET> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(SET); return TokenType.WHITE_SPACE; }
-    {Token}+[\ \t]*= { yybegin(SET); yypushback(1); return BatchTypes.CONSTANT; }
-    = { yybegin(SET_VALUE); return BatchTypes.SEPARATOR; }
+    {Token}+[\ \t]*= { yybegin(SET); yypushback(1); return BatchTypes.VARIABLE; }
+    = { yybegin(SET_VALUE); return BatchTypes.ASSIGNMENT; }
 }
 
 <SET_LOCAL> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(SET_LOCAL); return TokenType.WHITE_SPACE; }
-    {Token}+ { yybegin(SET_LOCAL); return BatchTypes.SET_LOCAL_COMMAND; }
+    {Token}+ { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_PARAMETER; }
 }
 
 <SET_VALUE> {
@@ -155,7 +155,7 @@ Toggle = "on" | "off"
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(SHIFT); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
-    \/[0-8] { yybegin(YYINITIAL); return BatchTypes.SHIFT_EXTENSION; }
+    \/[0-8] { yybegin(YYINITIAL); return BatchTypes.EXTENSION; }
 }
 
 {Token}+ { return TokenType.BAD_CHARACTER; }

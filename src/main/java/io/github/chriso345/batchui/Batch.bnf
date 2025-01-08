@@ -17,15 +17,7 @@
 
 batchFile ::= item_*
 
-private item_ ::= (variable|label|value_types|set_local|COMMENT|CRLF|misc)
-
-variable ::= (COMMAND CONSTANT) {
-    methods = [
-        getSetter
-        getKey
-    ]
-}
-
+// May be needed for reference completions later??
 label ::= (LABEL_MARKER? FUNC_LABEL) {
     methods = [
         getLabelMarker
@@ -35,8 +27,39 @@ label ::= (LABEL_MARKER? FUNC_LABEL) {
 
 //cmd_terminator ::= (PIPE|AND|LESS|GREATER|DOUBLE_PIPE|DOUBLE_AND|DOUBLE_LESS|DOUBLE_GREATER)
 
-value_types ::= STRING|NUMERIC|TOGGLE
+types_ ::= STRING | NUMERIC | PLAINTEXT
 
-set_local ::= COMMAND (SET_LOCAL_COMMAND SET_LOCAL_COMMAND? | SHIFT_EXTENSION NUMERIC?)?
+private item_ ::= (
+    prefix          // ECHO, SET, etc
+    | label
+    | COMMENT        // REM, ::
+    | CRLF
+)
 
-misc ::= ANNOTATION|REM_ANNOTATION|COMMAND|CMD_TERMINATOR|SEPARATOR|PLAINTEXT
+prefix ::= (DECORATOR? command)
+
+command ::= command_reference | annotation_reference | COMMENT_REFERENCE
+
+command_reference ::= (
+    ECHO_COMMAND echo_arguments?
+    | GOTO_COMMAND label?
+    | CALL_COMMAND call_arguments?
+    | SETLOCAL_COMMAND setlocal_arguments?
+    | ENDLOCAL_COMMAND
+    | SET_COMMAND set_arguments?
+    | SHIFT_COMMAND shift_arguments?
+    | EXIT_COMMAND exit_arguments?
+) (COMMAND_TERMINATOR command)?
+
+annotation_reference ::= (
+    REM_DECORATOR COMMENT?
+    | ECHO_ANNOTATION echo_arguments?
+) (COMMAND_TERMINATOR command)?
+
+echo_arguments ::= (TOGGLE | (STRING|PLAINTEXT)*)?
+
+call_arguments ::= label? // todo: add extra arguments
+set_arguments ::= EXTENSION? VARIABLE ASSIGNMENT types_?
+setlocal_arguments ::= SETLOCAL_PARAMETER SETLOCAL_PARAMETER?
+shift_arguments ::= EXTENSION
+exit_arguments ::= EXTENSION NUMERIC?

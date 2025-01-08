@@ -3,27 +3,8 @@ package io.github.chriso345.batchui.psi.impl;
 import com.intellij.lang.ASTNode;
 import io.github.chriso345.batchui.psi.BatchLabel;
 import io.github.chriso345.batchui.psi.BatchTypes;
-import io.github.chriso345.batchui.psi.BatchVariable;
 
 public class BatchPsiImplUtil {
-    // Variable
-    public static String getSetter(BatchVariable element) {
-        ASTNode setterNode = element.getNode().findChildByType(BatchTypes.COMMAND);
-        if (setterNode != null) {
-            return setterNode.getText();
-        } else {
-            return null;
-        }
-    }
-    public static String getKey(BatchVariable element) {
-        ASTNode keyNode = element.getNode().findChildByType(BatchTypes.CONSTANT);
-        if (keyNode != null) {
-            // IMPORTANT: Convert embedded escaped spaces to simple spaces FIXME: what is this doing??
-            return keyNode.getText().replaceAll("\\\\ ", " ");
-        } else {
-            return null;
-        }
-    }
 
     // Label
     public static String getFuncLabel(BatchLabel element) {

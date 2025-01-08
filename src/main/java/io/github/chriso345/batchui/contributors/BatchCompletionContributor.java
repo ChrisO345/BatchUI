@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class BatchCompletionContributor extends CompletionContributor {
     BatchCompletionContributor() {
         // Annotations
-        extend(CompletionType.BASIC, PlatformPatterns.or(PlatformPatterns.psiElement(BatchTypes.ANNOTATION), PlatformPatterns.psiElement(TokenType.BAD_CHARACTER)),
+        extend(CompletionType.BASIC, PlatformPatterns.or(PlatformPatterns.psiElement(BatchTypes.DECORATOR), PlatformPatterns.psiElement(TokenType.BAD_CHARACTER)),
                 new CompletionProvider<>() {
                     public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
                         for (BatchCommand command : BatchCommand.values()) {
@@ -29,13 +29,11 @@ public class BatchCompletionContributor extends CompletionContributor {
                 public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
                     resultSet.addElement(LookupElementBuilder.create("eof")
                             .withIcon(BatchIcons.FILE));
-//                    resultSet.addElement(LookupElementBuilder.create("goto")
-//                            .withIcon(BatchIcons.FILE));
                 }
             });
 
         // Toggles
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(BatchTypes.COMMAND),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(BatchTypes.PLAINTEXT),
                 new CompletionProvider<>() {
                     public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("on")
@@ -46,7 +44,7 @@ public class BatchCompletionContributor extends CompletionContributor {
                 }
         );
 
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(BatchTypes.SET_LOCAL_COMMAND),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(BatchTypes.SETLOCAL_PARAMETER),
             new CompletionProvider<>() {
                 public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
                     resultSet.addElement(LookupElementBuilder.create("enableExtensions"));
