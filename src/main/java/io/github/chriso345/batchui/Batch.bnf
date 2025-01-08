@@ -27,7 +27,8 @@ label ::= (LABEL_MARKER? FUNC_LABEL) {
 
 //cmd_terminator ::= (PIPE|AND|LESS|GREATER|DOUBLE_PIPE|DOUBLE_AND|DOUBLE_LESS|DOUBLE_GREATER)
 
-types_ ::= STRING | NUMERIC | PLAINTEXT
+types_ ::= STRING | NUMERIC | PLAINTEXT | DISK_DRIVE
+operators ::= COMPARISON_OPERATOR | OPERATOR
 
 private item_ ::= (
     prefix          // ECHO, SET, etc
@@ -38,17 +39,20 @@ private item_ ::= (
 
 prefix ::= (DECORATOR? command)
 
-command ::= command_reference | annotation_reference | COMMENT_REFERENCE
+command ::= command_reference | annotation_reference | COMMENT_REFERENCE | PLAINTEXT
 
 command_reference ::= (
-    ECHO_COMMAND echo_arguments?
-    | GOTO_COMMAND label?
+    ASSOC_COMMAND assoc_arguments?
     | CALL_COMMAND call_arguments?
-    | SETLOCAL_COMMAND setlocal_arguments?
+    | ECHO_COMMAND echo_arguments?
     | ENDLOCAL_COMMAND
-    | SET_COMMAND set_arguments?
-    | SHIFT_COMMAND shift_arguments?
     | EXIT_COMMAND exit_arguments?
+    | GOTO_COMMAND label?
+    | IF_COMMAND if_arguments?
+    | MORE_COMMAND more_arguments?
+    | SET_COMMAND set_arguments?
+    | SETLOCAL_COMMAND setlocal_arguments?
+    | SHIFT_COMMAND shift_arguments?
 ) (COMMAND_TERMINATOR command)?
 
 annotation_reference ::= (
@@ -56,10 +60,18 @@ annotation_reference ::= (
     | ECHO_ANNOTATION echo_arguments?
 ) (COMMAND_TERMINATOR command)?
 
-echo_arguments ::= (TOGGLE | (STRING|PLAINTEXT)*)?
-
+assoc_arguments ::= VARIABLE (ASSIGNMENT (STRING|NUMERIC)?)?
 call_arguments ::= label? // todo: add extra arguments
-set_arguments ::= EXTENSION? VARIABLE ASSIGNMENT types_?
+echo_arguments ::= (TOGGLE | (STRING|PLAINTEXT)*)?
+exit_arguments ::= EXTENSION NUMERIC?
+more_arguments ::= (EXTENSION | PLAINTEXT | DISK_DRIVE) more_arguments?
+set_arguments ::= EXTENSION? VARIABLE ASSIGNMENT (STRING | types_)?
 setlocal_arguments ::= SETLOCAL_PARAMETER SETLOCAL_PARAMETER?
 shift_arguments ::= EXTENSION
-exit_arguments ::= EXTENSION NUMERIC?
+
+if_arguments ::= COMPARISON_OPERATOR? (error_if | standard_if | exist_if)
+
+// TODO: brackets logic
+error_if ::= ERRORLEVEL_TOKEN NUMERIC command
+standard_if ::= (STRING | VARIABLE) operators (STRING | VARIABLE) command
+exist_if ::= EXIST_TOKEN STRING command

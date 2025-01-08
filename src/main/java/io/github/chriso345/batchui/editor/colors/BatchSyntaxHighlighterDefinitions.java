@@ -19,6 +19,7 @@ public enum BatchSyntaxHighlighterDefinitions {
 
     TOGGLE(DefaultLanguageHighlighterColors.CONSTANT),
     SETLOCAL_PARAMETER(DefaultLanguageHighlighterColors.METADATA),
+    COMMAND_TERMINATOR(DefaultLanguageHighlighterColors.OPERATION_SIGN),
 
     VARIABLE(DefaultLanguageHighlighterColors.CONSTANT), // Change default??
     ASSIGNMENT(DefaultLanguageHighlighterColors.OPERATION_SIGN),
@@ -26,6 +27,7 @@ public enum BatchSyntaxHighlighterDefinitions {
     EXTENSIONS(DefaultLanguageHighlighterColors.NUMBER),
     NUMERIC(DefaultLanguageHighlighterColors.NUMBER),
     STRING(DefaultLanguageHighlighterColors.STRING),
+    DISK_DRIVE(DefaultLanguageHighlighterColors.STRING),
     ;
 
     private final TextAttributesKey attributesKey;

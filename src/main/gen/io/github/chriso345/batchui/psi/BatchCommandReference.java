@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface BatchCommandReference extends PsiElement {
 
   @Nullable
+  BatchAssocArguments getAssocArguments();
+
+  @Nullable
   BatchCallArguments getCallArguments();
 
   @Nullable
@@ -20,7 +23,13 @@ public interface BatchCommandReference extends PsiElement {
   BatchExitArguments getExitArguments();
 
   @Nullable
+  BatchIfArguments getIfArguments();
+
+  @Nullable
   BatchLabel getLabel();
+
+  @Nullable
+  BatchMoreArguments getMoreArguments();
 
   @Nullable
   BatchSetArguments getSetArguments();

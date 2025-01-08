@@ -24,8 +24,8 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
     @Override @NotNull
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
         String tokenName = tokenType.toString();
-        if (Objects.equals(tokenName, "COMMAND_TERMINATOR"))
-            return COMMAND.getKeys();
+        if (Objects.equals(tokenName, "BatchTokenType.COMMAND_TERMINATOR"))
+            return COMMAND_TERMINATOR.getKeys();
         if (tokenName.contains("COMMAND"))
             return COMMAND.getKeys();
         if (tokenName.contains("ANNOTATION"))
@@ -49,6 +49,7 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
             case "BatchTokenType.EXTENSION" -> EXTENSIONS.getKeys();
             case "BatchTokenType.NUMERIC" -> NUMERIC.getKeys();
             case "BatchTokenType.STRING" -> STRING.getKeys();
+            case "BatchTokenType.DISK_DRIVE" -> DISK_DRIVE.getKeys();
 
             case "BatchTokenType.PLAINTEXT" -> PLAINTEXT;
             case "BAD_CHARACTER" -> BAD_CHARACTER.getKeys();

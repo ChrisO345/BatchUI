@@ -29,6 +29,12 @@ public class BatchCommandReferenceImpl extends ASTWrapperPsiElement implements B
 
   @Override
   @Nullable
+  public BatchAssocArguments getAssocArguments() {
+    return findChildByClass(BatchAssocArguments.class);
+  }
+
+  @Override
+  @Nullable
   public BatchCallArguments getCallArguments() {
     return findChildByClass(BatchCallArguments.class);
   }
@@ -53,8 +59,20 @@ public class BatchCommandReferenceImpl extends ASTWrapperPsiElement implements B
 
   @Override
   @Nullable
+  public BatchIfArguments getIfArguments() {
+    return findChildByClass(BatchIfArguments.class);
+  }
+
+  @Override
+  @Nullable
   public BatchLabel getLabel() {
     return findChildByClass(BatchLabel.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchMoreArguments getMoreArguments() {
+    return findChildByClass(BatchMoreArguments.class);
   }
 
   @Override

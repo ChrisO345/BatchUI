@@ -11,6 +11,10 @@ public class BatchVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAssocArguments(@NotNull BatchAssocArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitCallArguments(@NotNull BatchCallArguments o) {
     visitPsiElement(o);
   }
@@ -27,11 +31,31 @@ public class BatchVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitErrorIf(@NotNull BatchErrorIf o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExistIf(@NotNull BatchExistIf o) {
+    visitPsiElement(o);
+  }
+
   public void visitExitArguments(@NotNull BatchExitArguments o) {
     visitPsiElement(o);
   }
 
+  public void visitIfArguments(@NotNull BatchIfArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitLabel(@NotNull BatchLabel o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMoreArguments(@NotNull BatchMoreArguments o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOperators(@NotNull BatchOperators o) {
     visitPsiElement(o);
   }
 
@@ -48,6 +72,10 @@ public class BatchVisitor extends PsiElementVisitor {
   }
 
   public void visitShiftArguments(@NotNull BatchShiftArguments o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStandardIf(@NotNull BatchStandardIf o) {
     visitPsiElement(o);
   }
 
