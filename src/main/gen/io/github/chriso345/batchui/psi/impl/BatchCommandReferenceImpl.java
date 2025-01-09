@@ -53,6 +53,12 @@ public class BatchCommandReferenceImpl extends ASTWrapperPsiElement implements B
 
   @Override
   @Nullable
+  public BatchElseArguments getElseArguments() {
+    return findChildByClass(BatchElseArguments.class);
+  }
+
+  @Override
+  @Nullable
   public BatchExitArguments getExitArguments() {
     return findChildByClass(BatchExitArguments.class);
   }
@@ -91,6 +97,12 @@ public class BatchCommandReferenceImpl extends ASTWrapperPsiElement implements B
   @Nullable
   public BatchShiftArguments getShiftArguments() {
     return findChildByClass(BatchShiftArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchUndefinedArguments getUndefinedArguments() {
+    return findChildByClass(BatchUndefinedArguments.class);
   }
 
 }

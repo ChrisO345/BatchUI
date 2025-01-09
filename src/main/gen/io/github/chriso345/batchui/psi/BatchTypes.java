@@ -14,6 +14,7 @@ public interface BatchTypes {
   IElementType COMMAND = new BatchElementType("COMMAND");
   IElementType COMMAND_REFERENCE = new BatchElementType("COMMAND_REFERENCE");
   IElementType ECHO_ARGUMENTS = new BatchElementType("ECHO_ARGUMENTS");
+  IElementType ELSE_ARGUMENTS = new BatchElementType("ELSE_ARGUMENTS");
   IElementType ERROR_IF = new BatchElementType("ERROR_IF");
   IElementType EXIST_IF = new BatchElementType("EXIST_IF");
   IElementType EXIT_ARGUMENTS = new BatchElementType("EXIT_ARGUMENTS");
@@ -27,10 +28,13 @@ public interface BatchTypes {
   IElementType SHIFT_ARGUMENTS = new BatchElementType("SHIFT_ARGUMENTS");
   IElementType STANDARD_IF = new BatchElementType("STANDARD_IF");
   IElementType TYPES_ = new BatchElementType("TYPES_");
+  IElementType UNDEFINED_ARGUMENTS = new BatchElementType("UNDEFINED_ARGUMENTS");
 
   IElementType ASSIGNMENT = new BatchTokenType("ASSIGNMENT");
   IElementType ASSOC_COMMAND = new BatchTokenType("ASSOC_COMMAND");
+  IElementType BREAK_COMMAND = new BatchTokenType("BREAK_COMMAND");
   IElementType CALL_COMMAND = new BatchTokenType("CALL_COMMAND");
+  IElementType CLOSE_PAREN = new BatchTokenType("CLOSE_PAREN");
   IElementType COMMAND_TERMINATOR = new BatchTokenType("COMMAND_TERMINATOR");
   IElementType COMMENT = new BatchTokenType("COMMENT");
   IElementType COMMENT_REFERENCE = new BatchTokenType("COMMENT_REFERENCE");
@@ -40,6 +44,7 @@ public interface BatchTypes {
   IElementType DISK_DRIVE = new BatchTokenType("DISK_DRIVE");
   IElementType ECHO_ANNOTATION = new BatchTokenType("ECHO_ANNOTATION");
   IElementType ECHO_COMMAND = new BatchTokenType("ECHO_COMMAND");
+  IElementType ELSE_COMMAND = new BatchTokenType("ELSE_COMMAND");
   IElementType ENDLOCAL_COMMAND = new BatchTokenType("ENDLOCAL_COMMAND");
   IElementType ERRORLEVEL_TOKEN = new BatchTokenType("ERRORLEVEL_TOKEN");
   IElementType EXIST_TOKEN = new BatchTokenType("EXIST_TOKEN");
@@ -51,6 +56,7 @@ public interface BatchTypes {
   IElementType LABEL_MARKER = new BatchTokenType("LABEL_MARKER");
   IElementType MORE_COMMAND = new BatchTokenType("MORE_COMMAND");
   IElementType NUMERIC = new BatchTokenType("NUMERIC");
+  IElementType OPEN_PAREN = new BatchTokenType("OPEN_PAREN");
   IElementType OPERATOR = new BatchTokenType("OPERATOR");
   IElementType PLAINTEXT = new BatchTokenType("PLAINTEXT");
   IElementType REM_DECORATOR = new BatchTokenType("REM_DECORATOR");
@@ -60,6 +66,7 @@ public interface BatchTypes {
   IElementType SHIFT_COMMAND = new BatchTokenType("SHIFT_COMMAND");
   IElementType STRING = new BatchTokenType("STRING");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
+  IElementType UNDEFINED_COMMAND = new BatchTokenType("UNDEFINED_COMMAND");
   IElementType VARIABLE = new BatchTokenType("VARIABLE");
 
   class Factory {
@@ -82,6 +89,9 @@ public interface BatchTypes {
       }
       else if (type == ECHO_ARGUMENTS) {
         return new BatchEchoArgumentsImpl(node);
+      }
+      else if (type == ELSE_ARGUMENTS) {
+        return new BatchElseArgumentsImpl(node);
       }
       else if (type == ERROR_IF) {
         return new BatchErrorIfImpl(node);
@@ -121,6 +131,9 @@ public interface BatchTypes {
       }
       else if (type == TYPES_) {
         return new BatchTypes_Impl(node);
+      }
+      else if (type == UNDEFINED_ARGUMENTS) {
+        return new BatchUndefinedArgumentsImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

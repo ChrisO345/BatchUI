@@ -11,14 +11,14 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchErrorIfImpl extends ASTWrapperPsiElement implements BatchErrorIf {
+public class BatchUndefinedArgumentsImpl extends ASTWrapperPsiElement implements BatchUndefinedArguments {
 
-  public BatchErrorIfImpl(@NotNull ASTNode node) {
+  public BatchUndefinedArgumentsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitErrorIf(this);
+    visitor.visitUndefinedArguments(this);
   }
 
   @Override
@@ -29,20 +29,8 @@ public class BatchErrorIfImpl extends ASTWrapperPsiElement implements BatchError
 
   @Override
   @Nullable
-  public BatchCommand getCommand() {
-    return findChildByClass(BatchCommand.class);
-  }
-
-  @Override
-  @NotNull
-  public List<BatchLabel> getLabelList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchLabel.class);
-  }
-
-  @Override
-  @NotNull
-  public List<BatchPrefix> getPrefixList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchPrefix.class);
+  public BatchUndefinedArguments getUndefinedArguments() {
+    return findChildByClass(BatchUndefinedArguments.class);
   }
 
 }

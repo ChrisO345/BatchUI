@@ -7,7 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface BatchExistIf extends PsiElement {
 
-  @NotNull
+  @Nullable
   BatchCommand getCommand();
+
+  @NotNull
+  List<BatchLabel> getLabelList();
+
+  @NotNull
+  List<BatchPrefix> getPrefixList();
 
 }

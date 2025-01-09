@@ -31,6 +31,10 @@ public class BatchVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitElseArguments(@NotNull BatchElseArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitErrorIf(@NotNull BatchErrorIf o) {
     visitPsiElement(o);
   }
@@ -80,6 +84,10 @@ public class BatchVisitor extends PsiElementVisitor {
   }
 
   public void visitTypes_(@NotNull BatchTypes_ o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUndefinedArguments(@NotNull BatchUndefinedArguments o) {
     visitPsiElement(o);
   }
 

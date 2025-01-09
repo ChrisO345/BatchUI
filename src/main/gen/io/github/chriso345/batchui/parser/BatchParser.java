@@ -203,8 +203,10 @@ public class BatchParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // (
   //     ASSOC_COMMAND assoc_arguments?
+  //     | BREAK_COMMAND TOGGLE?
   //     | CALL_COMMAND call_arguments?
   //     | ECHO_COMMAND echo_arguments?
+  //     | ELSE_COMMAND else_arguments?
   //     | ENDLOCAL_COMMAND
   //     | EXIT_COMMAND exit_arguments?
   //     | GOTO_COMMAND label?
@@ -213,6 +215,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   //     | SET_COMMAND set_arguments?
   //     | SETLOCAL_COMMAND setlocal_arguments?
   //     | SHIFT_COMMAND shift_arguments?
+  //     | UNDEFINED_COMMAND undefined_arguments?
   // ) (COMMAND_TERMINATOR command)?
   public static boolean command_reference(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference")) return false;
@@ -225,8 +228,10 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   // ASSOC_COMMAND assoc_arguments?
+  //     | BREAK_COMMAND TOGGLE?
   //     | CALL_COMMAND call_arguments?
   //     | ECHO_COMMAND echo_arguments?
+  //     | ELSE_COMMAND else_arguments?
   //     | ENDLOCAL_COMMAND
   //     | EXIT_COMMAND exit_arguments?
   //     | GOTO_COMMAND label?
@@ -235,6 +240,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   //     | SET_COMMAND set_arguments?
   //     | SETLOCAL_COMMAND setlocal_arguments?
   //     | SHIFT_COMMAND shift_arguments?
+  //     | UNDEFINED_COMMAND undefined_arguments?
   private static boolean command_reference_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0")) return false;
     boolean r;
@@ -242,14 +248,17 @@ public class BatchParser implements PsiParser, LightPsiParser {
     r = command_reference_0_0(b, l + 1);
     if (!r) r = command_reference_0_1(b, l + 1);
     if (!r) r = command_reference_0_2(b, l + 1);
-    if (!r) r = consumeToken(b, ENDLOCAL_COMMAND);
+    if (!r) r = command_reference_0_3(b, l + 1);
     if (!r) r = command_reference_0_4(b, l + 1);
-    if (!r) r = command_reference_0_5(b, l + 1);
+    if (!r) r = consumeToken(b, ENDLOCAL_COMMAND);
     if (!r) r = command_reference_0_6(b, l + 1);
     if (!r) r = command_reference_0_7(b, l + 1);
     if (!r) r = command_reference_0_8(b, l + 1);
     if (!r) r = command_reference_0_9(b, l + 1);
     if (!r) r = command_reference_0_10(b, l + 1);
+    if (!r) r = command_reference_0_11(b, l + 1);
+    if (!r) r = command_reference_0_12(b, l + 1);
+    if (!r) r = command_reference_0_13(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -272,165 +281,219 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // CALL_COMMAND call_arguments?
+  // BREAK_COMMAND TOGGLE?
   private static boolean command_reference_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, CALL_COMMAND);
+    r = consumeToken(b, BREAK_COMMAND);
     r = r && command_reference_0_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // call_arguments?
+  // TOGGLE?
   private static boolean command_reference_0_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_1_1")) return false;
-    call_arguments(b, l + 1);
+    consumeToken(b, TOGGLE);
     return true;
   }
 
-  // ECHO_COMMAND echo_arguments?
+  // CALL_COMMAND call_arguments?
   private static boolean command_reference_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, ECHO_COMMAND);
+    r = consumeToken(b, CALL_COMMAND);
     r = r && command_reference_0_2_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // echo_arguments?
+  // call_arguments?
   private static boolean command_reference_0_2_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_2_1")) return false;
+    call_arguments(b, l + 1);
+    return true;
+  }
+
+  // ECHO_COMMAND echo_arguments?
+  private static boolean command_reference_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ECHO_COMMAND);
+    r = r && command_reference_0_3_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // echo_arguments?
+  private static boolean command_reference_0_3_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_3_1")) return false;
     echo_arguments(b, l + 1);
     return true;
   }
 
-  // EXIT_COMMAND exit_arguments?
+  // ELSE_COMMAND else_arguments?
   private static boolean command_reference_0_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_4")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, EXIT_COMMAND);
+    r = consumeToken(b, ELSE_COMMAND);
     r = r && command_reference_0_4_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // exit_arguments?
+  // else_arguments?
   private static boolean command_reference_0_4_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_4_1")) return false;
-    exit_arguments(b, l + 1);
+    else_arguments(b, l + 1);
     return true;
   }
 
-  // GOTO_COMMAND label?
-  private static boolean command_reference_0_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "command_reference_0_5")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, GOTO_COMMAND);
-    r = r && command_reference_0_5_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // label?
-  private static boolean command_reference_0_5_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "command_reference_0_5_1")) return false;
-    label(b, l + 1);
-    return true;
-  }
-
-  // IF_COMMAND if_arguments?
+  // EXIT_COMMAND exit_arguments?
   private static boolean command_reference_0_6(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_6")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IF_COMMAND);
+    r = consumeToken(b, EXIT_COMMAND);
     r = r && command_reference_0_6_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // if_arguments?
+  // exit_arguments?
   private static boolean command_reference_0_6_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_6_1")) return false;
-    if_arguments(b, l + 1);
+    exit_arguments(b, l + 1);
     return true;
   }
 
-  // MORE_COMMAND more_arguments?
+  // GOTO_COMMAND label?
   private static boolean command_reference_0_7(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_7")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, MORE_COMMAND);
+    r = consumeToken(b, GOTO_COMMAND);
     r = r && command_reference_0_7_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // more_arguments?
+  // label?
   private static boolean command_reference_0_7_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_7_1")) return false;
-    more_arguments(b, l + 1);
+    label(b, l + 1);
     return true;
   }
 
-  // SET_COMMAND set_arguments?
+  // IF_COMMAND if_arguments?
   private static boolean command_reference_0_8(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_8")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, SET_COMMAND);
+    r = consumeToken(b, IF_COMMAND);
     r = r && command_reference_0_8_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // set_arguments?
+  // if_arguments?
   private static boolean command_reference_0_8_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_8_1")) return false;
-    set_arguments(b, l + 1);
+    if_arguments(b, l + 1);
     return true;
   }
 
-  // SETLOCAL_COMMAND setlocal_arguments?
+  // MORE_COMMAND more_arguments?
   private static boolean command_reference_0_9(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_9")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, SETLOCAL_COMMAND);
+    r = consumeToken(b, MORE_COMMAND);
     r = r && command_reference_0_9_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // setlocal_arguments?
+  // more_arguments?
   private static boolean command_reference_0_9_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_9_1")) return false;
-    setlocal_arguments(b, l + 1);
+    more_arguments(b, l + 1);
     return true;
   }
 
-  // SHIFT_COMMAND shift_arguments?
+  // SET_COMMAND set_arguments?
   private static boolean command_reference_0_10(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_10")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, SHIFT_COMMAND);
+    r = consumeToken(b, SET_COMMAND);
     r = r && command_reference_0_10_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // shift_arguments?
+  // set_arguments?
   private static boolean command_reference_0_10_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command_reference_0_10_1")) return false;
+    set_arguments(b, l + 1);
+    return true;
+  }
+
+  // SETLOCAL_COMMAND setlocal_arguments?
+  private static boolean command_reference_0_11(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_11")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SETLOCAL_COMMAND);
+    r = r && command_reference_0_11_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // setlocal_arguments?
+  private static boolean command_reference_0_11_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_11_1")) return false;
+    setlocal_arguments(b, l + 1);
+    return true;
+  }
+
+  // SHIFT_COMMAND shift_arguments?
+  private static boolean command_reference_0_12(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_12")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SHIFT_COMMAND);
+    r = r && command_reference_0_12_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // shift_arguments?
+  private static boolean command_reference_0_12_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_12_1")) return false;
     shift_arguments(b, l + 1);
+    return true;
+  }
+
+  // UNDEFINED_COMMAND undefined_arguments?
+  private static boolean command_reference_0_13(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_13")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, UNDEFINED_COMMAND);
+    r = r && command_reference_0_13_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // undefined_arguments?
+  private static boolean command_reference_0_13_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_reference_0_13_1")) return false;
+    undefined_arguments(b, l + 1);
     return true;
   }
 
@@ -494,28 +557,98 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ERRORLEVEL_TOKEN NUMERIC command
+  // command | (OPEN_PAREN recurse_item CLOSE_PAREN)
+  public static boolean else_arguments(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "else_arguments")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ELSE_ARGUMENTS, "<else arguments>");
+    r = command(b, l + 1);
+    if (!r) r = else_arguments_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // OPEN_PAREN recurse_item CLOSE_PAREN
+  private static boolean else_arguments_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "else_arguments_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OPEN_PAREN);
+    r = r && recurse_item(b, l + 1);
+    r = r && consumeToken(b, CLOSE_PAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ERRORLEVEL_TOKEN NUMERIC (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
   public static boolean error_if(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "error_if")) return false;
     if (!nextTokenIs(b, ERRORLEVEL_TOKEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, ERRORLEVEL_TOKEN, NUMERIC);
-    r = r && command(b, l + 1);
+    r = r && error_if_2(b, l + 1);
     exit_section_(b, m, ERROR_IF, r);
     return r;
   }
 
+  // command | (OPEN_PAREN recurse_item CLOSE_PAREN)
+  private static boolean error_if_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "error_if_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = command(b, l + 1);
+    if (!r) r = error_if_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // OPEN_PAREN recurse_item CLOSE_PAREN
+  private static boolean error_if_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "error_if_2_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OPEN_PAREN);
+    r = r && recurse_item(b, l + 1);
+    r = r && consumeToken(b, CLOSE_PAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   /* ********************************************************** */
-  // EXIST_TOKEN STRING command
+  // EXIST_TOKEN STRING (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
   public static boolean exist_if(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exist_if")) return false;
     if (!nextTokenIs(b, EXIST_TOKEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, EXIST_TOKEN, STRING);
-    r = r && command(b, l + 1);
+    r = r && exist_if_2(b, l + 1);
     exit_section_(b, m, EXIST_IF, r);
+    return r;
+  }
+
+  // command | (OPEN_PAREN recurse_item CLOSE_PAREN)
+  private static boolean exist_if_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exist_if_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = command(b, l + 1);
+    if (!r) r = exist_if_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // OPEN_PAREN recurse_item CLOSE_PAREN
+  private static boolean exist_if_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "exist_if_2_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OPEN_PAREN);
+    r = r && recurse_item(b, l + 1);
+    r = r && consumeToken(b, CLOSE_PAREN);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -573,14 +706,37 @@ public class BatchParser implements PsiParser, LightPsiParser {
   //     | label
   //     | COMMENT        // REM, ::
   //     | CRLF
+  //     | OPEN_PAREN item_? CLOSE_PAREN
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
+    Marker m = enter_section_(b);
     r = prefix(b, l + 1);
     if (!r) r = label(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
+    if (!r) r = item__4(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
+  }
+
+  // OPEN_PAREN item_? CLOSE_PAREN
+  private static boolean item__4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item__4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OPEN_PAREN);
+    r = r && item__4_1(b, l + 1);
+    r = r && consumeToken(b, CLOSE_PAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // item_?
+  private static boolean item__4_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item__4_1")) return false;
+    item_(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -665,7 +821,26 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // EXTENSION? VARIABLE ASSIGNMENT (STRING | types_)?
+  // item_ recurse_item?
+  static boolean recurse_item(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "recurse_item")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = item_(b, l + 1);
+    r = r && recurse_item_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // recurse_item?
+  private static boolean recurse_item_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "recurse_item_1")) return false;
+    recurse_item(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // EXTENSION? VARIABLE ASSIGNMENT (STRING | NUMERIC)?
   public static boolean set_arguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "set_arguments")) return false;
     if (!nextTokenIs(b, "<set arguments>", EXTENSION, VARIABLE)) return false;
@@ -685,19 +860,19 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (STRING | types_)?
+  // (STRING | NUMERIC)?
   private static boolean set_arguments_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "set_arguments_3")) return false;
     set_arguments_3_0(b, l + 1);
     return true;
   }
 
-  // STRING | types_
+  // STRING | NUMERIC
   private static boolean set_arguments_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "set_arguments_3_0")) return false;
     boolean r;
     r = consumeToken(b, STRING);
-    if (!r) r = types_(b, l + 1);
+    if (!r) r = consumeToken(b, NUMERIC);
     return r;
   }
 
@@ -734,16 +909,16 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (STRING | VARIABLE) COMPARISON_OPERATOR (STRING | VARIABLE) command
+  // (STRING | VARIABLE) operators (STRING | VARIABLE) (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
   public static boolean standard_if(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "standard_if")) return false;
     if (!nextTokenIs(b, "<standard if>", STRING, VARIABLE)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STANDARD_IF, "<standard if>");
     r = standard_if_0(b, l + 1);
-    r = r && consumeToken(b, COMPARISON_OPERATOR);
+    r = r && operators(b, l + 1);
     r = r && standard_if_2(b, l + 1);
-    r = r && command(b, l + 1);
+    r = r && standard_if_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -766,6 +941,29 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  // command | (OPEN_PAREN recurse_item CLOSE_PAREN)
+  private static boolean standard_if_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "standard_if_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = command(b, l + 1);
+    if (!r) r = standard_if_3_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // OPEN_PAREN recurse_item CLOSE_PAREN
+  private static boolean standard_if_3_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "standard_if_3_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OPEN_PAREN);
+    r = r && recurse_item(b, l + 1);
+    r = r && consumeToken(b, CLOSE_PAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   /* ********************************************************** */
   // STRING | NUMERIC | PLAINTEXT | DISK_DRIVE
   public static boolean types_(PsiBuilder b, int l) {
@@ -778,6 +976,35 @@ public class BatchParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, DISK_DRIVE);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  /* ********************************************************** */
+  // (EXTENSION | PLAINTEXT | DISK_DRIVE) undefined_arguments?
+  public static boolean undefined_arguments(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "undefined_arguments")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _COLLAPSE_, UNDEFINED_ARGUMENTS, "<undefined arguments>");
+    r = undefined_arguments_0(b, l + 1);
+    r = r && undefined_arguments_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // EXTENSION | PLAINTEXT | DISK_DRIVE
+  private static boolean undefined_arguments_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "undefined_arguments_0")) return false;
+    boolean r;
+    r = consumeToken(b, EXTENSION);
+    if (!r) r = consumeToken(b, PLAINTEXT);
+    if (!r) r = consumeToken(b, DISK_DRIVE);
+    return r;
+  }
+
+  // undefined_arguments?
+  private static boolean undefined_arguments_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "undefined_arguments_1")) return false;
+    undefined_arguments(b, l + 1);
+    return true;
   }
 
 }

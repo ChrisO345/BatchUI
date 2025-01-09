@@ -7,7 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface BatchStandardIf extends PsiElement {
 
-  @NotNull
+  @Nullable
   BatchCommand getCommand();
+
+  @NotNull
+  List<BatchLabel> getLabelList();
+
+  @NotNull
+  BatchOperators getOperators();
+
+  @NotNull
+  List<BatchPrefix> getPrefixList();
 
 }

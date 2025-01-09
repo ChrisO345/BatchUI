@@ -11,14 +11,14 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchErrorIfImpl extends ASTWrapperPsiElement implements BatchErrorIf {
+public class BatchElseArgumentsImpl extends ASTWrapperPsiElement implements BatchElseArguments {
 
-  public BatchErrorIfImpl(@NotNull ASTNode node) {
+  public BatchElseArgumentsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitErrorIf(this);
+    visitor.visitElseArguments(this);
   }
 
   @Override

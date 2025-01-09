@@ -27,10 +27,4 @@ public class BatchSetArgumentsImpl extends ASTWrapperPsiElement implements Batch
     else super.accept(visitor);
   }
 
-  @Override
-  @Nullable
-  public BatchTypes_ getTypes_() {
-    return findChildByClass(BatchTypes_.class);
-  }
-
 }

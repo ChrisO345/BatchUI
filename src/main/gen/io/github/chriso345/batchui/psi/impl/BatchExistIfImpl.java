@@ -28,9 +28,21 @@ public class BatchExistIfImpl extends ASTWrapperPsiElement implements BatchExist
   }
 
   @Override
-  @NotNull
+  @Nullable
   public BatchCommand getCommand() {
-    return findNotNullChildByClass(BatchCommand.class);
+    return findChildByClass(BatchCommand.class);
+  }
+
+  @Override
+  @NotNull
+  public List<BatchLabel> getLabelList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchLabel.class);
+  }
+
+  @Override
+  @NotNull
+  public List<BatchPrefix> getPrefixList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchPrefix.class);
   }
 
 }

@@ -20,6 +20,9 @@ public interface BatchCommandReference extends PsiElement {
   BatchEchoArguments getEchoArguments();
 
   @Nullable
+  BatchElseArguments getElseArguments();
+
+  @Nullable
   BatchExitArguments getExitArguments();
 
   @Nullable
@@ -39,5 +42,8 @@ public interface BatchCommandReference extends PsiElement {
 
   @Nullable
   BatchShiftArguments getShiftArguments();
+
+  @Nullable
+  BatchUndefinedArguments getUndefinedArguments();
 
 }

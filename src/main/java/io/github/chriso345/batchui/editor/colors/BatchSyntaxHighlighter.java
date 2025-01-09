@@ -30,6 +30,8 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
             return COMMAND.getKeys();
         if (tokenName.contains("ANNOTATION"))
             return DECORATOR.getKeys();
+        if (tokenName.contains("TOKEN"))
+            return KEYWORD_TOKENS.getKeys();
 
         return switch (tokenName) {
             case "BatchTokenType.DECORATOR" -> DECORATOR.getKeys();
@@ -45,6 +47,9 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
             case "BatchTokenType.VARIABLE" -> VARIABLE.getKeys();
             case "BatchTokenType.ASSIGNMENT" -> ASSIGNMENT.getKeys();
             case "BatchTokenType.COMMAND_TERMINATOR" -> COMMAND.getKeys();
+
+            case "BatchTokenType.OPEN_PAREN", "BatchTokenType.CLOSE_PAREN" -> BRACKETS.getKeys();
+            case "BatchTokenType.COMPARISON_OPERATOR" -> OPERATORS.getKeys();
 
             case "BatchTokenType.EXTENSION" -> EXTENSIONS.getKeys();
             case "BatchTokenType.NUMERIC" -> NUMERIC.getKeys();

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class BatchCompletionContributor extends CompletionContributor {
     BatchCompletionContributor() {
         // Annotations
-        extend(CompletionType.BASIC, PlatformPatterns.or(PlatformPatterns.psiElement(BatchTypes.DECORATOR), PlatformPatterns.psiElement(TokenType.BAD_CHARACTER)),
+        extend(CompletionType.BASIC, PlatformPatterns.or(PlatformPatterns.psiElement(BatchTypes.DECORATOR), PlatformPatterns.psiElement(BatchTypes.PLAINTEXT)),
                 new CompletionProvider<>() {
                     public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
                         for (BatchCommand command : BatchCommand.values()) {

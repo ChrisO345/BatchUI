@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface BatchSetArguments extends PsiElement {
 
-  @Nullable
-  BatchTypes_ getTypes_();
-
 }

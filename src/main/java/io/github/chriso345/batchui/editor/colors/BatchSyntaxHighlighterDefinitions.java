@@ -21,6 +21,10 @@ public enum BatchSyntaxHighlighterDefinitions {
     SETLOCAL_PARAMETER(DefaultLanguageHighlighterColors.METADATA),
     COMMAND_TERMINATOR(DefaultLanguageHighlighterColors.OPERATION_SIGN),
 
+    BRACKETS(DefaultLanguageHighlighterColors.BRACKETS),
+    KEYWORD_TOKENS(DefaultLanguageHighlighterColors.IDENTIFIER),
+    OPERATORS(DefaultLanguageHighlighterColors.OPERATION_SIGN),
+
     VARIABLE(DefaultLanguageHighlighterColors.CONSTANT), // Change default??
     ASSIGNMENT(DefaultLanguageHighlighterColors.OPERATION_SIGN),
 

@@ -4,6 +4,7 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import io.github.chriso345.batchui.psi.BatchTypes;
 import com.intellij.lexer.FlexLexer;
+import java.util.Stack;
 
 %%
 
@@ -21,8 +22,10 @@ LineTerminator = \r|\n|\r\n
 FullLine = [^\r\n]
 StringLiteral = [^\=]\" ( \\\" | [^\"\n\r] )* \"
 ArgLiteral = \%\~[0-9~]
-AllowEqualsToken = [^ \t\f\n\r\:\;\,\|\&\<\>]+
-Token = [^ \t\f\n\r\:\;\,\|\&\<\>\=]+
+
+// TODO: tweak the token regex to allow for more characters to be used in plaintext
+Token = [^ \t\f\n\r\:\;\,\|\&\<\>\=\(\)\+]+
+
 CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
 EscapeCharacter = "^".
 Numeric = [0-9]+
@@ -31,8 +34,9 @@ RemIndicator = [Rr][Ee][Mm]
 CommentIndicator = ("::" | {RemIndicator})
 Toggle = "on" | "off"
 ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
+Operator = [\+\-\*\/]
 
-%state ANNOTATION, ASSOC, ASSOC_VALUE, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
+%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
 
 %%
 
@@ -49,6 +53,8 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
     {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.COMMAND_TERMINATOR; }
     {Token}+ { yybegin(COMMAND); yypushback(yylength()); }
     "=" { yybegin(YYINITIAL); return BatchTypes.ASSIGNMENT; }
+    \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
+    \) { yybegin(YYINITIAL); return BatchTypes.CLOSE_PAREN; }
 }
 
 <ANNOTATION> {
@@ -77,6 +83,14 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
     = { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 }
 
+<BREAK> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(BREAK); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    {Toggle} { yybegin(BREAK); return BatchTypes.TOGGLE; }
+}
+
 <CALL> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(GOTO); return TokenType.WHITE_SPACE; }
@@ -92,6 +106,7 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
     assoc { yybegin(ASSOC); return BatchTypes.ASSOC_COMMAND; }
+    break { yybegin(BREAK); return BatchTypes.BREAK_COMMAND; }
     echo { yybegin(ECHO); return BatchTypes.ECHO_COMMAND; }
     goto { yybegin(GOTO); return BatchTypes.GOTO_COMMAND; }
     call { yybegin(CALL); return BatchTypes.CALL_COMMAND; }
@@ -100,6 +115,7 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
     setlocal { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_COMMAND; }
     set {yybegin(SET); return BatchTypes.SET_COMMAND; }
     shift {yybegin(SHIFT); return BatchTypes.SHIFT_COMMAND; }
+    else { yybegin(YYINITIAL); return BatchTypes.ELSE_COMMAND; }
     endlocal { yybegin(YYINITIAL); return BatchTypes.ENDLOCAL_COMMAND; }
     exit { yybegin(EXIT); return BatchTypes.EXIT_COMMAND; }
 
@@ -146,7 +162,6 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 <IF> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(IF); return TokenType.WHITE_SPACE; }
-    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
     {ComparisonOperator} { yybegin(IF); return BatchTypes.COMPARISON_OPERATOR; }
 
@@ -161,8 +176,9 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
     {WhiteSpace} { yybegin(IF_ERRORLEVEL); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 
-    {Numeric} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
-    {Token}+ { yybegin(COMMAND); yypushback(yylength()); }
+    {Numeric} { yybegin(IF_ERRORLEVEL); return BatchTypes.NUMERIC; }
+    \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
+    {Token}+ { yybegin(YYINITIAL); yypushback(yylength()); }
 }
 
 <IF_EXIST> {
@@ -171,7 +187,8 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
     {CommandTerminator} { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 
     {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
-    {Token}+ { yybegin(COMMAND); yypushback(yylength()); }
+    \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
+    {Token}+ { yybegin(YYINITIAL); yypushback(yylength()); }
 }
 
 <IF_STANDARD> {
@@ -181,7 +198,8 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 
     {StringLiteral} { yybegin(IF_STANDARD); return BatchTypes.STRING; }
     {ComparisonOperator} | == { yybegin(IF_STANDARD); return BatchTypes.COMPARISON_OPERATOR; }
-    {AllowEqualsToken}+ { yybegin(COMMAND); return BatchTypes.PLAINTEXT; }
+    \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
+    {Token}+ { yybegin(YYINITIAL); yypushback(yylength()); }
 }
 
 <LABEL> {
@@ -210,12 +228,17 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 <SET> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(SET); return TokenType.WHITE_SPACE; }
+
+    \/[ap] { yybegin(SET); return BatchTypes.EXTENSION; }
+
     {Token}+[\ \t]*\= { yybegin(SET); yypushback(1); return BatchTypes.VARIABLE; }
-    \= { yybegin(SET_VALUE); return BatchTypes.ASSIGNMENT; }
+    {Token}+[\ \t]*{Operator}\= { yybegin(SET); yypushback(2); return BatchTypes.VARIABLE; }
+    {Operator}?\= { yybegin(SET_VALUE); return BatchTypes.ASSIGNMENT; }
 }
 
 <SET_LOCAL> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
     {WhiteSpace} { yybegin(SET_LOCAL); return TokenType.WHITE_SPACE; }
     {Token}+ { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_PARAMETER; }
 }
@@ -225,6 +248,7 @@ ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
     {WhiteSpace} { yybegin(SET_VALUE); return TokenType.WHITE_SPACE; }
     {StringLiteral} { yybegin(SET_VALUE); return BatchTypes.STRING; }
     {ArgLiteral} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
+    {Numeric} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
     {Token}+ { yybegin(SET_VALUE); return BatchTypes.STRING; }
     \= { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 }
