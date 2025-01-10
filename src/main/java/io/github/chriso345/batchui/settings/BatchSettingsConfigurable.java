@@ -30,19 +30,25 @@ public class BatchSettingsConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         BatchSettingsState settings = BatchSettingsState.getInstance();
-        return !mySettingsComponent.getCommentPrefixText().equals(settings.commentPrefix);
+        return !mySettingsComponent.getCommentPrefixText().equals(settings.commentPrefix) ||
+                mySettingsComponent.getUpperCaseKeywords() != settings.upperCaseKeywords ||
+                mySettingsComponent.getIsModified();
     }
 
     @Override
     public void apply() {
         BatchSettingsState settings = BatchSettingsState.getInstance();
         settings.commentPrefix = mySettingsComponent.getCommentPrefixText().strip();
+        settings.upperCaseKeywords = mySettingsComponent.getUpperCaseKeywords();
+        mySettingsComponent.applyOverrideCommands();
     }
 
     @Override
     public void reset() {
         BatchSettingsState settings = BatchSettingsState.getInstance();
         mySettingsComponent.setCommentPrefixText(settings.commentPrefix);
+        mySettingsComponent.setUpperCaseKeywords(settings.upperCaseKeywords);
+        mySettingsComponent.setOverrideCommands();
     }
 
     @Override

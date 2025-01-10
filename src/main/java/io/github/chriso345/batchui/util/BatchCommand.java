@@ -95,5 +95,9 @@ public enum BatchCommand {
     public String getCommand() {
         return command;
     }
+
+    public String getCommand(boolean uppercase) {
+        return uppercase ? command.toUpperCase() : command;
+    }
 }
 
