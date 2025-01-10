@@ -11,14 +11,14 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchSetArgumentsImpl extends ASTWrapperPsiElement implements BatchSetArguments {
+public class BatchCollectionImpl extends ASTWrapperPsiElement implements BatchCollection {
 
-  public BatchSetArgumentsImpl(@NotNull ASTNode node) {
+  public BatchCollectionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitSetArguments(this);
+    visitor.visitCollection(this);
   }
 
   @Override

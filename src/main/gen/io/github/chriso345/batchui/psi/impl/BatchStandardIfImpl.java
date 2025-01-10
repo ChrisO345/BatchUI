@@ -51,4 +51,10 @@ public class BatchStandardIfImpl extends ASTWrapperPsiElement implements BatchSt
     return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchPrefix.class);
   }
 
+  @Override
+  @NotNull
+  public List<BatchTypes_> getTypes_List() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchTypes_.class);
+  }
+
 }

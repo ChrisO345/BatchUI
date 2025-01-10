@@ -65,6 +65,12 @@ public class BatchCommandReferenceImpl extends ASTWrapperPsiElement implements B
 
   @Override
   @Nullable
+  public BatchForArguments getForArguments() {
+    return findChildByClass(BatchForArguments.class);
+  }
+
+  @Override
+  @Nullable
   public BatchIfArguments getIfArguments() {
     return findChildByClass(BatchIfArguments.class);
   }

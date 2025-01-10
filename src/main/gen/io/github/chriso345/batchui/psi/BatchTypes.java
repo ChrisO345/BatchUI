@@ -11,6 +11,7 @@ public interface BatchTypes {
   IElementType ANNOTATION_REFERENCE = new BatchElementType("ANNOTATION_REFERENCE");
   IElementType ASSOC_ARGUMENTS = new BatchElementType("ASSOC_ARGUMENTS");
   IElementType CALL_ARGUMENTS = new BatchElementType("CALL_ARGUMENTS");
+  IElementType COLLECTION = new BatchElementType("COLLECTION");
   IElementType COMMAND = new BatchElementType("COMMAND");
   IElementType COMMAND_REFERENCE = new BatchElementType("COMMAND_REFERENCE");
   IElementType ECHO_ARGUMENTS = new BatchElementType("ECHO_ARGUMENTS");
@@ -18,6 +19,7 @@ public interface BatchTypes {
   IElementType ERROR_IF = new BatchElementType("ERROR_IF");
   IElementType EXIST_IF = new BatchElementType("EXIST_IF");
   IElementType EXIT_ARGUMENTS = new BatchElementType("EXIT_ARGUMENTS");
+  IElementType FOR_ARGUMENTS = new BatchElementType("FOR_ARGUMENTS");
   IElementType IF_ARGUMENTS = new BatchElementType("IF_ARGUMENTS");
   IElementType LABEL = new BatchElementType("LABEL");
   IElementType MORE_ARGUMENTS = new BatchElementType("MORE_ARGUMENTS");
@@ -42,6 +44,7 @@ public interface BatchTypes {
   IElementType CRLF = new BatchTokenType("CRLF");
   IElementType DECORATOR = new BatchTokenType("DECORATOR");
   IElementType DISK_DRIVE = new BatchTokenType("DISK_DRIVE");
+  IElementType DO_COMMAND = new BatchTokenType("DO_COMMAND");
   IElementType ECHO_ANNOTATION = new BatchTokenType("ECHO_ANNOTATION");
   IElementType ECHO_COMMAND = new BatchTokenType("ECHO_COMMAND");
   IElementType ELSE_COMMAND = new BatchTokenType("ELSE_COMMAND");
@@ -50,9 +53,12 @@ public interface BatchTypes {
   IElementType EXIST_TOKEN = new BatchTokenType("EXIST_TOKEN");
   IElementType EXIT_COMMAND = new BatchTokenType("EXIT_COMMAND");
   IElementType EXTENSION = new BatchTokenType("EXTENSION");
+  IElementType FOR_COMMAND = new BatchTokenType("FOR_COMMAND");
+  IElementType FOR_VARIABLE = new BatchTokenType("FOR_VARIABLE");
   IElementType FUNC_LABEL = new BatchTokenType("FUNC_LABEL");
   IElementType GOTO_COMMAND = new BatchTokenType("GOTO_COMMAND");
   IElementType IF_COMMAND = new BatchTokenType("IF_COMMAND");
+  IElementType IN_COMMAND = new BatchTokenType("IN_COMMAND");
   IElementType LABEL_MARKER = new BatchTokenType("LABEL_MARKER");
   IElementType MORE_COMMAND = new BatchTokenType("MORE_COMMAND");
   IElementType NUMERIC = new BatchTokenType("NUMERIC");
@@ -81,6 +87,9 @@ public interface BatchTypes {
       else if (type == CALL_ARGUMENTS) {
         return new BatchCallArgumentsImpl(node);
       }
+      else if (type == COLLECTION) {
+        return new BatchCollectionImpl(node);
+      }
       else if (type == COMMAND) {
         return new BatchCommandImpl(node);
       }
@@ -101,6 +110,9 @@ public interface BatchTypes {
       }
       else if (type == EXIT_ARGUMENTS) {
         return new BatchExitArgumentsImpl(node);
+      }
+      else if (type == FOR_ARGUMENTS) {
+        return new BatchForArgumentsImpl(node);
       }
       else if (type == IF_ARGUMENTS) {
         return new BatchIfArgumentsImpl(node);

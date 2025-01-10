@@ -43,10 +43,11 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
 
             case "BatchTokenType.TOGGLE" -> TOGGLE.getKeys();
             case "BatchTokenType.SETLOCAL_PARAMETER" -> SETLOCAL_PARAMETER.getKeys();
+            case "BatchTokenType.COMMAND_TERMINATOR" -> COMMAND.getKeys();
 
             case "BatchTokenType.VARIABLE" -> VARIABLE.getKeys();
+            case "BatchTokenType.FOR_VARIABLE" -> FOR_VARIABLE.getKeys();
             case "BatchTokenType.ASSIGNMENT" -> ASSIGNMENT.getKeys();
-            case "BatchTokenType.COMMAND_TERMINATOR" -> COMMAND.getKeys();
 
             case "BatchTokenType.OPEN_PAREN", "BatchTokenType.CLOSE_PAREN" -> BRACKETS.getKeys();
             case "BatchTokenType.COMPARISON_OPERATOR" -> OPERATORS.getKeys();

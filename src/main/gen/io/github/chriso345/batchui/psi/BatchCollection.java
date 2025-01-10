@@ -5,19 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BatchStandardIf extends PsiElement {
-
-  @Nullable
-  BatchCommand getCommand();
-
-  @NotNull
-  List<BatchLabel> getLabelList();
-
-  @NotNull
-  BatchOperators getOperators();
-
-  @NotNull
-  List<BatchPrefix> getPrefixList();
+public interface BatchCollection extends PsiElement {
 
   @NotNull
   List<BatchTypes_> getTypes_List();

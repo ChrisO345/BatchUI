@@ -11,14 +11,14 @@ import static io.github.chriso345.batchui.psi.BatchTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.chriso345.batchui.psi.*;
 
-public class BatchSetArgumentsImpl extends ASTWrapperPsiElement implements BatchSetArguments {
+public class BatchForArgumentsImpl extends ASTWrapperPsiElement implements BatchForArguments {
 
-  public BatchSetArgumentsImpl(@NotNull ASTNode node) {
+  public BatchForArgumentsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BatchVisitor visitor) {
-    visitor.visitSetArguments(this);
+    visitor.visitForArguments(this);
   }
 
   @Override
@@ -29,8 +29,26 @@ public class BatchSetArgumentsImpl extends ASTWrapperPsiElement implements Batch
 
   @Override
   @NotNull
-  public List<BatchTypes_> getTypes_List() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchTypes_.class);
+  public BatchCollection getCollection() {
+    return findNotNullChildByClass(BatchCollection.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchCommand getCommand() {
+    return findChildByClass(BatchCommand.class);
+  }
+
+  @Override
+  @NotNull
+  public List<BatchLabel> getLabelList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchLabel.class);
+  }
+
+  @Override
+  @NotNull
+  public List<BatchPrefix> getPrefixList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchPrefix.class);
   }
 
 }

@@ -38,7 +38,7 @@ private item_ ::= (
     | label
     | COMMENT        // REM, ::
     | CRLF
-    | OPEN_PAREN item_? CLOSE_PAREN
+    | OPEN_PAREN recurse_item CLOSE_PAREN
 )
 
 private recurse_item ::= item_ recurse_item?
@@ -55,6 +55,7 @@ command_reference ::= (
     | ELSE_COMMAND else_arguments?
     | ENDLOCAL_COMMAND
     | EXIT_COMMAND exit_arguments?
+    | FOR_COMMAND for_arguments?
     | GOTO_COMMAND label?
     | IF_COMMAND if_arguments?
     | MORE_COMMAND more_arguments?
@@ -75,15 +76,21 @@ call_arguments ::= label? // todo: add extra arguments
 echo_arguments ::= (TOGGLE | (STRING|PLAINTEXT)*)?
 exit_arguments ::= EXTENSION NUMERIC?
 more_arguments ::= (EXTENSION | PLAINTEXT | DISK_DRIVE) more_arguments?
-set_arguments ::= EXTENSION? VARIABLE ASSIGNMENT (STRING | NUMERIC)?
+set_arguments ::= EXTENSION? VARIABLE ASSIGNMENT (recurse_types_)?
 setlocal_arguments ::= SETLOCAL_PARAMETER SETLOCAL_PARAMETER?
 shift_arguments ::= EXTENSION
 
 if_arguments ::= COMPARISON_OPERATOR? (error_if | standard_if | exist_if)
 else_arguments ::= (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
-
 error_if ::= ERRORLEVEL_TOKEN NUMERIC (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
-standard_if ::= (STRING | VARIABLE) operators (STRING | VARIABLE) (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
-exist_if ::= EXIST_TOKEN STRING (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
+standard_if ::= (types_ | VARIABLE) operators (types_ | VARIABLE) (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
+exist_if ::= EXIST_TOKEN (STRING | PLAINTEXT) (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
+
+//for_params ::= (PLAINTEXT | STRING) ASSIGNMENT (types_)
+private for_params ::= PLAINTEXT for_params?
+for_arguments ::= (EXTENSION (for_params | STRING))? FOR_VARIABLE IN_COMMAND collection DO_COMMAND (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
+
+private recurse_types_ ::= types_ recurse_types_?
+collection ::= OPEN_PAREN recurse_types_ CLOSE_PAREN
 
 undefined_arguments ::= (EXTENSION | PLAINTEXT | DISK_DRIVE) undefined_arguments?

@@ -20,13 +20,16 @@ import java.util.Stack;
 WhiteSpace = [ \t]+
 LineTerminator = \r|\n|\r\n
 FullLine = [^\r\n]
-StringLiteral = [^\=]\" ( \\\" | [^\"\n\r] )* \"
+
+// TODO: improve the way a string literal is determined
+StringLiteral = ([^\=]\" ( \\\" | [^\"\n\r] )* \") | ([^\=]\! ( \\\! | [^\!\n\r] )* \!) | [^\=]\' ( \\\' | [^\'\n\r] )* \'
 ArgLiteral = \%\~[0-9~]
 
 // TODO: tweak the token regex to allow for more characters to be used in plaintext
 Token = [^ \t\f\n\r\:\;\,\|\&\<\>\=\(\)\+]+
 
 CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
+SpecialCharacter = [\|\&\<\>\(\)]
 EscapeCharacter = "^".
 Numeric = [0-9]+
 
@@ -36,7 +39,7 @@ Toggle = "on" | "off"
 ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 Operator = [\+\-\*\/]
 
-%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
+%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
 
 %%
 
@@ -109,6 +112,7 @@ Operator = [\+\-\*\/]
     break { yybegin(BREAK); return BatchTypes.BREAK_COMMAND; }
     echo { yybegin(ECHO); return BatchTypes.ECHO_COMMAND; }
     goto { yybegin(GOTO); return BatchTypes.GOTO_COMMAND; }
+    for { yybegin(FOR); return BatchTypes.FOR_COMMAND; }
     call { yybegin(CALL); return BatchTypes.CALL_COMMAND; }
     if { yybegin(IF); return BatchTypes.IF_COMMAND; }
     more { yybegin(MORE); return BatchTypes.MORE_COMMAND; }
@@ -128,6 +132,7 @@ Operator = [\+\-\*\/]
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
     {Toggle}[\ \t]*[\r\n]+ { yybegin(YYINITIAL); return BatchTypes.TOGGLE; }
+    {Toggle}[\ \t]*{SpecialCharacter} { yybegin(YYINITIAL); yypushback(1); return BatchTypes.TOGGLE; }
 
     {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
     {Token}+ { yybegin(ECHO_STRING); return BatchTypes.PLAINTEXT; }
@@ -151,6 +156,41 @@ Operator = [\+\-\*\/]
     {Numeric} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
 }
 
+<FOR> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(FOR); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    \/[drlf] { yybegin(FOR); return BatchTypes.EXTENSION; }
+
+    \%\%[a-zA-Z] { yybegin(FOR); return BatchTypes.FOR_VARIABLE; }
+    in { yybegin(FOR); return BatchTypes.IN_COMMAND; }
+    do { yybegin(YYINITIAL); return BatchTypes.DO_COMMAND; }
+
+    \([\s\S]+\) { yybegin(FOR_COLLECTION); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
+
+    eol=\w { yybegin(FOR); return BatchTypes.PLAINTEXT; }
+    skip=\d+ { yybegin(FOR); return BatchTypes.PLAINTEXT; }
+    delims=[\w{Operator}\=]? { yybegin(FOR); return BatchTypes.PLAINTEXT; }
+    tokens=\d(\-\d)?(\,\d(\-\d)?)*\*? { yybegin(FOR); return BatchTypes.PLAINTEXT; }
+    usebackq { yybegin(FOR); return BatchTypes.PLAINTEXT; }
+
+    {StringLiteral} { yybegin(FOR); return BatchTypes.STRING; }
+
+    {Token}+ { yybegin(FOR); return TokenType.BAD_CHARACTER; }
+}
+
+<FOR_COLLECTION> {
+    {LineTerminator}+ { yybegin(FOR_COLLECTION); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(FOR_COLLECTION); return TokenType.WHITE_SPACE; }
+
+    \) { yybegin(FOR); return BatchTypes.CLOSE_PAREN; }
+
+    {StringLiteral} { yybegin(FOR_COLLECTION); return BatchTypes.STRING; }
+
+    {Token}+ { yybegin(FOR); yypushback(yylength()); return BatchTypes.PLAINTEXT; }
+}
+
 <GOTO> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(GOTO); return TokenType.WHITE_SPACE; }
@@ -166,9 +206,10 @@ Operator = [\+\-\*\/]
     {ComparisonOperator} { yybegin(IF); return BatchTypes.COMPARISON_OPERATOR; }
 
     ERRORLEVEL { yybegin(IF_ERRORLEVEL); return BatchTypes.ERRORLEVEL_TOKEN; }
-    EXIST { yybegin(IF_EXIST); return BatchTypes.EXIST_TOKEN; }
+    EXIST | DEFINED { yybegin(IF_EXIST); return BatchTypes.EXIST_TOKEN; }
 
-    {Token}+ { yybegin(IF_STANDARD); return BatchTypes.STRING; }
+    {StringLiteral} { yybegin(IF_STANDARD); return BatchTypes.STRING; }
+    {Token}+ { yybegin(IF_STANDARD); return BatchTypes.PLAINTEXT; }
 }
 
 <IF_ERRORLEVEL> {
@@ -188,7 +229,9 @@ Operator = [\+\-\*\/]
 
     {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
     \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
-    {Token}+ { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    // TODO: have a special isVariable function with stack to determine origin
+    {Token}+ { yybegin(YYINITIAL); return BatchTypes.PLAINTEXT; }
 }
 
 <IF_STANDARD> {
@@ -197,6 +240,7 @@ Operator = [\+\-\*\/]
     {CommandTerminator} { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 
     {StringLiteral} { yybegin(IF_STANDARD); return BatchTypes.STRING; }
+    {Numeric} { yybegin(IF_STANDARD); return BatchTypes.NUMERIC; }
     {ComparisonOperator} | == { yybegin(IF_STANDARD); return BatchTypes.COMPARISON_OPERATOR; }
     \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
     {Token}+ { yybegin(YYINITIAL); yypushback(yylength()); }
@@ -246,6 +290,7 @@ Operator = [\+\-\*\/]
 <SET_VALUE> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(SET_VALUE); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
     {StringLiteral} { yybegin(SET_VALUE); return BatchTypes.STRING; }
     {ArgLiteral} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
     {Numeric} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
