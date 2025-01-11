@@ -165,13 +165,31 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // item_*
+  // START_OF_FILE? item_*
   static boolean batchFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "batchFile")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = batchFile_0(b, l + 1);
+    r = r && batchFile_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // START_OF_FILE?
+  private static boolean batchFile_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "batchFile_0")) return false;
+    consumeToken(b, START_OF_FILE);
+    return true;
+  }
+
+  // item_*
+  private static boolean batchFile_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "batchFile_1")) return false;
     while (true) {
       int c = current_position_(b);
       if (!item_(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "batchFile", c)) break;
+      if (!empty_element_parsed_guard_(b, "batchFile_1", c)) break;
     }
     return true;
   }

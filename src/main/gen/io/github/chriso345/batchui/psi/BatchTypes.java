@@ -70,6 +70,7 @@ public interface BatchTypes {
   IElementType SETLOCAL_PARAMETER = new BatchTokenType("SETLOCAL_PARAMETER");
   IElementType SET_COMMAND = new BatchTokenType("SET_COMMAND");
   IElementType SHIFT_COMMAND = new BatchTokenType("SHIFT_COMMAND");
+  IElementType START_OF_FILE = new BatchTokenType("START_OF_FILE");
   IElementType STRING = new BatchTokenType("STRING");
   IElementType TOGGLE = new BatchTokenType("TOGGLE");
   IElementType UNDEFINED_COMMAND = new BatchTokenType("UNDEFINED_COMMAND");

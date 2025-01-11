@@ -20,6 +20,16 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <actions>
+        <action id="Create.BatchFile"
+                class="io.github.chriso345.batchui.actions.NewBatchFileAction"
+                text="Batch File"
+                icon="io.github.chriso345.batchui.BatchIcons.FILE">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+    </actions>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
@@ -30,6 +40,7 @@
                 fieldName="INSTANCE"
                 language="Batch"
                 extensions="cmd"/>
+        <internalFileTemplate name="Batch File"/>
         <lang.parserDefinition
                 language="Batch"
                 implementationClass="io.github.chriso345.batchui.parser.BatchParserDefinition"/>
@@ -51,5 +62,13 @@
         <lang.commenter
                 language="Batch"
                 implementationClass="io.github.chriso345.batchui.editor.BatchCommenter"/>
+        <configurationType
+                implementation="io.github.chriso345.batchui.runner.BatchRunConfigurationType"/>
+<!--        <codeInsight.lineMarkerProvider-->
+<!--                language="Batch"-->
+<!--                implementationClass="io.github.chriso345.batchui.BatchLineMarkerProvider"/>-->
+        <runLineMarkerContributor
+                language="Batch"
+                implementationClass="io.github.chriso345.batchui.contributors.BatchRunLineMarkerContributor"/>
     </extensions>
 </idea-plugin>
