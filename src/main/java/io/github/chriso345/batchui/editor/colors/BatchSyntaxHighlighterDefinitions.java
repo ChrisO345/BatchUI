@@ -26,7 +26,7 @@ public enum BatchSyntaxHighlighterDefinitions {
     OPERATORS(DefaultLanguageHighlighterColors.OPERATION_SIGN),
 
     VARIABLE(DefaultLanguageHighlighterColors.CONSTANT), // Change default??
-    FOR_VARIABLE(DefaultLanguageHighlighterColors.LOCAL_VARIABLE),
+    FOR_VARIABLE(DefaultLanguageHighlighterColors.INSTANCE_FIELD),
     ASSIGNMENT(DefaultLanguageHighlighterColors.OPERATION_SIGN),
 
     EXTENSIONS(DefaultLanguageHighlighterColors.NUMBER),

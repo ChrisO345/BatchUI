@@ -22,7 +22,7 @@ LineTerminator = \r|\n|\r\n
 FullLine = [^\r\n]
 
 // TODO: improve the way a string literal is determined
-StringLiteral = ([^\=]\" ( \\\" | [^\"\n\r] )* \") | ([^\=]\! ( \\\! | [^\!\n\r] )* \!) | [^\=]\' ( \\\' | [^\'\n\r] )* \'
+StringLiteral = (\" ( \\\" | [^\"\n\r] )* \") | ([^\=]\! ( \\\! | [^\!\n\r] )* \!) | \' ( \\\' | [^\'\n\r] )* \'
 ArgLiteral = \%\~[0-9~]
 
 // TODO: tweak the token regex to allow for more characters to be used in plaintext
@@ -167,7 +167,7 @@ Operator = [\+\-\*\/]
     in { yybegin(FOR); return BatchTypes.IN_COMMAND; }
     do { yybegin(YYINITIAL); return BatchTypes.DO_COMMAND; }
 
-    \([\s\S]+\) { yybegin(FOR_COLLECTION); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
+    \([\s\S]*\) { yybegin(FOR_COLLECTION); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
 
     eol=\w { yybegin(FOR); return BatchTypes.PLAINTEXT; }
     skip=\d+ { yybegin(FOR); return BatchTypes.PLAINTEXT; }
