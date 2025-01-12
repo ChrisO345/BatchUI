@@ -165,31 +165,13 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // START_OF_FILE? item_*
+  // item_*
   static boolean batchFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "batchFile")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = batchFile_0(b, l + 1);
-    r = r && batchFile_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // START_OF_FILE?
-  private static boolean batchFile_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "batchFile_0")) return false;
-    consumeToken(b, START_OF_FILE);
-    return true;
-  }
-
-  // item_*
-  private static boolean batchFile_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "batchFile_1")) return false;
     while (true) {
       int c = current_position_(b);
       if (!item_(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "batchFile_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "batchFile", c)) break;
     }
     return true;
   }
@@ -569,7 +551,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (TOGGLE | (STRING|PLAINTEXT)*)?
+  // (TOGGLE | (STRING|PLAINTEXT|VARIABLE)*)?
   public static boolean echo_arguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments")) return false;
     Marker m = enter_section_(b, l, _NONE_, ECHO_ARGUMENTS, "<echo arguments>");
@@ -578,7 +560,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // TOGGLE | (STRING|PLAINTEXT)*
+  // TOGGLE | (STRING|PLAINTEXT|VARIABLE)*
   private static boolean echo_arguments_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments_0")) return false;
     boolean r;
@@ -589,7 +571,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (STRING|PLAINTEXT)*
+  // (STRING|PLAINTEXT|VARIABLE)*
   private static boolean echo_arguments_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments_0_1")) return false;
     while (true) {
@@ -600,12 +582,13 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // STRING|PLAINTEXT
+  // STRING|PLAINTEXT|VARIABLE
   private static boolean echo_arguments_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments_0_1_0")) return false;
     boolean r;
     r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, PLAINTEXT);
+    if (!r) r = consumeToken(b, VARIABLE);
     return r;
   }
 
@@ -670,7 +653,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // EXIST_TOKEN (STRING | PLAINTEXT) (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
+  // EXIST_TOKEN (STRING | PLAINTEXT | VARIABLE) (command | (OPEN_PAREN recurse_item CLOSE_PAREN))
   public static boolean exist_if(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exist_if")) return false;
     if (!nextTokenIs(b, EXIST_TOKEN)) return false;
@@ -683,12 +666,13 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRING | PLAINTEXT
+  // STRING | PLAINTEXT | VARIABLE
   private static boolean exist_if_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exist_if_1")) return false;
     boolean r;
     r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, PLAINTEXT);
+    if (!r) r = consumeToken(b, VARIABLE);
     return r;
   }
 
@@ -1126,7 +1110,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRING | NUMERIC | PLAINTEXT | DISK_DRIVE
+  // STRING | NUMERIC | PLAINTEXT | DISK_DRIVE | VARIABLE
   public static boolean types_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "types_")) return false;
     boolean r;
@@ -1135,6 +1119,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, NUMERIC);
     if (!r) r = consumeToken(b, PLAINTEXT);
     if (!r) r = consumeToken(b, DISK_DRIVE);
+    if (!r) r = consumeToken(b, VARIABLE);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

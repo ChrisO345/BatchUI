@@ -14,6 +14,9 @@ import java.util.Stack;
 %unicode
 %function advance
 %type IElementType
+%{
+  private Stack<Integer> tokenOrigin = new Stack<>();
+%}
 %eof{  return;
 %eof}
 
@@ -22,8 +25,8 @@ LineTerminator = \r|\n|\r\n
 FullLine = [^\r\n]
 
 // TODO: improve the way a string literal is determined
-StringLiteral = (\" ( \\\" | [^\"\n\r] )* \") | ([^\=]\! ( \\\! | [^\!\n\r] )* \!) | \' ( \\\' | [^\'\n\r] )* \'
-ArgLiteral = \%\~[0-9~]
+StringLiteral = (\" ( \\\" | [^\"\n\r] )* \") | \' ( \\\' | [^\'\n\r] )* \'
+ArgLiteral = \%\~?[0-9]
 
 // TODO: tweak the token regex to allow for more characters to be used in plaintext
 Token = [^ \t\f\n\r\:\;\,\|\&\<\>\=\(\)\+]+
@@ -39,8 +42,8 @@ Toggle = "on" | "off"
 ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 Operator = [\+\-\*\/]
 
-%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE
-
+%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE, TOKEN
+%state BAD_WHITESPACE
 %%
 
 <YYINITIAL> {
@@ -135,7 +138,7 @@ Operator = [\+\-\*\/]
     {Toggle}[\ \t]*{SpecialCharacter} { yybegin(YYINITIAL); yypushback(1); return BatchTypes.TOGGLE; }
 
     {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
-    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.PLAINTEXT; }
+    {Token}+ { tokenOrigin.push(ECHO_STRING); yypushback(yylength()); yybegin(TOKEN); }
 }
 
 <ECHO_STRING> {
@@ -144,7 +147,7 @@ Operator = [\+\-\*\/]
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
     {StringLiteral} { yybegin(ECHO_STRING); return BatchTypes.STRING; }
 
-    {Token}+ { yybegin(ECHO_STRING); return BatchTypes.PLAINTEXT; }
+    {Token}+ { tokenOrigin.push(ECHO_STRING); yypushback(yylength()); yybegin(TOKEN); }
 }
 
 <EXIT> {
@@ -209,7 +212,7 @@ Operator = [\+\-\*\/]
     EXIST | DEFINED { yybegin(IF_EXIST); return BatchTypes.EXIST_TOKEN; }
 
     {StringLiteral} { yybegin(IF_STANDARD); return BatchTypes.STRING; }
-    {Token}+ { yybegin(IF_STANDARD); return BatchTypes.PLAINTEXT; }
+    {Token}+ { tokenOrigin.push(IF_STANDARD); yypushback(yylength()); yybegin(TOKEN); }
 }
 
 <IF_ERRORLEVEL> {
@@ -231,7 +234,7 @@ Operator = [\+\-\*\/]
     \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
 
     // TODO: have a special isVariable function with stack to determine origin
-    {Token}+ { yybegin(YYINITIAL); return BatchTypes.PLAINTEXT; }
+    {Token}+ { tokenOrigin.push(YYINITIAL); yypushback(yylength()); yybegin(TOKEN); }
 }
 
 <IF_STANDARD> {
@@ -243,7 +246,7 @@ Operator = [\+\-\*\/]
     {Numeric} { yybegin(IF_STANDARD); return BatchTypes.NUMERIC; }
     {ComparisonOperator} | == { yybegin(IF_STANDARD); return BatchTypes.COMPARISON_OPERATOR; }
     \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
-    {Token}+ { yybegin(YYINITIAL); yypushback(yylength()); }
+    {Token}+ { tokenOrigin.push(YYINITIAL); yypushback(yylength()); yybegin(TOKEN); }
 }
 
 <LABEL> {
@@ -273,10 +276,14 @@ Operator = [\+\-\*\/]
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(SET); return TokenType.WHITE_SPACE; }
 
-    \/[ap] { yybegin(SET); return BatchTypes.EXTENSION; }
+    \/[ap][\ \t]*[^\=\+\-\*] { yybegin(SET); yypushback(yylength() - 2); return BatchTypes.EXTENSION; }
 
-    {Token}+[\ \t]*\= { yybegin(SET); yypushback(1); return BatchTypes.VARIABLE; }
-    {Token}+[\ \t]*{Operator}\= { yybegin(SET); yypushback(2); return BatchTypes.VARIABLE; }
+    {Token}+\= { yybegin(SET); yypushback(1); return BatchTypes.VARIABLE; }
+    {Token}+[\ \t] { tokenOrigin.push(SET); yypushback(1); yybegin(BAD_WHITESPACE); return BatchTypes.VARIABLE; }
+
+    {Token}+{Operator}\= { yybegin(SET); yypushback(2); return BatchTypes.VARIABLE; }
+
+    {Operator}?\=[\ \t] { tokenOrigin.push(SET_VALUE); yypushback(1); yybegin(BAD_WHITESPACE); return BatchTypes.ASSIGNMENT; }
     {Operator}?\= { yybegin(SET_VALUE); return BatchTypes.ASSIGNMENT; }
 }
 
@@ -294,7 +301,7 @@ Operator = [\+\-\*\/]
     {StringLiteral} { yybegin(SET_VALUE); return BatchTypes.STRING; }
     {ArgLiteral} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
     {Numeric} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
-    {Token}+ { yybegin(SET_VALUE); return BatchTypes.STRING; }
+    {Token}+ { tokenOrigin.push(SET_VALUE); yybegin(TOKEN); yypushback(yylength()); }
     \= { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 }
 
@@ -303,6 +310,19 @@ Operator = [\+\-\*\/]
     {WhiteSpace} { yybegin(SHIFT); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
     \/[0-8] { yybegin(YYINITIAL); return BatchTypes.EXTENSION; }
+}
+
+<TOKEN> {
+    {LineTerminator}+ { yybegin(tokenOrigin.pop()); yypushback(yylength()); }
+    {WhiteSpace} { yybegin(tokenOrigin.pop()); yypushback(yylength()); }
+    {CommandTerminator} { yybegin(tokenOrigin.pop()); yypushback(yylength()); }
+    \%[\w]+\% {yybegin(tokenOrigin.pop()); return BatchTypes.VARIABLE; }
+    \![\w]+\! { yybegin(tokenOrigin.pop()); return BatchTypes.VARIABLE; }
+    {Token}+ { yybegin(tokenOrigin.pop()); return BatchTypes.PLAINTEXT; }
+}
+
+<BAD_WHITESPACE> {
+    [\ \t]+ { yybegin(tokenOrigin.pop()); return TokenType.BAD_CHARACTER; }
 }
 
 {Token}+ { return TokenType.BAD_CHARACTER; }
