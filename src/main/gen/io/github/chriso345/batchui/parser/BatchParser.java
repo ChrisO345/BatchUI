@@ -1110,7 +1110,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRING | NUMERIC | PLAINTEXT | DISK_DRIVE | VARIABLE
+  // STRING | NUMERIC | PLAINTEXT | DISK_DRIVE | VARIABLE | ARG_LITERAL
   public static boolean types_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "types_")) return false;
     boolean r;
@@ -1120,6 +1120,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, PLAINTEXT);
     if (!r) r = consumeToken(b, DISK_DRIVE);
     if (!r) r = consumeToken(b, VARIABLE);
+    if (!r) r = consumeToken(b, ARG_LITERAL);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

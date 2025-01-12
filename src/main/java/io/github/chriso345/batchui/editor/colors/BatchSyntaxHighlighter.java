@@ -54,6 +54,7 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
 
             case "BatchTokenType.EXTENSION" -> EXTENSIONS.getKeys();
             case "BatchTokenType.NUMERIC" -> NUMERIC.getKeys();
+            case "BatchTokenType.ARG_LITERAL" -> ARG_LITERAL.getKeys();
             case "BatchTokenType.STRING" -> STRING.getKeys();
             case "BatchTokenType.DISK_DRIVE" -> DISK_DRIVE.getKeys();
 

@@ -53,7 +53,7 @@ Operator = [\+\-\*\/]
     "@"{Token}+ { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.DECORATOR; }
     // {Escaping}
     {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
-    {ArgLiteral} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
+    {ArgLiteral} { yybegin(YYINITIAL); return BatchTypes.ARG_LITERAL; }
     {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
     ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
     {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.COMMAND_TERMINATOR; }
@@ -84,7 +84,7 @@ Operator = [\+\-\*\/]
     {WhiteSpace} { yybegin(ASSOC_VALUE); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
     {StringLiteral} { yybegin(ASSOC_VALUE); return BatchTypes.STRING; }
-    {ArgLiteral} { yybegin(ASSOC_VALUE); return BatchTypes.NUMERIC; }
+    {ArgLiteral} { yybegin(ASSOC_VALUE); return BatchTypes.ARG_LITERAL; }
     {Token}+ { yybegin(ASSOC_VALUE); return BatchTypes.STRING; }
     = { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
 }
@@ -299,7 +299,7 @@ Operator = [\+\-\*\/]
     {WhiteSpace} { yybegin(SET_VALUE); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
     {StringLiteral} { yybegin(SET_VALUE); return BatchTypes.STRING; }
-    {ArgLiteral} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
+    {ArgLiteral} { yybegin(SET_VALUE); return BatchTypes.ARG_LITERAL; }
     {Numeric} { yybegin(SET_VALUE); return BatchTypes.NUMERIC; }
     {Token}+ { tokenOrigin.push(SET_VALUE); yybegin(TOKEN); yypushback(yylength()); }
     \= { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }

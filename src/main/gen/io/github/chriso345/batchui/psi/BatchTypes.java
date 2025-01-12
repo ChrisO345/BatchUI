@@ -32,6 +32,7 @@ public interface BatchTypes {
   IElementType TYPES_ = new BatchElementType("TYPES_");
   IElementType UNDEFINED_ARGUMENTS = new BatchElementType("UNDEFINED_ARGUMENTS");
 
+  IElementType ARG_LITERAL = new BatchTokenType("ARG_LITERAL");
   IElementType ASSIGNMENT = new BatchTokenType("ASSIGNMENT");
   IElementType ASSOC_COMMAND = new BatchTokenType("ASSOC_COMMAND");
   IElementType BREAK_COMMAND = new BatchTokenType("BREAK_COMMAND");
