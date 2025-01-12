@@ -66,9 +66,22 @@ Operator = [\+\-\*\/]
 <ANNOTATION> {
     {WhiteSpace} { yybegin(ANNOTATION); return TokenType.WHITE_SPACE; }
 
+    assoc { yybegin(ASSOC); return BatchTypes.ASSOC_ANNOTATION; }
+    break { yybegin(BREAK); return BatchTypes.BREAK_ANNOTATION; }
     echo { yybegin(ECHO); return BatchTypes.ECHO_ANNOTATION; }
+    goto { yybegin(GOTO); return BatchTypes.GOTO_ANNOTATION; }
+    for { yybegin(FOR); return BatchTypes.FOR_ANNOTATION; }
+    call { yybegin(CALL); return BatchTypes.CALL_ANNOTATION; }
+    if { yybegin(IF); return BatchTypes.IF_ANNOTATION; }
+    more { yybegin(MORE); return BatchTypes.MORE_ANNOTATION; }
+    setlocal { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_ANNOTATION; }
+    set {yybegin(SET); return BatchTypes.SET_ANNOTATION; }
+    shift {yybegin(SHIFT); return BatchTypes.SHIFT_ANNOTATION; }
+    else { yybegin(YYINITIAL); return BatchTypes.ELSE_ANNOTATION; }
+    endlocal { yybegin(YYINITIAL); return BatchTypes.ENDLOCAL_ANNOTATION; }
+    exit { yybegin(EXIT); return BatchTypes.EXIT_ANNOTATION; }
 
-    {Token}+ { yybegin(YYINITIAL); return BatchTypes.DECORATOR; }
+    {Token}+ { yybegin(YYINITIAL); return BatchTypes.PLAINTEXT; }
 }
 
 <ASSOC> {

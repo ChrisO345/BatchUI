@@ -45,7 +45,7 @@ private recurse_item ::= item_ recurse_item?
 
 prefix ::= (DECORATOR? command)
 
-command ::= command_reference | annotation_reference | COMMENT_REFERENCE | PLAINTEXT
+command ::= command_reference | annotation_reference | COMMENT_REFERENCE | REM_DECORATOR COMMENT? | PLAINTEXT
 
 command_reference ::= (
     ASSOC_COMMAND assoc_arguments?
@@ -67,8 +67,22 @@ command_reference ::= (
 ) (COMMAND_TERMINATOR command)?
 
 annotation_reference ::= (
-    REM_DECORATOR COMMENT?
+    ASSOC_ANNOTATION assoc_arguments?
+    | BREAK_ANNOTATION TOGGLE?
+    | CALL_ANNOTATION call_arguments?
     | ECHO_ANNOTATION echo_arguments?
+    | ELSE_ANNOTATION else_arguments?
+    | ENDLOCAL_ANNOTATION
+    | EXIT_ANNOTATION exit_arguments?
+    | FOR_ANNOTATION for_arguments?
+    | GOTO_ANNOTATION label?
+    | IF_ANNOTATION if_arguments?
+    | MORE_ANNOTATION more_arguments?
+    | SET_ANNOTATION set_arguments?
+    | SETLOCAL_ANNOTATION setlocal_arguments?
+    | SHIFT_ANNOTATION shift_arguments?
+
+    | UNDEFINED_ANNOTATION undefined_arguments?
 ) (COMMAND_TERMINATOR command)?
 
 assoc_arguments ::= VARIABLE (ASSIGNMENT (STRING|NUMERIC)?)?

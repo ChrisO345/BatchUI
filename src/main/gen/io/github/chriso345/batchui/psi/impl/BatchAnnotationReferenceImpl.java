@@ -29,6 +29,18 @@ public class BatchAnnotationReferenceImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
+  public BatchAssocArguments getAssocArguments() {
+    return findChildByClass(BatchAssocArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchCallArguments getCallArguments() {
+    return findChildByClass(BatchCallArguments.class);
+  }
+
+  @Override
+  @Nullable
   public BatchCommand getCommand() {
     return findChildByClass(BatchCommand.class);
   }
@@ -37,6 +49,66 @@ public class BatchAnnotationReferenceImpl extends ASTWrapperPsiElement implement
   @Nullable
   public BatchEchoArguments getEchoArguments() {
     return findChildByClass(BatchEchoArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchElseArguments getElseArguments() {
+    return findChildByClass(BatchElseArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchExitArguments getExitArguments() {
+    return findChildByClass(BatchExitArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchForArguments getForArguments() {
+    return findChildByClass(BatchForArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchIfArguments getIfArguments() {
+    return findChildByClass(BatchIfArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchLabel getLabel() {
+    return findChildByClass(BatchLabel.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchMoreArguments getMoreArguments() {
+    return findChildByClass(BatchMoreArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchSetArguments getSetArguments() {
+    return findChildByClass(BatchSetArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchSetlocalArguments getSetlocalArguments() {
+    return findChildByClass(BatchSetlocalArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchShiftArguments getShiftArguments() {
+    return findChildByClass(BatchShiftArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchUndefinedArguments getUndefinedArguments() {
+    return findChildByClass(BatchUndefinedArguments.class);
   }
 
 }

@@ -8,9 +8,45 @@ import com.intellij.psi.PsiElement;
 public interface BatchAnnotationReference extends PsiElement {
 
   @Nullable
+  BatchAssocArguments getAssocArguments();
+
+  @Nullable
+  BatchCallArguments getCallArguments();
+
+  @Nullable
   BatchCommand getCommand();
 
   @Nullable
   BatchEchoArguments getEchoArguments();
+
+  @Nullable
+  BatchElseArguments getElseArguments();
+
+  @Nullable
+  BatchExitArguments getExitArguments();
+
+  @Nullable
+  BatchForArguments getForArguments();
+
+  @Nullable
+  BatchIfArguments getIfArguments();
+
+  @Nullable
+  BatchLabel getLabel();
+
+  @Nullable
+  BatchMoreArguments getMoreArguments();
+
+  @Nullable
+  BatchSetArguments getSetArguments();
+
+  @Nullable
+  BatchSetlocalArguments getSetlocalArguments();
+
+  @Nullable
+  BatchShiftArguments getShiftArguments();
+
+  @Nullable
+  BatchUndefinedArguments getUndefinedArguments();
 
 }

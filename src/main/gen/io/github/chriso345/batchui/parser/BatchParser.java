@@ -37,12 +37,25 @@ public class BatchParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // (
-  //     REM_DECORATOR COMMENT?
+  //     ASSOC_ANNOTATION assoc_arguments?
+  //     | BREAK_ANNOTATION TOGGLE?
+  //     | CALL_ANNOTATION call_arguments?
   //     | ECHO_ANNOTATION echo_arguments?
+  //     | ELSE_ANNOTATION else_arguments?
+  //     | ENDLOCAL_ANNOTATION
+  //     | EXIT_ANNOTATION exit_arguments?
+  //     | FOR_ANNOTATION for_arguments?
+  //     | GOTO_ANNOTATION label?
+  //     | IF_ANNOTATION if_arguments?
+  //     | MORE_ANNOTATION more_arguments?
+  //     | SET_ANNOTATION set_arguments?
+  //     | SETLOCAL_ANNOTATION setlocal_arguments?
+  //     | SHIFT_ANNOTATION shift_arguments?
+  //     
+  //     | UNDEFINED_ANNOTATION undefined_arguments?
   // ) (COMMAND_TERMINATOR command)?
   public static boolean annotation_reference(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_reference")) return false;
-    if (!nextTokenIs(b, "<annotation reference>", ECHO_ANNOTATION, REM_DECORATOR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ANNOTATION_REFERENCE, "<annotation reference>");
     r = annotation_reference_0(b, l + 1);
@@ -51,51 +64,294 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // REM_DECORATOR COMMENT?
+  // ASSOC_ANNOTATION assoc_arguments?
+  //     | BREAK_ANNOTATION TOGGLE?
+  //     | CALL_ANNOTATION call_arguments?
   //     | ECHO_ANNOTATION echo_arguments?
+  //     | ELSE_ANNOTATION else_arguments?
+  //     | ENDLOCAL_ANNOTATION
+  //     | EXIT_ANNOTATION exit_arguments?
+  //     | FOR_ANNOTATION for_arguments?
+  //     | GOTO_ANNOTATION label?
+  //     | IF_ANNOTATION if_arguments?
+  //     | MORE_ANNOTATION more_arguments?
+  //     | SET_ANNOTATION set_arguments?
+  //     | SETLOCAL_ANNOTATION setlocal_arguments?
+  //     | SHIFT_ANNOTATION shift_arguments?
+  //     
+  //     | UNDEFINED_ANNOTATION undefined_arguments?
   private static boolean annotation_reference_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_reference_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = annotation_reference_0_0(b, l + 1);
     if (!r) r = annotation_reference_0_1(b, l + 1);
+    if (!r) r = annotation_reference_0_2(b, l + 1);
+    if (!r) r = annotation_reference_0_3(b, l + 1);
+    if (!r) r = annotation_reference_0_4(b, l + 1);
+    if (!r) r = consumeToken(b, ENDLOCAL_ANNOTATION);
+    if (!r) r = annotation_reference_0_6(b, l + 1);
+    if (!r) r = annotation_reference_0_7(b, l + 1);
+    if (!r) r = annotation_reference_0_8(b, l + 1);
+    if (!r) r = annotation_reference_0_9(b, l + 1);
+    if (!r) r = annotation_reference_0_10(b, l + 1);
+    if (!r) r = annotation_reference_0_11(b, l + 1);
+    if (!r) r = annotation_reference_0_12(b, l + 1);
+    if (!r) r = annotation_reference_0_13(b, l + 1);
+    if (!r) r = annotation_reference_0_14(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // REM_DECORATOR COMMENT?
+  // ASSOC_ANNOTATION assoc_arguments?
   private static boolean annotation_reference_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_reference_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, REM_DECORATOR);
+    r = consumeToken(b, ASSOC_ANNOTATION);
     r = r && annotation_reference_0_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // COMMENT?
+  // assoc_arguments?
   private static boolean annotation_reference_0_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_reference_0_0_1")) return false;
-    consumeToken(b, COMMENT);
+    assoc_arguments(b, l + 1);
     return true;
   }
 
-  // ECHO_ANNOTATION echo_arguments?
+  // BREAK_ANNOTATION TOGGLE?
   private static boolean annotation_reference_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_reference_0_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, ECHO_ANNOTATION);
+    r = consumeToken(b, BREAK_ANNOTATION);
     r = r && annotation_reference_0_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // echo_arguments?
+  // TOGGLE?
   private static boolean annotation_reference_0_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_reference_0_1_1")) return false;
+    consumeToken(b, TOGGLE);
+    return true;
+  }
+
+  // CALL_ANNOTATION call_arguments?
+  private static boolean annotation_reference_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CALL_ANNOTATION);
+    r = r && annotation_reference_0_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // call_arguments?
+  private static boolean annotation_reference_0_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_2_1")) return false;
+    call_arguments(b, l + 1);
+    return true;
+  }
+
+  // ECHO_ANNOTATION echo_arguments?
+  private static boolean annotation_reference_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ECHO_ANNOTATION);
+    r = r && annotation_reference_0_3_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // echo_arguments?
+  private static boolean annotation_reference_0_3_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_3_1")) return false;
     echo_arguments(b, l + 1);
+    return true;
+  }
+
+  // ELSE_ANNOTATION else_arguments?
+  private static boolean annotation_reference_0_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ELSE_ANNOTATION);
+    r = r && annotation_reference_0_4_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // else_arguments?
+  private static boolean annotation_reference_0_4_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_4_1")) return false;
+    else_arguments(b, l + 1);
+    return true;
+  }
+
+  // EXIT_ANNOTATION exit_arguments?
+  private static boolean annotation_reference_0_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_6")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EXIT_ANNOTATION);
+    r = r && annotation_reference_0_6_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // exit_arguments?
+  private static boolean annotation_reference_0_6_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_6_1")) return false;
+    exit_arguments(b, l + 1);
+    return true;
+  }
+
+  // FOR_ANNOTATION for_arguments?
+  private static boolean annotation_reference_0_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_7")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, FOR_ANNOTATION);
+    r = r && annotation_reference_0_7_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // for_arguments?
+  private static boolean annotation_reference_0_7_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_7_1")) return false;
+    for_arguments(b, l + 1);
+    return true;
+  }
+
+  // GOTO_ANNOTATION label?
+  private static boolean annotation_reference_0_8(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_8")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, GOTO_ANNOTATION);
+    r = r && annotation_reference_0_8_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // label?
+  private static boolean annotation_reference_0_8_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_8_1")) return false;
+    label(b, l + 1);
+    return true;
+  }
+
+  // IF_ANNOTATION if_arguments?
+  private static boolean annotation_reference_0_9(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_9")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IF_ANNOTATION);
+    r = r && annotation_reference_0_9_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // if_arguments?
+  private static boolean annotation_reference_0_9_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_9_1")) return false;
+    if_arguments(b, l + 1);
+    return true;
+  }
+
+  // MORE_ANNOTATION more_arguments?
+  private static boolean annotation_reference_0_10(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_10")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, MORE_ANNOTATION);
+    r = r && annotation_reference_0_10_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // more_arguments?
+  private static boolean annotation_reference_0_10_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_10_1")) return false;
+    more_arguments(b, l + 1);
+    return true;
+  }
+
+  // SET_ANNOTATION set_arguments?
+  private static boolean annotation_reference_0_11(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_11")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SET_ANNOTATION);
+    r = r && annotation_reference_0_11_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // set_arguments?
+  private static boolean annotation_reference_0_11_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_11_1")) return false;
+    set_arguments(b, l + 1);
+    return true;
+  }
+
+  // SETLOCAL_ANNOTATION setlocal_arguments?
+  private static boolean annotation_reference_0_12(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_12")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SETLOCAL_ANNOTATION);
+    r = r && annotation_reference_0_12_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // setlocal_arguments?
+  private static boolean annotation_reference_0_12_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_12_1")) return false;
+    setlocal_arguments(b, l + 1);
+    return true;
+  }
+
+  // SHIFT_ANNOTATION shift_arguments?
+  private static boolean annotation_reference_0_13(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_13")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SHIFT_ANNOTATION);
+    r = r && annotation_reference_0_13_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // shift_arguments?
+  private static boolean annotation_reference_0_13_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_13_1")) return false;
+    shift_arguments(b, l + 1);
+    return true;
+  }
+
+  // UNDEFINED_ANNOTATION undefined_arguments?
+  private static boolean annotation_reference_0_14(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_14")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, UNDEFINED_ANNOTATION);
+    r = r && annotation_reference_0_14_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // undefined_arguments?
+  private static boolean annotation_reference_0_14_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_reference_0_14_1")) return false;
+    undefined_arguments(b, l + 1);
     return true;
   }
 
@@ -201,7 +457,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // command_reference | annotation_reference | COMMENT_REFERENCE | PLAINTEXT
+  // command_reference | annotation_reference | COMMENT_REFERENCE | REM_DECORATOR COMMENT? | PLAINTEXT
   public static boolean command(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command")) return false;
     boolean r;
@@ -209,9 +465,28 @@ public class BatchParser implements PsiParser, LightPsiParser {
     r = command_reference(b, l + 1);
     if (!r) r = annotation_reference(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT_REFERENCE);
+    if (!r) r = command_3(b, l + 1);
     if (!r) r = consumeToken(b, PLAINTEXT);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // REM_DECORATOR COMMENT?
+  private static boolean command_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, REM_DECORATOR);
+    r = r && command_3_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMENT?
+  private static boolean command_3_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "command_3_1")) return false;
+    consumeToken(b, COMMENT);
+    return true;
   }
 
   /* ********************************************************** */
