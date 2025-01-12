@@ -10,7 +10,6 @@ public class BatchPsiImplUtil {
     public static String getFuncLabel(BatchLabel element) {
         ASTNode valueNode = element.getNode().findChildByType(BatchTypes.FUNC_LABEL);
         if (valueNode != null) {
-            System.out.println("getFuncLabel: " + valueNode.getText());
             return valueNode.getText();
         } else {
             return null;

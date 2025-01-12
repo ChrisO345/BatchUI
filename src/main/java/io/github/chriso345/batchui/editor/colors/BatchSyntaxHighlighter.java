@@ -65,7 +65,6 @@ public class BatchSyntaxHighlighter extends SyntaxHighlighterBase {
     }
 
     private TextAttributesKey[] getEmptyKeys(String tokenType) {
-        System.out.println("Unknown token type: " + tokenType);
         return EMPTY_KEYS;
     }
 }

@@ -31,7 +31,6 @@ public class BatchRunLineMarkerContributor extends RunLineMarkerContributor impl
                 || element.getParent().getFirstChild() != element) {
             return null;
         }
-        System.out.println("Element: " + element);
 
         AnAction[] actions = new AnAction[] {getBatchRunAction(element)};
         return new Info(AllIcons.RunConfigurations.TestState.Run, actions, null);
