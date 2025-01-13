@@ -11,6 +11,7 @@ public interface BatchTypes {
   IElementType ANNOTATION_REFERENCE = new BatchElementType("ANNOTATION_REFERENCE");
   IElementType ASSOC_ARGUMENTS = new BatchElementType("ASSOC_ARGUMENTS");
   IElementType CALL_ARGUMENTS = new BatchElementType("CALL_ARGUMENTS");
+  IElementType CHDIR_ARGUMENTS = new BatchElementType("CHDIR_ARGUMENTS");
   IElementType COLLECTION = new BatchElementType("COLLECTION");
   IElementType COMMAND = new BatchElementType("COMMAND");
   IElementType COMMAND_REFERENCE = new BatchElementType("COMMAND_REFERENCE");
@@ -40,6 +41,8 @@ public interface BatchTypes {
   IElementType BREAK_COMMAND = new BatchTokenType("BREAK_COMMAND");
   IElementType CALL_ANNOTATION = new BatchTokenType("CALL_ANNOTATION");
   IElementType CALL_COMMAND = new BatchTokenType("CALL_COMMAND");
+  IElementType CHDIR_ANNOTATION = new BatchTokenType("CHDIR_ANNOTATION");
+  IElementType CHDIR_COMMAND = new BatchTokenType("CHDIR_COMMAND");
   IElementType CLOSE_PAREN = new BatchTokenType("CLOSE_PAREN");
   IElementType COMMAND_TERMINATOR = new BatchTokenType("COMMAND_TERMINATOR");
   IElementType COMMENT = new BatchTokenType("COMMENT");
@@ -70,6 +73,8 @@ public interface BatchTypes {
   IElementType IF_COMMAND = new BatchTokenType("IF_COMMAND");
   IElementType IN_COMMAND = new BatchTokenType("IN_COMMAND");
   IElementType LABEL_MARKER = new BatchTokenType("LABEL_MARKER");
+  IElementType MKDIR_ANNOTATION = new BatchTokenType("MKDIR_ANNOTATION");
+  IElementType MKDIR_COMMAND = new BatchTokenType("MKDIR_COMMAND");
   IElementType MORE_ANNOTATION = new BatchTokenType("MORE_ANNOTATION");
   IElementType MORE_COMMAND = new BatchTokenType("MORE_COMMAND");
   IElementType NUMERIC = new BatchTokenType("NUMERIC");
@@ -101,6 +106,9 @@ public interface BatchTypes {
       }
       else if (type == CALL_ARGUMENTS) {
         return new BatchCallArgumentsImpl(node);
+      }
+      else if (type == CHDIR_ARGUMENTS) {
+        return new BatchChdirArgumentsImpl(node);
       }
       else if (type == COLLECTION) {
         return new BatchCollectionImpl(node);

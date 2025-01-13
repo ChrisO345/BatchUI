@@ -19,6 +19,10 @@ public class BatchVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitChdirArguments(@NotNull BatchChdirArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitCollection(@NotNull BatchCollection o) {
     visitPsiElement(o);
   }

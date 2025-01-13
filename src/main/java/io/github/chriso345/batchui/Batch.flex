@@ -42,7 +42,7 @@ Toggle = "on" | "off"
 ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 Operator = [\+\-\*\/]
 
-%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, COMMAND, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE, TOKEN
+%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, CHDIR, COMMAND, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE, TOKEN
 %state BAD_WHITESPACE
 %%
 
@@ -72,7 +72,9 @@ Operator = [\+\-\*\/]
     goto { yybegin(GOTO); return BatchTypes.GOTO_ANNOTATION; }
     for { yybegin(FOR); return BatchTypes.FOR_ANNOTATION; }
     call { yybegin(CALL); return BatchTypes.CALL_ANNOTATION; }
+    chdir | cd { yybegin(CHDIR); return BatchTypes.CHDIR_ANNOTATION; }
     if { yybegin(IF); return BatchTypes.IF_ANNOTATION; }
+    mkdir | md { yybegin(YYINITIAL); return BatchTypes.MKDIR_ANNOTATION; }
     more { yybegin(MORE); return BatchTypes.MORE_ANNOTATION; }
     setlocal { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_ANNOTATION; }
     set {yybegin(SET); return BatchTypes.SET_ANNOTATION; }
@@ -118,6 +120,16 @@ Operator = [\+\-\*\/]
     {Token}+ { yybegin(YYINITIAL); return BatchTypes.FUNC_LABEL; }
 }
 
+<CHDIR> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(CHDIR); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    \/[d] { yybegin(CHDIR); return BatchTypes.EXTENSION; }
+    {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
+    {Token}+ { tokenOrigin.push(CHDIR); yypushback(yylength()); yybegin(TOKEN); }
+}
+
 <COMMAND> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WhiteSpace} { yybegin(COMMAND); return TokenType.WHITE_SPACE; }
@@ -130,7 +142,9 @@ Operator = [\+\-\*\/]
     goto { yybegin(GOTO); return BatchTypes.GOTO_COMMAND; }
     for { yybegin(FOR); return BatchTypes.FOR_COMMAND; }
     call { yybegin(CALL); return BatchTypes.CALL_COMMAND; }
+    chdir | cd { yybegin(CHDIR); return BatchTypes.CHDIR_COMMAND; }
     if { yybegin(IF); return BatchTypes.IF_COMMAND; }
+    mkdir | md { yybegin(YYINITIAL); return BatchTypes.MKDIR_COMMAND; }
     more { yybegin(MORE); return BatchTypes.MORE_COMMAND; }
     setlocal { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_COMMAND; }
     set {yybegin(SET); return BatchTypes.SET_COMMAND; }

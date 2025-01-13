@@ -14,6 +14,9 @@ public interface BatchAnnotationReference extends PsiElement {
   BatchCallArguments getCallArguments();
 
   @Nullable
+  BatchChdirArguments getChdirArguments();
+
+  @Nullable
   BatchCommand getCommand();
 
   @Nullable
@@ -45,6 +48,9 @@ public interface BatchAnnotationReference extends PsiElement {
 
   @Nullable
   BatchShiftArguments getShiftArguments();
+
+  @Nullable
+  BatchTypes_ getTypes_();
 
   @Nullable
   BatchUndefinedArguments getUndefinedArguments();

@@ -41,6 +41,12 @@ public class BatchAnnotationReferenceImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
+  public BatchChdirArguments getChdirArguments() {
+    return findChildByClass(BatchChdirArguments.class);
+  }
+
+  @Override
+  @Nullable
   public BatchCommand getCommand() {
     return findChildByClass(BatchCommand.class);
   }
@@ -103,6 +109,12 @@ public class BatchAnnotationReferenceImpl extends ASTWrapperPsiElement implement
   @Nullable
   public BatchShiftArguments getShiftArguments() {
     return findChildByClass(BatchShiftArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public BatchTypes_ getTypes_() {
+    return findChildByClass(BatchTypes_.class);
   }
 
   @Override
