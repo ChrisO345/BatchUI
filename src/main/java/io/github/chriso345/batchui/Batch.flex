@@ -57,6 +57,7 @@ Operator = [\+\-\*\/]
     {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
     ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
     {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.COMMAND_TERMINATOR; }
+    [a-zA-Z]+:{Token}* { yybegin(CHDIR); return BatchTypes.DISK_DRIVE; }
     {Token}+ { yybegin(COMMAND); yypushback(yylength()); }
     "=" { yybegin(YYINITIAL); return BatchTypes.ASSIGNMENT; }
     \([\s\S]+\) { yybegin(YYINITIAL); yypushback(yylength() - 1); return BatchTypes.OPEN_PAREN; }
@@ -126,7 +127,8 @@ Operator = [\+\-\*\/]
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
     \/[d] { yybegin(CHDIR); return BatchTypes.EXTENSION; }
-    {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
+    {StringLiteral} { yybegin(CHDIR); return BatchTypes.STRING; }
+    [a-zA-Z]+:{Token}* { yybegin(CHDIR); return BatchTypes.DISK_DRIVE; }
     {Token}+ { tokenOrigin.push(CHDIR); yypushback(yylength()); yybegin(TOKEN); }
 }
 
