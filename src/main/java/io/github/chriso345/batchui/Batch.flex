@@ -52,8 +52,8 @@ Operator = [\+\-\*\/]
     "@"{CommentIndicator} { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_DECORATOR; }
     "@"{Token}+ { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.DECORATOR; }
     // {Escaping}
-    {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
     {ArgLiteral} { yybegin(YYINITIAL); return BatchTypes.ARG_LITERAL; }
+    {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
     {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
     ":" { yybegin(LABEL); return BatchTypes.LABEL_MARKER; }
     {CommandTerminator} { yybegin(YYINITIAL); return BatchTypes.COMMAND_TERMINATOR; }
@@ -219,6 +219,7 @@ Operator = [\+\-\*\/]
     \) { yybegin(FOR); return BatchTypes.CLOSE_PAREN; }
 
     {StringLiteral} { yybegin(FOR_COLLECTION); return BatchTypes.STRING; }
+    {ArgLiteral} { yybegin(FOR_COLLECTION); return BatchTypes.ARG_LITERAL; }
 
     {Token}+ { yybegin(FOR); yypushback(yylength()); return BatchTypes.PLAINTEXT; }
 }
@@ -346,6 +347,7 @@ Operator = [\+\-\*\/]
     {WhiteSpace} { yybegin(tokenOrigin.pop()); yypushback(yylength()); }
     {CommandTerminator} { yybegin(tokenOrigin.pop()); yypushback(yylength()); }
     \%[\w]+\% {yybegin(tokenOrigin.pop()); return BatchTypes.VARIABLE; }
+    \%\%[a-zA-Z] { yybegin(tokenOrigin.pop()); return BatchTypes.FOR_VARIABLE; }
     \![\w]+\! { yybegin(tokenOrigin.pop()); return BatchTypes.VARIABLE; }
     {Token}+ { yybegin(tokenOrigin.pop()); return BatchTypes.PLAINTEXT; }
 }

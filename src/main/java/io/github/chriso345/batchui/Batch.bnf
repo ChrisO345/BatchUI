@@ -27,7 +27,7 @@ label ::= (LABEL_MARKER? FUNC_LABEL) {
 
 //cmd_terminator ::= (PIPE|AND|LESS|GREATER|DOUBLE_PIPE|DOUBLE_AND|DOUBLE_LESS|DOUBLE_GREATER)
 
-types_ ::= STRING | NUMERIC | PLAINTEXT | DISK_DRIVE | VARIABLE | ARG_LITERAL
+types_ ::= STRING | NUMERIC | PLAINTEXT | DISK_DRIVE | VARIABLE | ARG_LITERAL | FOR_VARIABLE
 operators ::= COMPARISON_OPERATOR | OPERATOR
 //parenthesis ::= LEFT_PARENTHESIS | RIGHT_PARENTHESIS
 //braces ::= LEFT_BRACE | RIGHT_BRACE
@@ -92,7 +92,7 @@ annotation_reference ::= (
 assoc_arguments ::= VARIABLE (ASSIGNMENT (STRING|NUMERIC)?)?
 call_arguments ::= label? // todo: add extra arguments
 chdir_arguments ::= EXTENSION? (DISK_DRIVE | PLAINTEXT | VARIABLE)
-echo_arguments ::= (TOGGLE | (STRING|PLAINTEXT|VARIABLE)*)?
+echo_arguments ::= (TOGGLE | (types_)*)?
 exit_arguments ::= EXTENSION NUMERIC?
 more_arguments ::= (EXTENSION | PLAINTEXT | DISK_DRIVE) more_arguments?
 set_arguments ::= EXTENSION? VARIABLE ASSIGNMENT (recurse_types_)?

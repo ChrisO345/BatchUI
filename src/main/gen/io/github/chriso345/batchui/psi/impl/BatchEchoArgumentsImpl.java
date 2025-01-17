@@ -27,4 +27,10 @@ public class BatchEchoArgumentsImpl extends ASTWrapperPsiElement implements Batc
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<BatchTypes_> getTypes_List() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BatchTypes_.class);
+  }
+
 }

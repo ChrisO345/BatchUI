@@ -14,13 +14,11 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description>
-        Provides support for Batch files in IntelliJ IDEA.
-        <ul>
-            <li>Code completion</li>
-            <li>Syntax highlighting</li>
-            <li>Run configurations</li>
-            <li>Line markers</li>
-        </ul>
+        "Provides support for Batch files in IntelliJ IDEA.
+        - Code completion
+        - Syntax highlighting
+        - Run configurations
+        - Line markers
     </description>
 
     <!-- Product and plugin compatibility requirements.

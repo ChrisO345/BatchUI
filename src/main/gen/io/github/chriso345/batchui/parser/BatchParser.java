@@ -923,7 +923,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (TOGGLE | (STRING|PLAINTEXT|VARIABLE)*)?
+  // (TOGGLE | (types_)*)?
   public static boolean echo_arguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments")) return false;
     Marker m = enter_section_(b, l, _NONE_, ECHO_ARGUMENTS, "<echo arguments>");
@@ -932,7 +932,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // TOGGLE | (STRING|PLAINTEXT|VARIABLE)*
+  // TOGGLE | (types_)*
   private static boolean echo_arguments_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments_0")) return false;
     boolean r;
@@ -943,7 +943,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (STRING|PLAINTEXT|VARIABLE)*
+  // (types_)*
   private static boolean echo_arguments_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments_0_1")) return false;
     while (true) {
@@ -954,13 +954,13 @@ public class BatchParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // STRING|PLAINTEXT|VARIABLE
+  // (types_)
   private static boolean echo_arguments_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "echo_arguments_0_1_0")) return false;
     boolean r;
-    r = consumeToken(b, STRING);
-    if (!r) r = consumeToken(b, PLAINTEXT);
-    if (!r) r = consumeToken(b, VARIABLE);
+    Marker m = enter_section_(b);
+    r = types_(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1482,7 +1482,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRING | NUMERIC | PLAINTEXT | DISK_DRIVE | VARIABLE | ARG_LITERAL
+  // STRING | NUMERIC | PLAINTEXT | DISK_DRIVE | VARIABLE | ARG_LITERAL | FOR_VARIABLE
   public static boolean types_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "types_")) return false;
     boolean r;
@@ -1493,6 +1493,7 @@ public class BatchParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, DISK_DRIVE);
     if (!r) r = consumeToken(b, VARIABLE);
     if (!r) r = consumeToken(b, ARG_LITERAL);
+    if (!r) r = consumeToken(b, FOR_VARIABLE);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
