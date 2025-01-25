@@ -52,6 +52,7 @@ command_reference ::= (
     | BREAK_COMMAND TOGGLE?
     | CALL_COMMAND call_arguments?
     | CHDIR_COMMAND chdir_arguments?
+    | DATE_COMMAND date_arguments?
     | ECHO_COMMAND echo_arguments?
     | ELSE_COMMAND else_arguments?
     | ENDLOCAL_COMMAND
@@ -73,6 +74,7 @@ annotation_reference ::= (
     | BREAK_ANNOTATION TOGGLE?
     | CALL_ANNOTATION call_arguments?
     | CHDIR_ANNOTATION chdir_arguments?
+    | DATE_ANNOTATION date_arguments?
     | ECHO_ANNOTATION echo_arguments?
     | ELSE_ANNOTATION else_arguments?
     | ENDLOCAL_ANNOTATION
@@ -92,6 +94,7 @@ annotation_reference ::= (
 assoc_arguments ::= VARIABLE (ASSIGNMENT (STRING|NUMERIC)?)?
 call_arguments ::= label? // todo: add extra arguments
 chdir_arguments ::= EXTENSION? (DISK_DRIVE | PLAINTEXT | VARIABLE)
+date_arguments ::= EXTENSION? NUMERIC?
 echo_arguments ::= (TOGGLE | (types_)*)?
 exit_arguments ::= EXTENSION NUMERIC?
 more_arguments ::= (EXTENSION | PLAINTEXT | DISK_DRIVE) more_arguments?

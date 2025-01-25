@@ -42,7 +42,7 @@ Toggle = "on" | "off"
 ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 Operator = [\+\-\*\/]
 
-%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, CHDIR, COMMAND, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE, TOKEN
+%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, CHDIR, COMMAND, DATE, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE, TOKEN
 %state BAD_WHITESPACE
 %%
 
@@ -69,6 +69,7 @@ Operator = [\+\-\*\/]
 
     assoc { yybegin(ASSOC); return BatchTypes.ASSOC_ANNOTATION; }
     break { yybegin(BREAK); return BatchTypes.BREAK_ANNOTATION; }
+    date { yybegin(DATE); return BatchTypes.DATE_ANNOTATION; }
     echo { yybegin(ECHO); return BatchTypes.ECHO_ANNOTATION; }
     goto { yybegin(GOTO); return BatchTypes.GOTO_ANNOTATION; }
     for { yybegin(FOR); return BatchTypes.FOR_ANNOTATION; }
@@ -140,6 +141,7 @@ Operator = [\+\-\*\/]
 
     assoc { yybegin(ASSOC); return BatchTypes.ASSOC_COMMAND; }
     break { yybegin(BREAK); return BatchTypes.BREAK_COMMAND; }
+    date { yybegin(DATE); return BatchTypes.DATE_COMMAND; }
     echo { yybegin(ECHO); return BatchTypes.ECHO_COMMAND; }
     goto { yybegin(GOTO); return BatchTypes.GOTO_COMMAND; }
     for { yybegin(FOR); return BatchTypes.FOR_COMMAND; }
@@ -156,6 +158,14 @@ Operator = [\+\-\*\/]
     exit { yybegin(EXIT); return BatchTypes.EXIT_COMMAND; }
 
     {Token}+ { yybegin(YYINITIAL); return BatchTypes.PLAINTEXT; }
+}
+
+<DATE> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(DATE); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+    \/t { yybegin(DATE); return BatchTypes.EXTENSION; }
+    [0-9]{1,2}[\/\-\.][0-9]{1,2}[\/\-\.][0-9]{2,4} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
 }
 
 <ECHO> {

@@ -20,6 +20,9 @@ public interface BatchAnnotationReference extends PsiElement {
   BatchCommand getCommand();
 
   @Nullable
+  BatchDateArguments getDateArguments();
+
+  @Nullable
   BatchEchoArguments getEchoArguments();
 
   @Nullable

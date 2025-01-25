@@ -15,6 +15,7 @@ public interface BatchTypes {
   IElementType COLLECTION = new BatchElementType("COLLECTION");
   IElementType COMMAND = new BatchElementType("COMMAND");
   IElementType COMMAND_REFERENCE = new BatchElementType("COMMAND_REFERENCE");
+  IElementType DATE_ARGUMENTS = new BatchElementType("DATE_ARGUMENTS");
   IElementType ECHO_ARGUMENTS = new BatchElementType("ECHO_ARGUMENTS");
   IElementType ELSE_ARGUMENTS = new BatchElementType("ELSE_ARGUMENTS");
   IElementType ERROR_IF = new BatchElementType("ERROR_IF");
@@ -49,6 +50,8 @@ public interface BatchTypes {
   IElementType COMMENT_REFERENCE = new BatchTokenType("COMMENT_REFERENCE");
   IElementType COMPARISON_OPERATOR = new BatchTokenType("COMPARISON_OPERATOR");
   IElementType CRLF = new BatchTokenType("CRLF");
+  IElementType DATE_ANNOTATION = new BatchTokenType("DATE_ANNOTATION");
+  IElementType DATE_COMMAND = new BatchTokenType("DATE_COMMAND");
   IElementType DECORATOR = new BatchTokenType("DECORATOR");
   IElementType DISK_DRIVE = new BatchTokenType("DISK_DRIVE");
   IElementType DO_COMMAND = new BatchTokenType("DO_COMMAND");
@@ -118,6 +121,9 @@ public interface BatchTypes {
       }
       else if (type == COMMAND_REFERENCE) {
         return new BatchCommandReferenceImpl(node);
+      }
+      else if (type == DATE_ARGUMENTS) {
+        return new BatchDateArgumentsImpl(node);
       }
       else if (type == ECHO_ARGUMENTS) {
         return new BatchEchoArgumentsImpl(node);

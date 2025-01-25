@@ -53,6 +53,12 @@ public class BatchCommandReferenceImpl extends ASTWrapperPsiElement implements B
 
   @Override
   @Nullable
+  public BatchDateArguments getDateArguments() {
+    return findChildByClass(BatchDateArguments.class);
+  }
+
+  @Override
+  @Nullable
   public BatchEchoArguments getEchoArguments() {
     return findChildByClass(BatchEchoArguments.class);
   }

@@ -35,6 +35,10 @@ public class BatchVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDateArguments(@NotNull BatchDateArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitEchoArguments(@NotNull BatchEchoArguments o) {
     visitPsiElement(o);
   }
