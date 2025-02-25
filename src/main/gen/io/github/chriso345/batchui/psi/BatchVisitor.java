@@ -15,6 +15,10 @@ public class BatchVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAttribArguments(@NotNull BatchAttribArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitCallArguments(@NotNull BatchCallArguments o) {
     visitPsiElement(o);
   }
@@ -24,6 +28,10 @@ public class BatchVisitor extends PsiElementVisitor {
   }
 
   public void visitCollection(@NotNull BatchCollection o) {
+    visitPsiElement(o);
+  }
+
+  public void visitColorArguments(@NotNull BatchColorArguments o) {
     visitPsiElement(o);
   }
 

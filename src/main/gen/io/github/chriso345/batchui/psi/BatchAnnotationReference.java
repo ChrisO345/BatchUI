@@ -11,10 +11,16 @@ public interface BatchAnnotationReference extends PsiElement {
   BatchAssocArguments getAssocArguments();
 
   @Nullable
+  BatchAttribArguments getAttribArguments();
+
+  @Nullable
   BatchCallArguments getCallArguments();
 
   @Nullable
   BatchChdirArguments getChdirArguments();
+
+  @Nullable
+  BatchColorArguments getColorArguments();
 
   @Nullable
   BatchCommand getCommand();

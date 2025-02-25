@@ -49,9 +49,12 @@ command ::= command_reference | annotation_reference | COMMENT_REFERENCE | REM_D
 
 command_reference ::= (
     ASSOC_COMMAND assoc_arguments?
+    | ATTRIB_COMMAND attrib_arguments?
     | BREAK_COMMAND TOGGLE?
     | CALL_COMMAND call_arguments?
     | CHDIR_COMMAND chdir_arguments?
+    | COLOR_COMMAND color_arguments?
+    | CLS_COMMAND
     | DATE_COMMAND date_arguments?
     | ECHO_COMMAND echo_arguments?
     | ELSE_COMMAND else_arguments?
@@ -71,9 +74,12 @@ command_reference ::= (
 
 annotation_reference ::= (
     ASSOC_ANNOTATION assoc_arguments?
+    | ATTRIB_ANNOTATION attrib_arguments?
     | BREAK_ANNOTATION TOGGLE?
     | CALL_ANNOTATION call_arguments?
     | CHDIR_ANNOTATION chdir_arguments?
+    | CLS_ANNOTATION
+    | COLOR_ANNOTATION color_arguments?
     | DATE_ANNOTATION date_arguments?
     | ECHO_ANNOTATION echo_arguments?
     | ELSE_ANNOTATION else_arguments?
@@ -92,8 +98,10 @@ annotation_reference ::= (
 ) (COMMAND_TERMINATOR command)?
 
 assoc_arguments ::= VARIABLE (ASSIGNMENT (STRING|NUMERIC)?)?
+attrib_arguments ::= (types_ | EXTENSION) attrib_arguments?
 call_arguments ::= label? // todo: add extra arguments
 chdir_arguments ::= EXTENSION? (DISK_DRIVE | PLAINTEXT | VARIABLE)
+color_arguments ::= NUMERIC
 date_arguments ::= EXTENSION? NUMERIC?
 echo_arguments ::= (TOGGLE | (types_)*)?
 exit_arguments ::= EXTENSION NUMERIC?

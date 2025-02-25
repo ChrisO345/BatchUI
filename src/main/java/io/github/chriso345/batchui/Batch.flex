@@ -35,6 +35,7 @@ CommandTerminator = "|""|"? | "&""&"? | "<""<"? | ">"">"?
 SpecialCharacter = [\|\&\<\>\(\)]
 EscapeCharacter = "^".
 Numeric = [0-9]+
+Hexadecimal = [0-9a-fA-F]+
 
 RemIndicator = [Rr][Ee][Mm]
 CommentIndicator = ("::" | {RemIndicator})
@@ -42,7 +43,7 @@ Toggle = "on" | "off"
 ComparisonOperator = "EQU" | "NEQ" | "LSS" | "LEQ" | "GTR" | "GEQ" | "NOT"
 Operator = [\+\-\*\/]
 
-%state ANNOTATION, ASSOC, ASSOC_VALUE, BREAK, CALL, CHDIR, COMMAND, DATE, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE, TOKEN
+%state ANNOTATION, ASSOC, ASSOC_VALUE, ATTRIB, BREAK, CALL, CHDIR, COLOR, COMMAND, DATE, ECHO, ECHO_STRING, EXIT, FOR, FOR_COLLECTION, GOTO, IF, IF_ERRORLEVEL, IF_EXIST, IF_STANDARD, LABEL, MORE, REM, SET, SET_LOCAL, SHIFT, SET_VALUE, TOKEN
 %state BAD_WHITESPACE
 %%
 
@@ -51,7 +52,6 @@ Operator = [\+\-\*\/]
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     "@"{CommentIndicator} { yybegin(REM); yypushback(yylength() - 1); return BatchTypes.REM_DECORATOR; }
     "@"{Token}+ { yybegin(ANNOTATION); yypushback(yylength() - 1); return BatchTypes.DECORATOR; }
-    // {Escaping}
     {ArgLiteral} { yybegin(YYINITIAL); return BatchTypes.ARG_LITERAL; }
     {StringLiteral} { yybegin(YYINITIAL); return BatchTypes.STRING; }
     {CommentIndicator} { yybegin(REM); yypushback(yylength()); }
@@ -68,6 +68,7 @@ Operator = [\+\-\*\/]
     {WhiteSpace} { yybegin(ANNOTATION); return TokenType.WHITE_SPACE; }
 
     assoc { yybegin(ASSOC); return BatchTypes.ASSOC_ANNOTATION; }
+    attrib { yybegin(ATTRIB); return BatchTypes.ATTRIB_ANNOTATION; }
     break { yybegin(BREAK); return BatchTypes.BREAK_ANNOTATION; }
     date { yybegin(DATE); return BatchTypes.DATE_ANNOTATION; }
     echo { yybegin(ECHO); return BatchTypes.ECHO_ANNOTATION; }
@@ -75,6 +76,8 @@ Operator = [\+\-\*\/]
     for { yybegin(FOR); return BatchTypes.FOR_ANNOTATION; }
     call { yybegin(CALL); return BatchTypes.CALL_ANNOTATION; }
     chdir | cd { yybegin(CHDIR); return BatchTypes.CHDIR_ANNOTATION; }
+    cls { yybegin(YYINITIAL); return BatchTypes.CLS_ANNOTATION; }
+    color { yybegin(COLOR); return BatchTypes.COLOR_ANNOTATION; }
     if { yybegin(IF); return BatchTypes.IF_ANNOTATION; }
     mkdir | md { yybegin(YYINITIAL); return BatchTypes.MKDIR_ANNOTATION; }
     more { yybegin(MORE); return BatchTypes.MORE_ANNOTATION; }
@@ -84,6 +87,36 @@ Operator = [\+\-\*\/]
     else { yybegin(YYINITIAL); return BatchTypes.ELSE_ANNOTATION; }
     endlocal { yybegin(YYINITIAL); return BatchTypes.ENDLOCAL_ANNOTATION; }
     exit { yybegin(EXIT); return BatchTypes.EXIT_ANNOTATION; }
+
+    {Token}+ { yybegin(YYINITIAL); return BatchTypes.PLAINTEXT; }
+}
+
+<COMMAND> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(COMMAND); return TokenType.WHITE_SPACE; }
+    {StringLiteral} { yybegin(COMMAND); return BatchTypes.STRING; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    assoc { yybegin(ASSOC); return BatchTypes.ASSOC_COMMAND; }
+    attrib { yybegin(ATTRIB); return BatchTypes.ATTRIB_COMMAND; }
+    break { yybegin(BREAK); return BatchTypes.BREAK_COMMAND; }
+    date { yybegin(DATE); return BatchTypes.DATE_COMMAND; }
+    echo { yybegin(ECHO); return BatchTypes.ECHO_COMMAND; }
+    goto { yybegin(GOTO); return BatchTypes.GOTO_COMMAND; }
+    for { yybegin(FOR); return BatchTypes.FOR_COMMAND; }
+    call { yybegin(CALL); return BatchTypes.CALL_COMMAND; }
+    chdir | cd { yybegin(CHDIR); return BatchTypes.CHDIR_COMMAND; }
+    color { yybegin(COLOR); return BatchTypes.COLOR_COMMAND; }
+    cls { yybegin(YYINITIAL); return BatchTypes.CLS_COMMAND; }
+    if { yybegin(IF); return BatchTypes.IF_COMMAND; }
+    mkdir | md { yybegin(YYINITIAL); return BatchTypes.MKDIR_COMMAND; }
+    more { yybegin(MORE); return BatchTypes.MORE_COMMAND; }
+    setlocal { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_COMMAND; }
+    set {yybegin(SET); return BatchTypes.SET_COMMAND; }
+    shift {yybegin(SHIFT); return BatchTypes.SHIFT_COMMAND; }
+    else { yybegin(YYINITIAL); return BatchTypes.ELSE_COMMAND; }
+    endlocal { yybegin(YYINITIAL); return BatchTypes.ENDLOCAL_COMMAND; }
+    exit { yybegin(EXIT); return BatchTypes.EXIT_COMMAND; }
 
     {Token}+ { yybegin(YYINITIAL); return BatchTypes.PLAINTEXT; }
 }
@@ -104,6 +137,17 @@ Operator = [\+\-\*\/]
     {ArgLiteral} { yybegin(ASSOC_VALUE); return BatchTypes.ARG_LITERAL; }
     {Token}+ { yybegin(ASSOC_VALUE); return BatchTypes.STRING; }
     = { yybegin(YYINITIAL); return TokenType.BAD_CHARACTER; }
+}
+
+<ATTRIB> {
+    {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WhiteSpace} { yybegin(ATTRIB); return TokenType.WHITE_SPACE; }
+    {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
+
+    (\+|\-)[rashoixoub] { yybegin(ATTRIB); return BatchTypes.EXTENSION; }
+    [a-zA-Z]+:{Token}* { yybegin(ATTRIB); return BatchTypes.DISK_DRIVE; }
+    \/[sdl] { yybegin(ATTRIB); return BatchTypes.EXTENSION; }
+    {Token}+ { yybegin(ATTRIB); return BatchTypes.STRING; }
 }
 
 <BREAK> {
@@ -133,31 +177,12 @@ Operator = [\+\-\*\/]
     {Token}+ { tokenOrigin.push(CHDIR); yypushback(yylength()); yybegin(TOKEN); }
 }
 
-<COMMAND> {
+<COLOR> {
     {LineTerminator}+ { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-    {WhiteSpace} { yybegin(COMMAND); return TokenType.WHITE_SPACE; }
-    {StringLiteral} { yybegin(COMMAND); return BatchTypes.STRING; }
+    {WhiteSpace} { yybegin(COLOR); return TokenType.WHITE_SPACE; }
     {CommandTerminator} { yybegin(YYINITIAL); yypushback(yylength()); }
 
-    assoc { yybegin(ASSOC); return BatchTypes.ASSOC_COMMAND; }
-    break { yybegin(BREAK); return BatchTypes.BREAK_COMMAND; }
-    date { yybegin(DATE); return BatchTypes.DATE_COMMAND; }
-    echo { yybegin(ECHO); return BatchTypes.ECHO_COMMAND; }
-    goto { yybegin(GOTO); return BatchTypes.GOTO_COMMAND; }
-    for { yybegin(FOR); return BatchTypes.FOR_COMMAND; }
-    call { yybegin(CALL); return BatchTypes.CALL_COMMAND; }
-    chdir | cd { yybegin(CHDIR); return BatchTypes.CHDIR_COMMAND; }
-    if { yybegin(IF); return BatchTypes.IF_COMMAND; }
-    mkdir | md { yybegin(YYINITIAL); return BatchTypes.MKDIR_COMMAND; }
-    more { yybegin(MORE); return BatchTypes.MORE_COMMAND; }
-    setlocal { yybegin(SET_LOCAL); return BatchTypes.SETLOCAL_COMMAND; }
-    set {yybegin(SET); return BatchTypes.SET_COMMAND; }
-    shift {yybegin(SHIFT); return BatchTypes.SHIFT_COMMAND; }
-    else { yybegin(YYINITIAL); return BatchTypes.ELSE_COMMAND; }
-    endlocal { yybegin(YYINITIAL); return BatchTypes.ENDLOCAL_COMMAND; }
-    exit { yybegin(EXIT); return BatchTypes.EXIT_COMMAND; }
-
-    {Token}+ { yybegin(YYINITIAL); return BatchTypes.PLAINTEXT; }
+    {Hexadecimal} { yybegin(YYINITIAL); return BatchTypes.NUMERIC; }
 }
 
 <DATE> {

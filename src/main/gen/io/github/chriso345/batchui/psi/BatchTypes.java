@@ -10,9 +10,11 @@ public interface BatchTypes {
 
   IElementType ANNOTATION_REFERENCE = new BatchElementType("ANNOTATION_REFERENCE");
   IElementType ASSOC_ARGUMENTS = new BatchElementType("ASSOC_ARGUMENTS");
+  IElementType ATTRIB_ARGUMENTS = new BatchElementType("ATTRIB_ARGUMENTS");
   IElementType CALL_ARGUMENTS = new BatchElementType("CALL_ARGUMENTS");
   IElementType CHDIR_ARGUMENTS = new BatchElementType("CHDIR_ARGUMENTS");
   IElementType COLLECTION = new BatchElementType("COLLECTION");
+  IElementType COLOR_ARGUMENTS = new BatchElementType("COLOR_ARGUMENTS");
   IElementType COMMAND = new BatchElementType("COMMAND");
   IElementType COMMAND_REFERENCE = new BatchElementType("COMMAND_REFERENCE");
   IElementType DATE_ARGUMENTS = new BatchElementType("DATE_ARGUMENTS");
@@ -38,6 +40,8 @@ public interface BatchTypes {
   IElementType ASSIGNMENT = new BatchTokenType("ASSIGNMENT");
   IElementType ASSOC_ANNOTATION = new BatchTokenType("ASSOC_ANNOTATION");
   IElementType ASSOC_COMMAND = new BatchTokenType("ASSOC_COMMAND");
+  IElementType ATTRIB_ANNOTATION = new BatchTokenType("ATTRIB_ANNOTATION");
+  IElementType ATTRIB_COMMAND = new BatchTokenType("ATTRIB_COMMAND");
   IElementType BREAK_ANNOTATION = new BatchTokenType("BREAK_ANNOTATION");
   IElementType BREAK_COMMAND = new BatchTokenType("BREAK_COMMAND");
   IElementType CALL_ANNOTATION = new BatchTokenType("CALL_ANNOTATION");
@@ -45,6 +49,10 @@ public interface BatchTypes {
   IElementType CHDIR_ANNOTATION = new BatchTokenType("CHDIR_ANNOTATION");
   IElementType CHDIR_COMMAND = new BatchTokenType("CHDIR_COMMAND");
   IElementType CLOSE_PAREN = new BatchTokenType("CLOSE_PAREN");
+  IElementType CLS_ANNOTATION = new BatchTokenType("CLS_ANNOTATION");
+  IElementType CLS_COMMAND = new BatchTokenType("CLS_COMMAND");
+  IElementType COLOR_ANNOTATION = new BatchTokenType("COLOR_ANNOTATION");
+  IElementType COLOR_COMMAND = new BatchTokenType("COLOR_COMMAND");
   IElementType COMMAND_TERMINATOR = new BatchTokenType("COMMAND_TERMINATOR");
   IElementType COMMENT = new BatchTokenType("COMMENT");
   IElementType COMMENT_REFERENCE = new BatchTokenType("COMMENT_REFERENCE");
@@ -107,6 +115,9 @@ public interface BatchTypes {
       else if (type == ASSOC_ARGUMENTS) {
         return new BatchAssocArgumentsImpl(node);
       }
+      else if (type == ATTRIB_ARGUMENTS) {
+        return new BatchAttribArgumentsImpl(node);
+      }
       else if (type == CALL_ARGUMENTS) {
         return new BatchCallArgumentsImpl(node);
       }
@@ -115,6 +126,9 @@ public interface BatchTypes {
       }
       else if (type == COLLECTION) {
         return new BatchCollectionImpl(node);
+      }
+      else if (type == COLOR_ARGUMENTS) {
+        return new BatchColorArgumentsImpl(node);
       }
       else if (type == COMMAND) {
         return new BatchCommandImpl(node);
